@@ -1,0 +1,9 @@
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\bin\Debug\netcoreapp3.1\brokfy.dashboard.api.data.deps.json
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\bin\Debug\netcoreapp3.1\brokfy.dashboard.api.data.dll
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\obj\Debug\netcoreapp3.1\brokfy.dashboard.api.data.AssemblyInfoInputs.cache
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\obj\Debug\netcoreapp3.1\brokfy.dashboard.api.data.AssemblyInfo.cs
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\bin\Debug\netcoreapp3.1\brokfy.dashboard.api.data.runtimeconfig.json
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\bin\Debug\netcoreapp3.1\brokfy.dashboard.api.data.runtimeconfig.dev.json
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\bin\Debug\netcoreapp3.1\brokfy.dashboard.api.data.pdb
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\obj\Debug\netcoreapp3.1\brokfy.dashboard.api.data.dll
+D:\Programacion\brokfy\brokfy.dashboard.api\brokfy.dashboard.api.data\obj\Debug\netcoreapp3.1\brokfy.dashboard.api.data.pdb

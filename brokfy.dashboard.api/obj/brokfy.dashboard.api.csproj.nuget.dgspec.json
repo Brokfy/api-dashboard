@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj": {}
+    "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj": {}
   },
   "projects": {
-    "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj": {
+    "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
+        "projectUniqueName": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
         "projectName": "brokfy.dashboard.api.data",
-        "projectPath": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
+        "projectPath": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
         "packagesPath": "C:\\Users\\Trabajo Papa\\.nuget\\packages\\",
-        "outputPath": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\obj\\",
+        "outputPath": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Trabajo Papa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -80,14 +80,14 @@
         }
       }
     },
-    "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj": {
+    "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj",
+        "projectUniqueName": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj",
         "projectName": "brokfy.dashboard.api",
-        "projectPath": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj",
+        "projectPath": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api\\brokfy.dashboard.api.csproj",
         "packagesPath": "C:\\Users\\Trabajo Papa\\.nuget\\packages\\",
-        "outputPath": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api\\obj\\",
+        "outputPath": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Trabajo Papa\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -103,8 +103,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj": {
-                "projectPath": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj"
+              "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj": {
+                "projectPath": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj"
               }
             }
           }

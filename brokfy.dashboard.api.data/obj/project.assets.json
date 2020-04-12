@@ -5756,11 +5756,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
+      "projectUniqueName": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
       "projectName": "brokfy.dashboard.api.data",
-      "projectPath": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
+      "projectPath": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\brokfy.dashboard.api.data.csproj",
       "packagesPath": "C:\\Users\\Trabajo Papa\\.nuget\\packages\\",
-      "outputPath": "D:\\Programacion\\brokfy\\brokfy.dashboard.api\\brokfy.dashboard.api.data\\obj\\",
+      "outputPath": "D:\\Programacion\\brokfy-dashboard-api\\brokfy.dashboard.api.data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Trabajo Papa\\AppData\\Roaming\\NuGet\\NuGet.Config",

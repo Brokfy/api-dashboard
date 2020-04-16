@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace brokfy.dashboard.api.data.DataModel
 {
-    public partial class brokfy_desarrolloContext : DbContext
+    public partial class brokfy_devContext : DbContext
     {
-        public brokfy_desarrolloContext()
+        public brokfy_devContext()
         {
         }
 
-        public brokfy_desarrolloContext(DbContextOptions<brokfy_desarrolloContext> options)
+        public brokfy_devContext(DbContextOptions<brokfy_devContext> options)
             : base(options)
         {
         }
@@ -69,6 +69,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Salud> Salud { get; set; }
         public virtual DbSet<Siniestros> Siniestros { get; set; }
         public virtual DbSet<Sotanos> Sotanos { get; set; }
+        public virtual DbSet<TipoPoliza> TipoPoliza { get; set; }
         public virtual DbSet<TipoSeguro> TipoSeguro { get; set; }
         public virtual DbSet<TipoTecho> TipoTecho { get; set; }
         public virtual DbSet<TipoViviendaBrokfy> TipoViviendaBrokfy { get; set; }
@@ -78,13 +79,21 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<UsuariosToRoles> UsuariosToRoles { get; set; }
 
-        // Unable to generate entity type for table 'brokfy_desarrollo.bfroleusers'. Please see the warning messages.
-        // Unable to generate entity type for table 'brokfy_desarrollo.oauth_access_token'. Please see the warning messages.
-        // Unable to generate entity type for table 'brokfy_desarrollo.oauth_client_token'. Please see the warning messages.
-        // Unable to generate entity type for table 'brokfy_desarrollo.oauth_code'. Please see the warning messages.
-        // Unable to generate entity type for table 'brokfy_desarrollo.oauth_refresh_token'. Please see the warning messages.
-        // Unable to generate entity type for table 'brokfy_desarrollo.perfil_asegurado_to_propiedades'. Please see the warning messages.
+        // Unable to generate entity type for table 'brokfy_dev.bfroleusers'. Please see the warning messages.
+        // Unable to generate entity type for table 'brokfy_dev.oauth_access_token'. Please see the warning messages.
+        // Unable to generate entity type for table 'brokfy_dev.oauth_client_token'. Please see the warning messages.
+        // Unable to generate entity type for table 'brokfy_dev.oauth_code'. Please see the warning messages.
+        // Unable to generate entity type for table 'brokfy_dev.oauth_refresh_token'. Please see the warning messages.
+        // Unable to generate entity type for table 'brokfy_dev.perfil_asegurado_to_propiedades'. Please see the warning messages.
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySQL(@"server=database-1.cyu1bxjzzhpm.us-east-2.rds.amazonaws.com;port=3306;user=dev;password=DevBrokfy18;database=brokfy_dev");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -92,7 +101,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Actividades>(entity =>
             {
-                entity.ToTable("actividades", "brokfy_desarrollo");
+                entity.ToTable("actividades", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -109,7 +118,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.AnoMarac);
 
-                entity.ToTable("anos_marca", "brokfy_desarrollo");
+                entity.ToTable("anos_marca", "brokfy_dev");
 
                 entity.Property(e => e.AnoMarac)
                     .HasColumnName("ano_marac")
@@ -121,7 +130,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.IdAseguradora);
 
-                entity.ToTable("aseguradoras", "brokfy_desarrollo");
+                entity.ToTable("aseguradoras", "brokfy_dev");
 
                 entity.Property(e => e.IdAseguradora)
                     .HasColumnName("id_aseguradora")
@@ -156,10 +165,10 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("auto", "brokfy_desarrollo");
+                entity.ToTable("auto", "brokfy_dev");
 
                 entity.Property(e => e.NoPoliza)
-                    .HasColumnName("noPoliza")
+                    .HasColumnName("no_poliza")
                     .HasMaxLength(45)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
@@ -168,14 +177,28 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnName("ano")
                     .HasColumnType("int(4)");
 
+                entity.Property(e => e.Clave)
+                    .IsRequired()
+                    .HasColumnName("clave")
+                    .HasMaxLength(45)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Marca)
+                    .IsRequired()
                     .HasColumnName("marca")
                     .HasMaxLength(15)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Modelo)
+                    .IsRequired()
                     .HasColumnName("modelo")
                     .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Placas)
+                    .IsRequired()
+                    .HasColumnName("placas")
+                    .HasMaxLength(45)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.NoPolizaNavigation)
@@ -189,7 +212,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.Banco, e.CodQualitas });
 
-                entity.ToTable("bankcode", "brokfy_desarrollo");
+                entity.ToTable("bankcode", "brokfy_dev");
 
                 entity.Property(e => e.Banco)
                     .HasColumnName("banco")
@@ -206,7 +229,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.IdRol);
 
-                entity.ToTable("bfroles", "brokfy_desarrollo");
+                entity.ToTable("bfroles", "brokfy_dev");
 
                 entity.Property(e => e.IdRol)
                     .HasColumnName("id_rol")
@@ -223,7 +246,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.IdUser);
 
-                entity.ToTable("bfusers", "brokfy_desarrollo");
+                entity.ToTable("bfusers", "brokfy_dev");
 
                 entity.Property(e => e.IdUser)
                     .HasColumnName("id_user")
@@ -248,14 +271,21 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<CartasNombramiento>(entity =>
             {
-                entity.ToTable("cartas_nombramiento", "brokfy_desarrollo");
+                entity.HasKey(e => e.NoPoliza);
+
+                entity.ToTable("cartas_nombramiento", "brokfy_dev");
+
+                entity.HasIndex(e => e.Tipo)
+                    .HasName("fk_tipo_poliza_carta_nombramiento_idx");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_idx");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("bigint(20)");
+                entity.Property(e => e.NoPoliza)
+                    .HasColumnName("no_poliza")
+                    .HasMaxLength(45)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.Aseguradora)
                     .IsRequired()
@@ -267,16 +297,17 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnName("fecha")
                     .HasColumnType("date");
 
-                entity.Property(e => e.NoPoliza)
-                    .IsRequired()
-                    .HasColumnName("no_poliza")
-                    .HasMaxLength(45)
-                    .IsUnicode(false);
+                entity.Property(e => e.Revisado)
+                    .HasColumnName("revisado")
+                    .HasColumnType("tinyint(1)");
 
                 entity.Property(e => e.Tipo)
-                    .IsRequired()
                     .HasColumnName("tipo")
-                    .HasMaxLength(45)
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.UrlPoliza)
+                    .HasColumnName("url_poliza")
+                    .HasMaxLength(245)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Username)
@@ -284,6 +315,12 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnName("username")
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.TipoNavigation)
+                    .WithMany(p => p.CartasNombramiento)
+                    .HasForeignKey(d => d.Tipo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_tipo_poliza_carta_nombramiento");
 
                 entity.HasOne(d => d.UsernameNavigation)
                     .WithMany(p => p.CartasNombramiento)
@@ -296,7 +333,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.CodAmis);
 
-                entity.ToTable("catalogo_homologado", "brokfy_desarrollo");
+                entity.ToTable("catalogo_homologado", "brokfy_dev");
 
                 entity.Property(e => e.CodAmis)
                     .HasColumnName("codAmis")
@@ -313,7 +350,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<ChatAutomoviles>(entity =>
             {
-                entity.ToTable("chat_automoviles", "brokfy_desarrollo");
+                entity.ToTable("chat_automoviles", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -327,7 +364,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<ChatHogar>(entity =>
             {
-                entity.ToTable("chat_hogar", "brokfy_desarrollo");
+                entity.ToTable("chat_hogar", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -343,7 +380,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.IdCoberturas);
 
-                entity.ToTable("coberturas", "brokfy_desarrollo");
+                entity.ToTable("coberturas", "brokfy_dev");
 
                 entity.HasIndex(e => e.ProductosId)
                     .HasName("fk_coberturas_productos1_idx");
@@ -371,7 +408,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Codigospostales>(entity =>
             {
-                entity.ToTable("codigospostales", "brokfy_desarrollo");
+                entity.ToTable("codigospostales", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -406,7 +443,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.Username);
 
-                entity.ToTable("datos_verificacion_mati", "brokfy_desarrollo");
+                entity.ToTable("datos_verificacion_mati", "brokfy_dev");
 
                 entity.Property(e => e.Username)
                     .HasColumnName("username")
@@ -488,7 +525,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<EstadosMexico>(entity =>
             {
-                entity.ToTable("estados_mexico", "brokfy_desarrollo");
+                entity.ToTable("estados_mexico", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -515,7 +552,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Gadgets>(entity =>
             {
-                entity.ToTable("gadgets", "brokfy_desarrollo");
+                entity.ToTable("gadgets", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -530,7 +567,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Marcas>(entity =>
             {
-                entity.ToTable("marcas", "brokfy_desarrollo");
+                entity.ToTable("marcas", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -553,7 +590,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.CodMarca, e.Nombre });
 
-                entity.ToTable("marcas_aseguradoras", "brokfy_desarrollo");
+                entity.ToTable("marcas_aseguradoras", "brokfy_dev");
 
                 entity.Property(e => e.CodMarca)
                     .HasColumnName("codMarca")
@@ -574,7 +611,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<MedidasSeguridad>(entity =>
             {
-                entity.ToTable("medidas_seguridad", "brokfy_desarrollo");
+                entity.ToTable("medidas_seguridad", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -593,7 +630,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<MetodosPagoReg>(entity =>
             {
-                entity.ToTable("metodos_pago_reg", "brokfy_desarrollo");
+                entity.ToTable("metodos_pago_reg", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_metodos_pago_idx");
@@ -623,7 +660,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Modelo>(entity =>
             {
-                entity.ToTable("modelo", "brokfy_desarrollo");
+                entity.ToTable("modelo", "brokfy_dev");
 
                 entity.HasIndex(e => e.IdMarca)
                     .HasName("fk_marcas_idx");
@@ -651,7 +688,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<ModelosAseguradoras>(entity =>
             {
-                entity.ToTable("modelos_aseguradoras", "brokfy_desarrollo");
+                entity.ToTable("modelos_aseguradoras", "brokfy_dev");
 
                 entity.HasIndex(e => e.CodBrokfy)
                     .HasName("fk_modelos_aseguradoras_marcas_brokfy_idx");
@@ -705,7 +742,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<ModelosMoto>(entity =>
             {
-                entity.ToTable("modelos_moto", "brokfy_desarrollo");
+                entity.ToTable("modelos_moto", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -740,7 +777,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.Municipio, e.Estado });
 
-                entity.ToTable("municipios", "brokfy_desarrollo");
+                entity.ToTable("municipios", "brokfy_dev");
 
                 entity.Property(e => e.Municipio)
                     .HasColumnName("municipio")
@@ -761,7 +798,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<NivelesCondominio>(entity =>
             {
-                entity.ToTable("nivelesCondominio", "brokfy_desarrollo");
+                entity.ToTable("nivelesCondominio", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -787,7 +824,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.ClientId);
 
-                entity.ToTable("oauth_client_details", "brokfy_desarrollo");
+                entity.ToTable("oauth_client_details", "brokfy_dev");
 
                 entity.Property(e => e.ClientId)
                     .HasColumnName("client_id")
@@ -847,7 +884,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.Username);
 
-                entity.ToTable("perfil", "brokfy_desarrollo");
+                entity.ToTable("perfil", "brokfy_dev");
 
                 entity.Property(e => e.Username)
                     .HasColumnName("username")
@@ -899,7 +936,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.IdPerfil);
 
-                entity.ToTable("perfil_asegurado", "brokfy_desarrollo");
+                entity.ToTable("perfil_asegurado", "brokfy_dev");
 
                 entity.HasIndex(e => e.IdProfesion)
                     .HasName("fk_perfil_asegurado_profesiones_idx");
@@ -991,7 +1028,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.IdPerfil, e.IdGadgets });
 
-                entity.ToTable("perfil_asegurado_tiene_gadgets", "brokfy_desarrollo");
+                entity.ToTable("perfil_asegurado_tiene_gadgets", "brokfy_dev");
 
                 entity.HasIndex(e => e.IdGadgets)
                     .HasName("fk_perfil_asegurado_has_gadgets_gadgets1_idx");
@@ -1029,7 +1066,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.IdPerfil, e.IdActividad });
 
-                entity.ToTable("perfil_asegurado_to_actividades", "brokfy_desarrollo");
+                entity.ToTable("perfil_asegurado_to_actividades", "brokfy_dev");
 
                 entity.HasIndex(e => e.IdActividad)
                     .HasName("fk_perfi_asegurado_actividades_actividad_idx");
@@ -1064,7 +1101,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.IdPerfil, e.IdSalud });
 
-                entity.ToTable("perfil_asegurado_to_salud", "brokfy_desarrollo");
+                entity.ToTable("perfil_asegurado_to_salud", "brokfy_dev");
 
                 entity.HasIndex(e => e.IdPerfil)
                     .HasName("fk_perfil_asegurado_has_salud_perfil_asegurado1_idx");
@@ -1100,7 +1137,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<PisosCasas>(entity =>
             {
-                entity.ToTable("pisosCasas", "brokfy_desarrollo");
+                entity.ToTable("pisosCasas", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1122,13 +1159,16 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas", "brokfy_desarrollo");
+                entity.ToTable("polizas", "brokfy_dev");
 
                 entity.HasIndex(e => e.IdAseguradoras)
                     .HasName("fk_polizas_aseguradoras1_idx");
 
                 entity.HasIndex(e => e.ProductoId)
                     .HasName("fk_polizas_productos1_idx");
+
+                entity.HasIndex(e => e.TipoPoliza)
+                    .HasName("fk_tipo_polizas_polizas_idx");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_polizas_idx");
@@ -1174,23 +1214,8 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnName("id_aseguradoras")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.Marca)
-                    .HasColumnName("marca")
-                    .HasMaxLength(45)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ModeloMarca)
-                    .HasColumnName("modelo_marca")
-                    .HasMaxLength(105)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.NoAsegurado)
                     .HasColumnName("no_asegurado")
-                    .HasMaxLength(45)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Placas)
-                    .HasColumnName("placas")
                     .HasMaxLength(45)
                     .IsUnicode(false);
 
@@ -1218,10 +1243,8 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("longtext");
 
                 entity.Property(e => e.TipoPoliza)
-                    .IsRequired()
                     .HasColumnName("tipo_poliza")
-                    .HasMaxLength(45)
-                    .IsUnicode(false);
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.Username)
                     .IsRequired()
@@ -1241,6 +1264,12 @@ namespace brokfy.dashboard.api.data.DataModel
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_polizas_productos1");
 
+                entity.HasOne(d => d.TipoPolizaNavigation)
+                    .WithMany(p => p.Polizas)
+                    .HasForeignKey(d => d.TipoPoliza)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_tipo_polizas_polizas");
+
                 entity.HasOne(d => d.UsernameNavigation)
                     .WithMany(p => p.Polizas)
                     .HasForeignKey(d => d.Username)
@@ -1250,7 +1279,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<PolizasAseguradorasNoAgente>(entity =>
             {
-                entity.ToTable("polizas_aseguradoras_no_agente", "brokfy_desarrollo");
+                entity.ToTable("polizas_aseguradoras_no_agente", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_polizas_no_agente_usuarios_idx");
@@ -1286,7 +1315,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_gadgets", "brokfy_desarrollo");
+                entity.ToTable("polizas_gadgets", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_gadgets_idx");
@@ -1314,7 +1343,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_gastos_medicos", "brokfy_desarrollo");
+                entity.ToTable("polizas_gastos_medicos", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_gastos_medicos_idx");
@@ -1348,7 +1377,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_hogar", "brokfy_desarrollo");
+                entity.ToTable("polizas_hogar", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_hogar_idx");
@@ -1376,7 +1405,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_mascotas", "brokfy_desarrollo");
+                entity.ToTable("polizas_mascotas", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_mascotas_idx");
@@ -1404,7 +1433,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_moto", "brokfy_desarrollo");
+                entity.ToTable("polizas_moto", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_moto");
@@ -1432,7 +1461,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_rc", "brokfy_desarrollo");
+                entity.ToTable("polizas_rc", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuarios_rc_idx");
@@ -1460,7 +1489,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_viajes", "brokfy_desarrollo");
+                entity.ToTable("polizas_viajes", "brokfy_dev");
 
                 entity.Property(e => e.NoPoliza)
                     .HasColumnName("no_poliza")
@@ -1479,7 +1508,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.NoPoliza);
 
-                entity.ToTable("polizas_vida", "brokfy_desarrollo");
+                entity.ToTable("polizas_vida", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_usuario_vida_idx");
@@ -1505,7 +1534,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Preguntas>(entity =>
             {
-                entity.ToTable("preguntas", "brokfy_desarrollo");
+                entity.ToTable("preguntas", "brokfy_dev");
 
                 entity.HasIndex(e => e.TipoSeguroId)
                     .HasName("fk_preguntas_tipo_seguro1_idx");
@@ -1535,7 +1564,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.Pregunta, e.IdPregunta });
 
-                entity.ToTable("preguntas_chat", "brokfy_desarrollo");
+                entity.ToTable("preguntas_chat", "brokfy_dev");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("chat_automoviles_idx");
@@ -1573,7 +1602,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<PreguntasHogar>(entity =>
             {
-                entity.ToTable("preguntasHogar", "brokfy_desarrollo");
+                entity.ToTable("preguntasHogar", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1593,7 +1622,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<PreguntasPerfil>(entity =>
             {
-                entity.ToTable("preguntas_perfil", "brokfy_desarrollo");
+                entity.ToTable("preguntas_perfil", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1612,7 +1641,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Productos>(entity =>
             {
-                entity.ToTable("productos", "brokfy_desarrollo");
+                entity.ToTable("productos", "brokfy_dev");
 
                 entity.HasIndex(e => e.Aseguradora)
                     .HasName("fk_productos_aseguradoras1_idx");
@@ -1659,7 +1688,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<ProductosBrokfy>(entity =>
             {
-                entity.ToTable("productos_brokfy", "brokfy_desarrollo");
+                entity.ToTable("productos_brokfy", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1674,7 +1703,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Profesiones>(entity =>
             {
-                entity.ToTable("profesiones", "brokfy_desarrollo");
+                entity.ToTable("profesiones", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1689,7 +1718,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Propiedades>(entity =>
             {
-                entity.ToTable("propiedades", "brokfy_desarrollo");
+                entity.ToTable("propiedades", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1704,7 +1733,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Roles>(entity =>
             {
-                entity.ToTable("roles", "brokfy_desarrollo");
+                entity.ToTable("roles", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1719,7 +1748,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Salud>(entity =>
             {
-                entity.ToTable("salud", "brokfy_desarrollo");
+                entity.ToTable("salud", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1736,7 +1765,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.IdSiniestros);
 
-                entity.ToTable("siniestros", "brokfy_desarrollo");
+                entity.ToTable("siniestros", "brokfy_dev");
 
                 entity.HasIndex(e => e.Username)
                     .HasName("fk_siniestros_usuarios_idx");
@@ -1770,7 +1799,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Sotanos>(entity =>
             {
-                entity.ToTable("sotanos", "brokfy_desarrollo");
+                entity.ToTable("sotanos", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1788,9 +1817,24 @@ namespace brokfy.dashboard.api.data.DataModel
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<TipoPoliza>(entity =>
+            {
+                entity.ToTable("tipo_poliza", "brokfy_dev");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Tipo)
+                    .IsRequired()
+                    .HasColumnName("tipo")
+                    .HasMaxLength(45)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<TipoSeguro>(entity =>
             {
-                entity.ToTable("tipo_seguro", "brokfy_desarrollo");
+                entity.ToTable("tipo_seguro", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1805,7 +1849,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<TipoTecho>(entity =>
             {
-                entity.ToTable("tipo_techo", "brokfy_desarrollo");
+                entity.ToTable("tipo_techo", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1839,7 +1883,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<TipoViviendaBrokfy>(entity =>
             {
-                entity.ToTable("tipo_vivienda_brokfy", "brokfy_desarrollo");
+                entity.ToTable("tipo_vivienda_brokfy", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1873,7 +1917,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<TiposMuro>(entity =>
             {
-                entity.ToTable("tipos_muro", "brokfy_desarrollo");
+                entity.ToTable("tipos_muro", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1909,7 +1953,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.IdTipoSuelo);
 
-                entity.ToTable("tiposuelo", "brokfy_desarrollo");
+                entity.ToTable("tiposuelo", "brokfy_dev");
 
                 entity.Property(e => e.IdTipoSuelo)
                     .HasColumnName("idTipoSuelo")
@@ -1924,7 +1968,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<UsoVivienda>(entity =>
             {
-                entity.ToTable("uso_vivienda", "brokfy_desarrollo");
+                entity.ToTable("uso_vivienda", "brokfy_dev");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1955,7 +1999,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => e.Username);
 
-                entity.ToTable("usuario", "brokfy_desarrollo");
+                entity.ToTable("usuario", "brokfy_dev");
 
                 entity.Property(e => e.Username)
                     .HasColumnName("username")
@@ -1999,7 +2043,7 @@ namespace brokfy.dashboard.api.data.DataModel
             {
                 entity.HasKey(e => new { e.UsuarioId, e.RoleId });
 
-                entity.ToTable("usuarios_to_roles", "brokfy_desarrollo");
+                entity.ToTable("usuarios_to_roles", "brokfy_dev");
 
                 entity.HasIndex(e => e.RoleId)
                     .HasName("FK_ROLE_1_idx");

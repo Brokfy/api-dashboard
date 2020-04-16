@@ -5,9 +5,8 @@ namespace brokfy.dashboard.api.data.DataModel
 {
     public partial class Polizas
     {
-        public string TipoPoliza { get; set; }
+        public int TipoPoliza { get; set; }
         public double Costo { get; set; }
-        public string Placas { get; set; }
         public string NoPoliza { get; set; }
         public string FormaPago { get; set; }
         public DateTime ProximoPago { get; set; }
@@ -24,11 +23,10 @@ namespace brokfy.dashboard.api.data.DataModel
         public string RcUsaCanada { get; set; }
         public string CostoPrimerRecibo { get; set; }
         public string CostoRecibosSubsecuentes { get; set; }
-        public string Marca { get; set; }
-        public string ModeloMarca { get; set; }
 
         public virtual Aseguradoras IdAseguradorasNavigation { get; set; }
         public virtual Productos Producto { get; set; }
+        public virtual TipoPoliza TipoPolizaNavigation { get; set; }
         public virtual Usuario UsernameNavigation { get; set; }
         public virtual Auto Auto { get; set; }
     }

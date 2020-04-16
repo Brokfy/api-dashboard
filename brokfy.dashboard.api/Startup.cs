@@ -30,7 +30,7 @@ namespace brokfy.dashboard.api
         {
             services.AddControllers();
 
-            services.AddDbContext<brokfy_desarrolloContext>(options =>
+            services.AddDbContext<brokfy_devContext>(options =>
             options.UseMySQL(Configuration.GetConnectionString("brokfy")));
         }
 

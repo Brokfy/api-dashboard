@@ -32,9 +32,9 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/CartasNombramiento/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CartasNombramiento>> GetCartasNombramiento(int id)
+        public async Task<ActionResult<CartasNombramiento>> GetCartasNombramiento(string id)
         {
-            var dato = await _context.CartasNombramiento.FindAsync(id);
+            var dato = await _context.CartasNombramiento.Where(x => x.NoPoliza == id).FirstOrDefaultAsync();
 
             if (dato == null)
             {

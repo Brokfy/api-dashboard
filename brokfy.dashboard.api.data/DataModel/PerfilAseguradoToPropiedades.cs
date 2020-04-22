@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace brokfy.dashboard.api.data.DataModel
 {
-    public partial class PerfilAseguradoTieneGadgets
+    public partial class PerfilAseguradoToPropiedades
     {
         public string IdPerfil { get; set; }
-        public int IdGadgets { get; set; }
-        public bool? Seguro { get; set; }
+        public int IdPropiedades { get; set; }
 
-        public virtual Gadgets IdGadgetsNavigation { get; set; }
         public virtual PerfilAsegurado IdPerfilNavigation { get; set; }
+        public virtual Propiedades IdPropiedadesNavigation { get; set; }
     }
 }

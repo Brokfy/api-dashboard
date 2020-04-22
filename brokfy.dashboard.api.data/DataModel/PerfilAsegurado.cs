@@ -20,9 +20,9 @@ namespace brokfy.dashboard.api.data.DataModel
         public string Edad { get; set; }
         public string RegimenVivienda { get; set; }
         public string SituacionLaboral { get; set; }
-        public byte Hipoteca { get; set; }
-        public byte Viaja { get; set; }
-        public byte Mascotas { get; set; }
+        public bool Hipoteca { get; set; }
+        public bool Viaja { get; set; }
+        public bool Mascotas { get; set; }
         public string EstadoCivil { get; set; }
         public int IdProfesion { get; set; }
 

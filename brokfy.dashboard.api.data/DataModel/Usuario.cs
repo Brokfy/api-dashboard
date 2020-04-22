@@ -24,7 +24,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
         public string Username { get; set; }
         public string Password { get; set; }
-        public byte? Enabled { get; set; }
+        public bool? Enabled { get; set; }
         public int? Intentos { get; set; }
         public string IdConekta { get; set; }
         public string Token { get; set; }

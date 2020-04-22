@@ -15,6 +15,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public int? AccessTokenValidity { get; set; }
         public int? RefreshTokenValidity { get; set; }
         public string AdditionalInformation { get; set; }
-        public byte? Autoapprove { get; set; }
+        public sbyte? Autoapprove { get; set; }
     }
 }

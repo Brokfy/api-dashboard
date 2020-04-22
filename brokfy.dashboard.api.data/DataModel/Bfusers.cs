@@ -8,6 +8,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public long IdUser { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public byte Enabled { get; set; }
+        public bool Enabled { get; set; }
     }
 }

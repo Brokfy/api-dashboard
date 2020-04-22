@@ -10,7 +10,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public string Aseguradora { get; set; }
         public DateTime Fecha { get; set; }
         public string NoPoliza { get; set; }
-        public byte? Revisado { get; set; }
+        public bool? Revisado { get; set; }
         public string UrlPoliza { get; set; }
 
         public virtual TipoPoliza TipoNavigation { get; set; }

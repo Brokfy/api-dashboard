@@ -7,7 +7,7 @@ namespace brokfy.dashboard.api.data.DataModel
     {
         public string IdPerfil { get; set; }
         public int IdActividad { get; set; }
-        public byte? Seguro { get; set; }
+        public bool? Seguro { get; set; }
 
         public virtual Actividades IdActividadNavigation { get; set; }
         public virtual PerfilAsegurado IdPerfilNavigation { get; set; }

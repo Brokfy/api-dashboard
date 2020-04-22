@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using brokfy.dashboard.api.data.DataModel;
+using brokfy.dashboard.api.Middleware;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MySql.Data;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace brokfy.dashboard.api
 {
@@ -28,15 +31,21 @@ namespace brokfy.dashboard.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
 
             services.AddDbContext<brokfy_devContext>(options =>
-            options.UseMySQL(Configuration.GetConnectionString("brokfy")));
+                options.UseMySql(Configuration.GetConnectionString("brokfy")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(
+                options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()
+            );
+            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,13 +54,17 @@ namespace brokfy.dashboard.api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseMiddleware<ADAuthMiddleware>();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            
+
         }
+
     }
 }

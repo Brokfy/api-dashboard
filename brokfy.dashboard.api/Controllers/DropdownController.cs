@@ -37,19 +37,19 @@ namespace brokfy.dashboard.api.Controllers
                     switch (item)
                     {
                         case "aseguradoras":
-                            model.Data = _context.Aseguradoras.ToList();
+                            model.Data = await _context.Aseguradoras.ToListAsync();
                             break;
                         case "productos":
-                            model.Data = _context.Productos.ToList();
+                            model.Data = await _context.Productos.ToListAsync();
                             break;
                         case "tipo_poliza":
-                            model.Data = _context.TipoPoliza.ToList();
+                            model.Data = await _context.TipoPoliza.ToListAsync();
                             break;
                         case "usuario":
-                            model.Data = _context.Usuario.ToList();
+                            model.Data = await _context.Usuario.ToListAsync();
                             break;
                         case "auto":
-                            model.Data = _context.Auto.ToList();
+                            model.Data = await _context.Auto.ToListAsync();
                             break;
                         default:
                             break;

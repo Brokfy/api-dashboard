@@ -180,6 +180,13 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 
+                entity.Property(e => e.CodigoPostal)
+                    .IsRequired()
+                    .HasColumnName("codigo_postal")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
                 entity.Property(e => e.Marca)
                     .IsRequired()
                     .HasColumnName("marca")

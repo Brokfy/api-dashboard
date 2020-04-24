@@ -27,7 +27,7 @@ namespace brokfy.dashboard.api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CartasNombramiento>>> GetCartasNombramiento()
         {
-             return await _context.CartasNombramiento.ToListAsync();
+            return await _context.CartasNombramiento.ToListAsync();
         }
 
         // GET: api/CartasNombramiento/5
@@ -49,9 +49,9 @@ namespace brokfy.dashboard.api.Controllers
         {
             try
             {
-                    _context.CartasNombramiento.Update(data);
-                    await _context.SaveChangesAsync();
-                    return new ResponseModel { Message = "Ok", Result = null, Success = true };
+                _context.CartasNombramiento.Update(data);
+                await _context.SaveChangesAsync();
+                return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
             {
@@ -66,9 +66,9 @@ namespace brokfy.dashboard.api.Controllers
         {
             try
             {
-                    _context.CartasNombramiento.Add(data);
-                    await _context.SaveChangesAsync();
-                    return new ResponseModel { Message = "Ok", Result = null, Success = true };
+                _context.CartasNombramiento.Add(data);
+                await _context.SaveChangesAsync();
+                return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
             {
@@ -82,9 +82,9 @@ namespace brokfy.dashboard.api.Controllers
         {
             try
             {
-                    _context.CartasNombramiento.Remove(data);
-                    await _context.SaveChangesAsync();
-                    return new ResponseModel { Message = "Ok", Result = null, Success = true };
+                _context.CartasNombramiento.Remove(data);
+                await _context.SaveChangesAsync();
+                return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
             {

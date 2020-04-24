@@ -11,6 +11,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public string NoPoliza { get; set; }
         public string Placas { get; set; }
         public string Clave { get; set; }
+        public string CodigoPostal { get; set; }
 
         public virtual Polizas NoPolizaNavigation { get; set; }
     }

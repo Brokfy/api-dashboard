@@ -24,24 +24,47 @@ namespace brokfy.dashboard.api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<object>>> GetDropdown(string id)
+        public async Task<ActionResult<List<DropdownListModel>>> GetDropdown(string id)
         {
             try
             {
+                //aseguradoras,productos,tipo_poliza,usuario,auto
                 List<string> list = id.Split(",").ToList();
-                List<object> result = new List<object>();
+                List<DropdownListModel> result = new List<DropdownListModel>();
                 foreach (var item in list)
                 {
-                    result.Add(_context.Database.ExecuteSqlRaw(string.Format(@"Select * From {0}", item)));
+                    DropdownListModel model = new DropdownListModel() { Table = item };
+                    switch (item)
+                    {
+                        case "aseguradoras":
+                            model.Data = _context.Aseguradoras.ToList();
+                            break;
+                        case "productos":
+                            model.Data = _context.Productos.ToList();
+                            break;
+                        case "tipo_poliza":
+                            model.Data = _context.TipoPoliza.ToList();
+                            break;
+                        case "usuario":
+                            model.Data = _context.Usuario.ToList();
+                            break;
+                        case "auto":
+                            model.Data = _context.Auto.ToList();
+                            break;
+                        default:
+                            break;
+                    }
+                    result.Add(model);
+                    //result.Add(_context.Database.ExecuteSqlRaw(string.Format(@"Select * From {0}", item)));
                 }
 
                 return result;
             }
             catch (Exception ex)
             {
-                return new List<object>();
+                return new List<DropdownListModel>();
             }
-            
+
         }
     }
 }

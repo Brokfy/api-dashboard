@@ -1,4 +1,5 @@
 ﻿using System;
+using brokfy.dashboard.api.data.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -14,6 +15,8 @@ namespace brokfy.dashboard.api.data.DataModel
             : base(options)
         {
         }
+
+        public virtual DbSet<PolizaAuto> PolizaAutos { get; set; }
 
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }

@@ -172,8 +172,7 @@ namespace brokfy.dashboard.api.Controllers
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
                     CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes
                 };
-                _context.Polizas.Update(poliza);
-                await _context.SaveChangesAsync();
+                _context.Polizas.Add(poliza);
 
                 Auto auto = new Auto()
                 {
@@ -185,7 +184,7 @@ namespace brokfy.dashboard.api.Controllers
                     CodigoPostal = data.CodigoPostal,
                     NoPoliza = data.NoPoliza
                 };
-                _context.Auto.Update(auto);
+                _context.Auto.Add(auto);
                 await _context.SaveChangesAsync();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }

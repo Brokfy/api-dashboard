@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using brokfy.dashboard.api.Models;
 using System;
 using brokfy.dashboard.api.data.ViewModel;
+using Newtonsoft.Json;
 
 namespace brokfy.dashboard.api.Controllers
 {
@@ -24,7 +25,7 @@ namespace brokfy.dashboard.api.Controllers
             _config = config;
         }
 
-        // GET: api/Polizas
+        // GET: api/Polizas/
         [HttpGet]
         public async Task<ActionResult<List<PolizaAuto>>> GetPolizaAuto()
         {
@@ -56,13 +57,13 @@ namespace brokfy.dashboard.api.Controllers
                              Clave = a.Clave,
                              CodigoPostal = a.CodigoPostal,
                          };
-                         
+
             return await result.ToListAsync();
         }
 
         // GET: api/Polizas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<PolizaAuto>>> GetPolizas(string id)
+        public async Task<ActionResult<List<PolizaAuto>>> GetPolizaAuto(string id)
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
@@ -98,12 +99,15 @@ namespace brokfy.dashboard.api.Controllers
         }
         // PUT: api/Polizas/5
         [HttpPut]
-        public async Task<ResponseModel> PutPolizas([FromBody] PolizaAuto data)
+        public async Task<ResponseModel> PutPolizaAuto([FromBody] string model)
         {
+            Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
             {
+                PolizaAuto data = (PolizaAuto)_form.Serialize(JsonConvert.DeserializeObject<List<FormSerialize>>(model), "PolizaAuto");
                 Polizas poliza = new Polizas()
                 {
+                    TipoPoliza = 1,
                     NoPoliza = data.NoPoliza,
                     FormaPago = data.FormaPago,
                     ProximoPago = data.ProximoPago,
@@ -148,12 +152,15 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Polizas
         [HttpPost]
-        public async Task<ResponseModel> PostPolizas([FromBody] PolizaAuto data)
+        public async Task<ResponseModel> PostPolizaAuto([FromBody] string model)
         {
+            Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
             {
+                PolizaAuto data = (PolizaAuto)_form.Serialize(JsonConvert.DeserializeObject<List<FormSerialize>>(model), "PolizaAuto");
                 Polizas poliza = new Polizas()
                 {
+                    TipoPoliza = 1,
                     NoPoliza = data.NoPoliza,
                     FormaPago = data.FormaPago,
                     ProximoPago = data.ProximoPago,
@@ -185,34 +192,29 @@ namespace brokfy.dashboard.api.Controllers
                     NoPoliza = data.NoPoliza
                 };
                 _context.Auto.Add(auto);
+
                 await _context.SaveChangesAsync();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
             {
+
                 return new ResponseModel { Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message, Result = null, Success = false };
             }
+
         }
 
         // DELETE: api/Polizas/
         [HttpDelete]
-        public async Task<ResponseModel> DeletePolizas([FromBody] PolizaAuto data)
+        public async Task<ResponseModel> DeletePolizaAuto([FromBody] string model)
         {
+            Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
             {
-                Auto auto = new Auto()
-                {
-                    Marca = data.Marca,
-                    Modelo = data.Modelo,
-                    Ano = data.Ano,
-                    Placas = data.Placas,
-                    Clave = data.Clave,
-                    CodigoPostal = data.CodigoPostal,
-                    NoPoliza = data.NoPoliza
-                };
-
+                PolizaAuto data = (PolizaAuto)_form.Serialize(JsonConvert.DeserializeObject<List<FormSerialize>>(model), "PolizaAuto");
                 Polizas poliza = new Polizas()
                 {
+                    TipoPoliza = 1,
                     NoPoliza = data.NoPoliza,
                     FormaPago = data.FormaPago,
                     ProximoPago = data.ProximoPago,
@@ -231,14 +233,26 @@ namespace brokfy.dashboard.api.Controllers
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
                     CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes
                 };
-                _context.Polizas.Remove(poliza);
+                _context.Polizas.Update(poliza);
+
+                Auto auto = new Auto()
+                {
+                    Marca = data.Marca,
+                    Modelo = data.Modelo,
+                    Ano = data.Ano,
+                    Placas = data.Placas,
+                    Clave = data.Clave,
+                    CodigoPostal = data.CodigoPostal,
+                    NoPoliza = data.NoPoliza
+                };
+                _context.Auto.Update(auto);
 
                 await _context.SaveChangesAsync();
-
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
             {
+
                 return new ResponseModel { Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message, Result = null, Success = false };
             }
         }

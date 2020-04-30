@@ -25,32 +25,27 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Polizas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Polizas>>> GetPolizas()
+        public List<Polizas> GetPolizas()
         {
-            return await _context.Polizas.ToListAsync();
+            return _context.Polizas.ToList();
         }
 
         // GET: api/Polizas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Polizas>> GetPolizas(string id)
+        public Polizas GetPolizas(string id)
         {
-            var dato = await _context.Polizas.Where(x => x.NoPoliza == id).FirstOrDefaultAsync();
-
-            if (dato == null)
-            {
-                return NotFound();
-            }
+            var dato = _context.Polizas.Where(x => x.NoPoliza == id).FirstOrDefault();
 
             return dato;
         }
         // PUT: api/Polizas/5
         [HttpPut]
-        public async Task<ResponseModel> PutPolizas([FromBody] Polizas data)
+        public ResponseModel PutPolizas([FromBody] Polizas data)
         {
             try
             {
                 _context.Polizas.Update(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -62,12 +57,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Polizas
         [HttpPost]
-        public async Task<ResponseModel> PostPolizas([FromBody] Polizas data)
+        public ResponseModel PostPolizas([FromBody] Polizas data)
         {
             try
             {
                 _context.Polizas.Add(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -78,12 +73,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Polizas/
         [HttpDelete]
-        public async Task<ResponseModel> DeletePolizas([FromBody] Polizas data)
+        public ResponseModel DeletePolizas([FromBody] Polizas data)
         {
             try
             {
                 _context.Polizas.Remove(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)

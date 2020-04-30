@@ -25,32 +25,27 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Salud
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Salud>>> GetSalud()
+        public List<Salud> GetSalud()
         {
-            return await _context.Salud.ToListAsync();
+            return _context.Salud.ToList();
         }
 
         // GET: api/Salud/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Salud>> GetSalud(int id)
+        public Salud GetSalud(int id)
         {
-            var dato = await _context.Salud.Where(x => x.Id == id).FirstOrDefaultAsync();
-
-            if (dato == null)
-            {
-                return NotFound();
-            }
+            var dato = _context.Salud.Where(x => x.Id == id).FirstOrDefault();
 
             return dato;
         }
         // PUT: api/Salud/5
         [HttpPut]
-        public async Task<ResponseModel> PutSalud([FromBody] Salud data)
+        public ResponseModel PutSalud([FromBody] Salud data)
         {
             try
             {
                 _context.Salud.Update(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -62,12 +57,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Salud
         [HttpPost]
-        public async Task<ResponseModel> PostSalud([FromBody] Salud data)
+        public ResponseModel PostSalud([FromBody] Salud data)
         {
             try
             {
                 _context.Salud.Add(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -78,12 +73,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Salud/
         [HttpDelete]
-        public async Task<ResponseModel> DeleteSalud([FromBody] Salud data)
+        public ResponseModel DeleteSalud([FromBody] Salud data)
         {
             try
             {
                 _context.Salud.Remove(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)

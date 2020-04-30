@@ -13,36 +13,36 @@ namespace brokfy.dashboard.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AseguradorasController : ControllerBase
+    public class ProductosController : ControllerBase
     {
         private readonly brokfy_devContext _context;
         private IConfiguration _config;
-        public AseguradorasController(brokfy_devContext context, IConfiguration config)
+        public ProductosController(brokfy_devContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
         }
 
-        // GET: api/Aseguradoras
+        // GET: api/Productos
         [HttpGet]
-        public IEnumerable<Aseguradoras> GetAseguradoras()
+        public IEnumerable<Productos> GetProductos()
         {
-            return _context.Aseguradoras.ToList();
+            return _context.Productos.ToList();
         }
 
-        // GET: api/Aseguradoras/5
+        // GET: api/Productos/5
         [HttpGet("{id}")]
-        public Aseguradoras GetAseguradoras(string id)
+        public Productos GetProductos(int id)
         {
-            return _context.Aseguradoras.Where(x => x.Nombre == id).FirstOrDefault();
+            return _context.Productos.Where(x => x.Id == id).FirstOrDefault();
         }
-        // PUT: api/Aseguradoras/5
+        // PUT: api/Productos/5
         [HttpPut]
-        public ResponseModel PutAseguradoras([FromBody] Aseguradoras data)
+        public ResponseModel PutProductos([FromBody] Productos data)
         {
             try
             {
-                _context.Aseguradoras.Update(data);
+                _context.Productos.Update(data);
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
@@ -53,13 +53,13 @@ namespace brokfy.dashboard.api.Controllers
             }
         }
 
-        // POST: api/Aseguradoras
+        // POST: api/Productos
         [HttpPost]
-        public ResponseModel PostAseguradoras([FromBody] Aseguradoras data)
+        public ResponseModel PostProductos([FromBody] Productos data)
         {
             try
             {
-                _context.Aseguradoras.Add(data);
+                _context.Productos.Add(data);
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
@@ -69,13 +69,13 @@ namespace brokfy.dashboard.api.Controllers
             }
         }
 
-        // DELETE: api/Aseguradoras/
+        // DELETE: api/Productos/
         [HttpDelete]
-        public ResponseModel DeleteAseguradoras([FromBody] Aseguradoras data)
+        public ResponseModel DeleteProductos([FromBody] Productos data)
         {
             try
             {
-                _context.Aseguradoras.Remove(data);
+                _context.Productos.Remove(data);
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }

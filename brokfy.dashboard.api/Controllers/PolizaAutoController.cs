@@ -27,7 +27,7 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Polizas/
         [HttpGet]
-        public async Task<ActionResult<List<PolizaAuto>>> GetPolizaAuto()
+        public List<PolizaAuto> GetPolizaAuto()
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
@@ -58,12 +58,12 @@ namespace brokfy.dashboard.api.Controllers
                              CodigoPostal = a.CodigoPostal,
                          };
 
-            return await result.ToListAsync();
+            return result.ToList();
         }
 
         // GET: api/Polizas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<PolizaAuto>>> GetPolizaAuto(string id)
+        public List<PolizaAuto> GetPolizaAuto(string id)
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
@@ -95,11 +95,11 @@ namespace brokfy.dashboard.api.Controllers
                              CodigoPostal = a.CodigoPostal,
                          };
 
-            return await result.ToListAsync();
+            return result.ToList();
         }
         // PUT: api/Polizas/5
         [HttpPut]
-        public async Task<ResponseModel> PutPolizaAuto([FromBody] string model)
+        public ResponseModel PutPolizaAuto([FromBody] string model)
         {
             Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
@@ -140,7 +140,7 @@ namespace brokfy.dashboard.api.Controllers
                 };
                 _context.Auto.Update(auto);
 
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -152,7 +152,7 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Polizas
         [HttpPost]
-        public async Task<ResponseModel> PostPolizaAuto([FromBody] string model)
+        public ResponseModel PostPolizaAuto([FromBody] string model)
         {
             Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
@@ -193,7 +193,7 @@ namespace brokfy.dashboard.api.Controllers
                 };
                 _context.Auto.Add(auto);
 
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -206,7 +206,7 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Polizas/
         [HttpDelete]
-        public async Task<ResponseModel> DeletePolizaAuto([FromBody] string model)
+        public ResponseModel DeletePolizaAuto([FromBody] string model)
         {
             Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
@@ -247,7 +247,7 @@ namespace brokfy.dashboard.api.Controllers
                 };
                 _context.Auto.Update(auto);
 
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)

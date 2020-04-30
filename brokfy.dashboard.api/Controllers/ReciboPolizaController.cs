@@ -25,14 +25,9 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/ReciboPoliza/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<dynamic>> GetReciboPoliza(string id)
+        public dynamic GetReciboPoliza(string id)
         {
             string dato = _context.Polizas.Where(x => x.NoPoliza == id).FirstOrDefault().ReciboPdf;
-
-            if (dato == null)
-            {
-                return new { ReciboPdf = "" };
-            }
 
             return new { ReciboPdf = dato };
         }

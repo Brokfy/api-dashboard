@@ -25,32 +25,27 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/CartasNombramiento
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CartasNombramiento>>> GetCartasNombramiento()
+        public List<CartasNombramiento> GetCartasNombramiento()
         {
-            return await _context.CartasNombramiento.ToListAsync();
+            return _context.CartasNombramiento.ToList();
         }
 
         // GET: api/CartasNombramiento/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CartasNombramiento>> GetCartasNombramiento(string id)
+        public CartasNombramiento GetCartasNombramiento(string id)
         {
-            var dato = await _context.CartasNombramiento.Where(x => x.NoPoliza == id).FirstOrDefaultAsync();
-
-            if (dato == null)
-            {
-                return NotFound();
-            }
+            var dato = _context.CartasNombramiento.Where(x => x.NoPoliza == id).FirstOrDefault();
 
             return dato;
         }
         // PUT: api/CartasNombramiento/5
         [HttpPut]
-        public async Task<ResponseModel> PutCartasNombramiento([FromBody] CartasNombramiento data)
+        public ResponseModel PutCartasNombramiento([FromBody] CartasNombramiento data)
         {
             try
             {
                 _context.CartasNombramiento.Update(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -62,12 +57,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/CartasNombramiento
         [HttpPost]
-        public async Task<ResponseModel> PostCartasNombramiento([FromBody] CartasNombramiento data)
+        public ResponseModel PostCartasNombramiento([FromBody] CartasNombramiento data)
         {
             try
             {
                 _context.CartasNombramiento.Add(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -78,12 +73,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/CartasNombramiento/
         [HttpDelete]
-        public async Task<ResponseModel> DeleteCartasNombramiento([FromBody] CartasNombramiento data)
+        public ResponseModel DeleteCartasNombramiento([FromBody] CartasNombramiento data)
         {
             try
             {
                 _context.CartasNombramiento.Remove(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)

@@ -25,32 +25,27 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Gadgets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Gadgets>>> GetGadgets()
+        public List<Gadgets> GetGadgets()
         {
-            return await _context.Gadgets.ToListAsync();
+            return _context.Gadgets.ToList();
         }
 
         // GET: api/Gadgets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Gadgets>> GetGadgets(int id)
+        public Gadgets GetGadgets(int id)
         {
-            var dato = await _context.Gadgets.Where(x => x.Id == id).FirstOrDefaultAsync();
-
-            if (dato == null)
-            {
-                return NotFound();
-            }
+            var dato = _context.Gadgets.Where(x => x.Id == id).FirstOrDefault();
 
             return dato;
         }
         // PUT: api/Gadgets/5
         [HttpPut]
-        public async Task<ResponseModel> PutGadgets([FromBody] Gadgets data)
+        public ResponseModel PutGadgets([FromBody] Gadgets data)
         {
             try
             {
                 _context.Gadgets.Update(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -62,12 +57,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Gadgets
         [HttpPost]
-        public async Task<ResponseModel> PostGadgets([FromBody] Gadgets data)
+        public ResponseModel PostGadgets([FromBody] Gadgets data)
         {
             try
             {
                 _context.Gadgets.Add(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -78,12 +73,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Gadgets/
         [HttpDelete]
-        public async Task<ResponseModel> DeleteGadgets([FromBody] Gadgets data)
+        public ResponseModel DeleteGadgets([FromBody] Gadgets data)
         {
             try
             {
                 _context.Gadgets.Remove(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)

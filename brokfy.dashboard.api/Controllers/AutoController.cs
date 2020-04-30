@@ -25,32 +25,27 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Auto
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Auto>>> GetAuto()
+        public List<Auto> GetAuto()
         {
-            return await _context.Auto.ToListAsync();
+            return _context.Auto.ToList();
         }
 
         // GET: api/Auto/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Auto>> GetAuto(string id)
+        public Auto GetAuto(string id)
         {
-            var dato = await _context.Auto.Where(x => x.Placas == id).FirstOrDefaultAsync();
-
-            if (dato == null)
-            {
-                return NotFound();
-            }
+            var dato = _context.Auto.Where(x => x.Placas == id).FirstOrDefault();
 
             return dato;
         }
         // PUT: api/Auto/5
         [HttpPut]
-        public async Task<ResponseModel> PutAuto([FromBody] Auto data)
+        public ResponseModel PutAuto([FromBody] Auto data)
         {
             try
             {
                 _context.Auto.Update(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -62,12 +57,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Auto
         [HttpPost]
-        public async Task<ResponseModel> PostAuto([FromBody] Auto data)
+        public ResponseModel PostAuto([FromBody] Auto data)
         {
             try
             {
                 _context.Auto.Add(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
@@ -78,12 +73,12 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Auto/
         [HttpDelete]
-        public async Task<ResponseModel> DeleteAuto([FromBody] Auto data)
+        public ResponseModel DeleteAuto([FromBody] Auto data)
         {
             try
             {
                 _context.Auto.Remove(data);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)

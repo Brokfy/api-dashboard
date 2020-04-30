@@ -24,11 +24,10 @@ namespace brokfy.dashboard.api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<DropdownListModel>>> GetDropdown(string id)
+        public List<DropdownListModel> GetDropdown(string id)
         {
             try
             {
-                //aseguradoras,productos,tipo_poliza,usuario,auto
                 List<string> list = id.Split(",").ToList();
                 List<DropdownListModel> result = new List<DropdownListModel>();
                 foreach (var item in list)
@@ -37,25 +36,24 @@ namespace brokfy.dashboard.api.Controllers
                     switch (item)
                     {
                         case "aseguradoras":
-                            model.Data = await _context.Aseguradoras.ToListAsync();
+                            model.Data =  _context.Aseguradoras.ToList();
                             break;
                         case "productos":
-                            model.Data = await _context.Productos.ToListAsync();
+                            model.Data =  _context.Productos.ToList();
                             break;
                         case "tipo_poliza":
-                            model.Data = await _context.TipoPoliza.ToListAsync();
+                            model.Data =  _context.TipoPoliza.ToList();
                             break;
                         case "usuario":
-                            model.Data = await _context.Usuario.ToListAsync();
+                            model.Data =  _context.Usuario.ToList();
                             break;
                         case "auto":
-                            model.Data = await _context.Auto.ToListAsync();
+                            model.Data =  _context.Auto.ToList();
                             break;
                         default:
                             break;
                     }
                     result.Add(model);
-                    //result.Add(_context.Database.ExecuteSqlRaw(string.Format(@"Select * From {0}", item)));
                 }
 
                 return result;

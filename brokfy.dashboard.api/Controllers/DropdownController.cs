@@ -50,6 +50,9 @@ namespace brokfy.dashboard.api.Controllers
                         case "auto":
                             model.Data =  _context.Auto.ToList();
                             break;
+                        case "productos_brokfy":
+                            model.Data = _context.ProductosBrokfy.ToList();
+                            break;
                         default:
                             break;
                     }

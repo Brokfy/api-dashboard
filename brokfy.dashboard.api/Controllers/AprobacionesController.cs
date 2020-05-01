@@ -13,26 +13,26 @@ namespace brokfy.dashboard.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartaNombramientoController : ControllerBase
+    public class AprobacionesController : ControllerBase
     {
         private readonly brokfy_devContext _context;
         private IConfiguration _config;
-        public CartaNombramientoController(brokfy_devContext context, IConfiguration config)
+        public AprobacionesController(brokfy_devContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
         }
 
-        // GET: api/CartasNombramiento
+        // GET: api/Aprobaciones
         [HttpGet]
-        public List<CartasNombramiento> GetCartasNombramiento()
+        public List<CartasNombramiento> GetAprobaciones()
         {
             var result = from cn in _context.CartasNombramiento
                          join p in _context.Perfil on cn.Username equals p.Username
-                         where cn.Revisado == true && cn.Firmada == true
+                         where cn.Revisado == false
                          select new CartasNombramiento
                          {
-                             Username = string.Format(@"{0} {1} {2} ({3})", p.Nombre, p.ApellidoPaterno, p.ApellidoMaterno, p.Username),
+                             Username = string.Format(@"{0} {1} {2} ({3})",p.Nombre, p.ApellidoPaterno, p.ApellidoMaterno, p.Username),
                              //Username = cn.Username,
                              Tipo = cn.Tipo,
                              Aseguradora = cn.Aseguradora,
@@ -43,22 +43,21 @@ namespace brokfy.dashboard.api.Controllers
                              UrlCartaNombramiento = cn.UrlCartaNombramiento,
                              Firmada = cn.Firmada
                          };
-            return result.ToList();
+            return result.ToList(); 
             //_context.CartasNombramiento.Where(x => x.Revisado == false).ToList();
-            //return _context.CartasNombramiento.Where(x => x.Revisado == true && x.Firmada == true).ToList();
         }
 
-        // GET: api/CartasNombramiento/5
+        // GET: api/Aprobaciones/5
         [HttpGet("{id}")]
-        public CartasNombramiento GetCartasNombramiento(string id)
+        public CartasNombramiento GetAprobaciones(string id)
         {
             var dato = _context.CartasNombramiento.Where(x => x.NoPoliza == id).FirstOrDefault();
 
             return dato;
         }
-        // PUT: api/CartasNombramiento/5
+        // PUT: api/Aprobaciones/5
         [HttpPut]
-        public ResponseModel PutCartasNombramiento([FromBody] CartasNombramiento data)
+        public ResponseModel PutAprobaciones([FromBody] CartasNombramiento data)
         {
             try
             {
@@ -73,7 +72,7 @@ namespace brokfy.dashboard.api.Controllers
             }
         }
 
-        // POST: api/CartasNombramiento
+        // POST: api/Aprobaciones
         [HttpPost]
         public ResponseModel PostCartasNombramiento([FromBody] CartasNombramiento data)
         {
@@ -89,7 +88,7 @@ namespace brokfy.dashboard.api.Controllers
             }
         }
 
-        // DELETE: api/CartasNombramiento/
+        // DELETE: api/Aprobaciones/
         [HttpDelete]
         public ResponseModel DeleteCartasNombramiento([FromBody] CartasNombramiento data)
         {

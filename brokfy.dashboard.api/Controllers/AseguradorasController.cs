@@ -71,11 +71,15 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Aseguradoras/
         [HttpDelete]
-        public ResponseModel DeleteAseguradoras([FromBody] Aseguradoras data)
+        public ResponseModel DeleteAseguradoras([FromBody] List<Aseguradoras> data)
         {
             try
             {
-                _context.Aseguradoras.Remove(data);
+                foreach (var item in data)
+                {
+                    _context.Aseguradoras.Remove(_context.Aseguradoras.Where(x => x.IdAseguradora == item.IdAseguradora).FirstOrDefault());
+                }
+                
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }

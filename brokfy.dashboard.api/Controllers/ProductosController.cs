@@ -87,19 +87,15 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Productos/
         [HttpDelete]
-        public ResponseModel DeleteProductos([FromBody] ProductosModel data)
+        public ResponseModel DeleteProductos([FromBody] List<ProductosModel> data)
         {
             try
             {
-                _context.Productos.Remove(new Productos()
+                foreach (var item in data)
                 {
-                    Id = data.Id,
-                    Producto = data.Producto,
-                    Aseguradora = int.Parse(data.Aseguradora),
-                    Xml = data.Xml,
-                    IdProductos = int.Parse(data.IdProductos),
-                    XmlEmision = data.XmlEmision,
-                });
+                    _context.Productos.Remove(_context.Productos.Where(x => x.Id == item.Id).FirstOrDefault());
+                }
+                
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }

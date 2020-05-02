@@ -39,9 +39,10 @@ namespace brokfy.dashboard.api.Controllers
                              Fecha = cn.Fecha,
                              NoPoliza = cn.NoPoliza,
                              Revisado = cn.Revisado,
+                             Firmada = cn.Firmada,
                              UrlPoliza = cn.UrlPoliza,
-                             UrlCartaNombramiento = cn.UrlCartaNombramiento,
-                             Firmada = cn.Firmada
+                             UrlCartaNombramiento = cn.UrlCartaNombramiento
+                             
                          };
             return result.ToList(); 
             //_context.CartasNombramiento.Where(x => x.Revisado == false).ToList();

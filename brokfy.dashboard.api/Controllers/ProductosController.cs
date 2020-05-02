@@ -38,11 +38,19 @@ namespace brokfy.dashboard.api.Controllers
         }
         // PUT: api/Productos/5
         [HttpPut]
-        public ResponseModel PutProductos([FromBody] Productos data)
+        public ResponseModel PutProductos([FromBody] ProductosModel data)
         {
             try
             {
-                _context.Productos.Update(data);
+                
+                _context.Productos.Update(new Productos() {
+                    Id = data.Id,
+                    Producto = data.Producto,
+                    Aseguradora = int.Parse(data.Aseguradora),
+                    Xml = data.Xml,
+                    IdProductos = int.Parse(data.IdProductos),
+                    XmlEmision = data.XmlEmision,
+                });
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
@@ -55,11 +63,19 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Productos
         [HttpPost]
-        public ResponseModel PostProductos([FromBody] Productos data)
+        public ResponseModel PostProductos([FromBody] ProductosModel data)
         {
             try
             {
-                _context.Productos.Add(data);
+                _context.Productos.Add(new Productos()
+                {
+                    Id = data.Id,
+                    Producto = data.Producto,
+                    Aseguradora = int.Parse(data.Aseguradora),
+                    Xml = data.Xml,
+                    IdProductos = int.Parse(data.IdProductos),
+                    XmlEmision = data.XmlEmision,
+                });
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
@@ -71,11 +87,19 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Productos/
         [HttpDelete]
-        public ResponseModel DeleteProductos([FromBody] Productos data)
+        public ResponseModel DeleteProductos([FromBody] ProductosModel data)
         {
             try
             {
-                _context.Productos.Remove(data);
+                _context.Productos.Remove(new Productos()
+                {
+                    Id = data.Id,
+                    Producto = data.Producto,
+                    Aseguradora = int.Parse(data.Aseguradora),
+                    Xml = data.Xml,
+                    IdProductos = int.Parse(data.IdProductos),
+                    XmlEmision = data.XmlEmision,
+                });
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }

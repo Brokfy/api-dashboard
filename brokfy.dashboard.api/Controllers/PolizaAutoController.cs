@@ -27,10 +27,11 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Polizas/
         [HttpGet]
-        public List<PolizaAuto> GetPolizaAuto()
+        public List<PolizaAuto> GetPolizaAuto([FromQuery] string propia)
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
+                         where p.PolizaPropia == propia
                          select new PolizaAuto
                          {
                              NoPoliza = p.NoPoliza,
@@ -63,7 +64,7 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Polizas/5
         [HttpGet("{id}")]
-        public List<PolizaAuto> GetPolizaAuto(string id)
+        public List<PolizaAuto> GetPolizaAutoDetalle(string id)
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza

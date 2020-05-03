@@ -53,6 +53,27 @@ namespace brokfy.dashboard.api.Controllers
                         case "productos_brokfy":
                             model.Data = _context.ProductosBrokfy.ToList();
                             break;
+                        case "cascadaAseguradoraProducto":
+                            model.Data = (from ase in _context.Aseguradoras
+                                          join prd in _context.Productos on ase.IdAseguradora equals prd.Aseguradora
+                                          select new CascadaAseguradoraProductos
+                                          {
+                                              IdAseguradora = ase.IdAseguradora,
+                                              Nombre = ase.Nombre,
+                                              Telefono = ase.Telefono,
+                                              Enabled = ase.Enabled,
+                                              CveCopsis = ase.CveCopsis,
+                                              Id = prd.Id,
+                                              Producto = prd.Producto,
+                                              Aseguradora = prd.Aseguradora,
+                                              //Xml = prd.Xml,
+                                              IdProductos = prd.IdProductos,
+                                              //XmlEmision = prd.XmlEmision
+                                          }).ToList();
+                            break;
+                        case "cascadaMarcaModelo":
+                            model.Data = _context.ModelosAseguradoras.ToList();
+                            break;
                         default:
                             break;
                     }

@@ -25,24 +25,23 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Aprobaciones
         [HttpGet]
-        public List<CartasNombramiento> GetAprobaciones()
+        public List<CartaNombramientoShowModel> GetAprobaciones()
         {
             var result = from cn in _context.CartasNombramiento
                          join p in _context.Perfil on cn.Username equals p.Username
                          where cn.Revisado == false
-                         select new CartasNombramiento
+                         select new CartaNombramientoShowModel
                          {
-                             Username = string.Format(@"{0} {1} {2} ({3})",p.Nombre, p.ApellidoPaterno, p.ApellidoMaterno, p.Username),
-                             //Username = cn.Username,
+                             Username = p.Username,
+                             FullName = string.Format(@"{0} {1} {2}", p.Nombre, p.ApellidoPaterno, p.ApellidoMaterno),
                              Tipo = cn.Tipo,
                              Aseguradora = cn.Aseguradora,
                              Fecha = cn.Fecha,
                              NoPoliza = cn.NoPoliza,
                              Revisado = cn.Revisado,
-                             Firmada = cn.Firmada,
                              UrlPoliza = cn.UrlPoliza,
-                             UrlCartaNombramiento = cn.UrlCartaNombramiento
-                             
+                             UrlCartaNombramiento = cn.UrlCartaNombramiento,
+                             Firmada = cn.Firmada
                          };
             return result.ToList(); 
             //_context.CartasNombramiento.Where(x => x.Revisado == false).ToList();

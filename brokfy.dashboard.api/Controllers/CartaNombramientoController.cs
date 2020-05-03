@@ -25,15 +25,15 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/CartasNombramiento
         [HttpGet]
-        public List<CartasNombramiento> GetCartasNombramiento()
+        public List<CartaNombramientoShowModel> GetCartasNombramiento()
         {
             var result = from cn in _context.CartasNombramiento
                          join p in _context.Perfil on cn.Username equals p.Username
                          where cn.Revisado == true && cn.Firmada == true
-                         select new CartasNombramiento
+                         select new CartaNombramientoShowModel
                          {
-                             Username = string.Format(@"{0} {1} {2} ({3})", p.Nombre, p.ApellidoPaterno, p.ApellidoMaterno, p.Username),
-                             //Username = cn.Username,
+                             Username = p.Username,
+                             FullName = string.Format(@"{0} {1} {2}", p.Nombre, p.ApellidoPaterno, p.ApellidoMaterno),
                              Tipo = cn.Tipo,
                              Aseguradora = cn.Aseguradora,
                              Fecha = cn.Fecha,

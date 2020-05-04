@@ -100,12 +100,10 @@ namespace brokfy.dashboard.api.Controllers
         }
         // PUT: api/Polizas/5
         [HttpPut]
-        public ResponseModel PutPolizaAuto([FromBody] string model)
+        public ResponseModel PutPolizaAuto([FromBody] PolizaAuto data)
         {
-            Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
             {
-                PolizaAuto data = (PolizaAuto)_form.Serialize(JsonConvert.DeserializeObject<List<FormSerialize>>(model), "PolizaAuto");
                 Polizas poliza = new Polizas()
                 {
                     TipoPoliza = 1,
@@ -153,12 +151,10 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Polizas
         [HttpPost]
-        public ResponseModel PostPolizaAuto([FromBody] string model)
+        public ResponseModel PostPolizaAuto([FromBody] PolizaAuto data)
         {
-            Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
             {
-                PolizaAuto data = (PolizaAuto)_form.Serialize(JsonConvert.DeserializeObject<List<FormSerialize>>(model), "PolizaAuto");
                 Polizas poliza = new Polizas()
                 {
                     TipoPoliza = 1,
@@ -207,46 +203,15 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Polizas/
         [HttpDelete]
-        public ResponseModel DeletePolizaAuto([FromBody] string model)
+        public ResponseModel DeletePolizaAuto([FromBody] List<PolizaAuto> data)
         {
-            Helpers.FormSerializer _form = new Helpers.FormSerializer();
             try
             {
-                PolizaAuto data = (PolizaAuto)_form.Serialize(JsonConvert.DeserializeObject<List<FormSerialize>>(model), "PolizaAuto");
-                Polizas poliza = new Polizas()
+                foreach (var item in data)
                 {
-                    TipoPoliza = 1,
-                    NoPoliza = data.NoPoliza,
-                    FormaPago = data.FormaPago,
-                    ProximoPago = data.ProximoPago,
-                    FechaInicio = data.FechaInicio,
-                    FechaFin = data.FechaFin,
-                    IdAseguradoras = data.IdAseguradoras,
-                    Costo = data.Costo,
-                    Username = data.Username,
-                    ProductoId = data.ProductoId,
-                    Habilitada = data.Habilitada,
-                    NoAsegurado = data.NoAsegurado,
-                    PolizaPropia = data.PolizaPropia,
-                    PolizaPdf = data.PolizaPdf,
-                    //ReciboPdf = data.ReciboPdf,
-                    RcUsaCanada = data.RcUsaCanada,
-                    CostoPrimerRecibo = data.CostoPrimerRecibo,
-                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes
-                };
-                _context.Polizas.Update(poliza);
-
-                Auto auto = new Auto()
-                {
-                    Marca = data.Marca,
-                    Modelo = data.Modelo,
-                    Ano = data.Ano,
-                    Placas = data.Placas,
-                    Clave = data.Clave,
-                    CodigoPostal = data.CodigoPostal,
-                    NoPoliza = data.NoPoliza
-                };
-                _context.Auto.Update(auto);
+                    _context.Auto.Remove(_context.Auto.Where(x => x.NoPoliza == item.NoPoliza).FirstOrDefault());
+                    _context.Polizas.Remove(_context.Polizas.Where(x => x.NoPoliza == item.NoPoliza).FirstOrDefault());
+                }
 
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };

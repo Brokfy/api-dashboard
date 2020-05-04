@@ -71,8 +71,8 @@ namespace brokfy.dashboard.api.Controllers
                                               //XmlEmision = prd.XmlEmision
                                           }).ToList();
                             break;
-                        case "cascadaMarcaModelo":
-                            model.Data = _context.ModelosAseguradoras.ToList();
+                        case "marcas":
+                            model.Data = _context.MarcasAseguradoras.ToList();
                             break;
                         default:
                             break;

@@ -13,28 +13,28 @@ namespace brokfy.dashboard.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ModelosController : ControllerBase
+    public class YearController : ControllerBase
     {
         private readonly brokfy_devContext _context;
         private IConfiguration _config;
-        public ModelosController(brokfy_devContext context, IConfiguration config)
+        public YearController(brokfy_devContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
         }
 
-        // GET: api/Modelos
+        // GET: api/Year
         [HttpGet]
-        public List<ModelosModel> GetModelos([FromQuery] string Marca, [FromQuery] string Year)
+        public List<YearModel> GetYears([FromQuery] string Marca)
         {
             try
             {
-                List<ModelosModel> modelos = _context.ModelosAseguradoras.Where(x => x.Marcas == Marca && x.AnioComercializacion == Year).Select(x => new ModelosModel { Marca = x.Marcas, Modelo = x.NomModelo, Year = x.AnioComercializacion }).Distinct().OrderBy(x => x.Modelo).ToList();
-                return modelos;
+                List<YearModel> year = _context.ModelosAseguradoras.Where(x => x.Marcas == Marca).Select(x => new YearModel { Year = x.AnioComercializacion, Marca = x.Marcas }).Distinct().OrderByDescending(x => x.Year).ToList();
+                return year;
             }
             catch (Exception ex)
             {
-                return new List<ModelosModel>();
+                return new List<YearModel>();
             }
 
         }

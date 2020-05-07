@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace brokfy.dashboard.api.Models
 {
-    public class ModelosModel
+    public class YearModel
     {
-        public string Marca { get; set; }
         public string Year { get; set; }
-        public string Modelo { get; set; }
+        public string Marca { get; set; }
     }
 }

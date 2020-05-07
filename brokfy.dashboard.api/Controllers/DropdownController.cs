@@ -74,6 +74,18 @@ namespace brokfy.dashboard.api.Controllers
                         case "marcas":
                             model.Data = _context.MarcasAseguradoras.ToList();
                             break;
+                        case "sexo":
+                            model.Data = _context.Sexo.ToList();
+                            break;
+                        case "parentesco";
+                            model.Data = _context.Parentesco.ToList();
+                            break;
+                        case "ocupaciones":
+                            model.Data = _context.Ocupaciones.ToList();
+                            break;
+                        case "estadocivil":
+                            model.Data = _context.EstadoCivil.ToList();
+                            break;
                         default:
                             break;
                     }

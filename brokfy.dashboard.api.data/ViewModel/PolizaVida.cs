@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
-namespace brokfy.dashboard.api.data.DataModel
+namespace brokfy.dashboard.api.data.ViewModel
 {
-    public partial class Polizas
+    public class PolizaVida
     {
-        public int TipoPoliza { get; set; }
-        public double Costo { get; set; }
+        [Key]
         public string NoPoliza { get; set; }
         public string FormaPago { get; set; }
         public DateTime ProximoPago { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public int IdAseguradoras { get; set; }
+        public double Costo { get; set; }
         public string Username { get; set; }
         public long ProductoId { get; set; }
         public string Habilitada { get; set; }
@@ -23,12 +25,12 @@ namespace brokfy.dashboard.api.data.DataModel
         public string RcUsaCanada { get; set; }
         public string CostoPrimerRecibo { get; set; }
         public string CostoRecibosSubsecuentes { get; set; }
-
-        public virtual Aseguradoras IdAseguradorasNavigation { get; set; }
-        public virtual Productos Producto { get; set; }
-        public virtual TipoPoliza TipoPolizaNavigation { get; set; }
-        public virtual Usuario UsernameNavigation { get; set; }
-        public virtual Auto Auto { get; set; }
-        public virtual Vida Vida { get; set; }
+        public bool Fumador { get; set; }
+        public string Estatura { get; set; }
+        public string Peso { get; set; }
+        public string Ingresos { get; set; }
+        public int IdOcupacion { get; set; }
+        public int IdEstadoCivil { get; set; }
+        public int IdSexo { get; set; }
     }
 }

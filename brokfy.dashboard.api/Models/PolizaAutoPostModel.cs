@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace brokfy.dashboard.api.data.DataModel
+namespace brokfy.dashboard.api.Models
 {
-    public partial class Polizas
+    public class PolizaAutoPostModel
     {
-        public int TipoPoliza { get; set; }
-        public double Costo { get; set; }
         public string NoPoliza { get; set; }
         public string FormaPago { get; set; }
         public DateTime ProximoPago { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public int IdAseguradoras { get; set; }
+        public double Costo { get; set; }
         public string Username { get; set; }
         public long ProductoId { get; set; }
-        public string Habilitada { get; set; }
+        public bool Habilitada { get; set; }
         public string NoAsegurado { get; set; }
         public string PolizaPropia { get; set; }
         public string PolizaPdf { get; set; }
@@ -23,12 +24,11 @@ namespace brokfy.dashboard.api.data.DataModel
         public string RcUsaCanada { get; set; }
         public string CostoPrimerRecibo { get; set; }
         public string CostoRecibosSubsecuentes { get; set; }
-
-        public virtual Aseguradoras IdAseguradorasNavigation { get; set; }
-        public virtual Productos Producto { get; set; }
-        public virtual TipoPoliza TipoPolizaNavigation { get; set; }
-        public virtual Usuario UsernameNavigation { get; set; }
-        public virtual Auto Auto { get; set; }
-        public virtual Vida Vida { get; set; }
+        public string Marca { get; set; }
+        public string Modelo { get; set; }
+        public int Ano { get; set; }
+        public string Placas { get; set; }
+        public string Clave { get; set; }
+        public string CodigoPostal { get; set; }
     }
 }

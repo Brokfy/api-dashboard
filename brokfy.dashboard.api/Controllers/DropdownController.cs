@@ -77,7 +77,7 @@ namespace brokfy.dashboard.api.Controllers
                         case "sexo":
                             model.Data = _context.Sexo.ToList();
                             break;
-                        case "parentesco";
+                        case "parentesco":
                             model.Data = _context.Parentesco.ToList();
                             break;
                         case "ocupaciones":

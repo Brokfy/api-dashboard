@@ -23,8 +23,11 @@ namespace brokfy.dashboard.api.data.DataModel
         public string RcUsaCanada { get; set; }
         public string CostoPrimerRecibo { get; set; }
         public string CostoRecibosSubsecuentes { get; set; }
+        public double PrimaNeta { get; set; }
+        public int IdEstadoPoliza { get; set; }
 
         public virtual Aseguradoras IdAseguradorasNavigation { get; set; }
+        public virtual EstadosPolizas IdEstadoPolizaNavigation { get; set; }
         public virtual Productos Producto { get; set; }
         public virtual TipoPoliza TipoPolizaNavigation { get; set; }
         public virtual Usuario UsernameNavigation { get; set; }

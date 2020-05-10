@@ -1,4 +1,5 @@
 ﻿using System;
+using brokfy.dashboard.api.data.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 

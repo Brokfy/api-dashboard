@@ -32,7 +32,11 @@ namespace brokfy.dashboard.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+
 
             services.AddDbContext<brokfy_devContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("brokfy")));

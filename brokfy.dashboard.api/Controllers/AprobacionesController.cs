@@ -90,14 +90,14 @@ namespace brokfy.dashboard.api.Controllers
 
         // DELETE: api/Aprobaciones/
         [HttpDelete]
-        public ResponseModel DeleteCartasNombramiento([FromBody] List<CartasNombramiento> data)
+        public ResponseModel DeleteCartasNombramiento([FromBody] List<string> data)
         {
             try
             {
                 foreach (var item in data)
                 {
                     // PUSH
-                    _context.CartasNombramiento.Remove(_context.CartasNombramiento.Where(x => x.NoPoliza == item.NoPoliza).FirstOrDefault());
+                    _context.CartasNombramiento.RemoveRange(_context.CartasNombramiento.Where(x => x.NoPoliza == item));
                 }
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };

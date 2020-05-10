@@ -30,13 +30,12 @@ namespace brokfy.dashboard.api.Controllers
             return _context.Polizas.ToList();
         }
 
-        // GET: api/Polizas/5
-        [HttpGet("{id}")]
-        public Polizas GetPolizas(string id)
-        {
-            var dato = _context.Polizas.Where(x => x.NoPoliza == id).FirstOrDefault();
+        // GET: api/Polizas/Mapfre
 
-            return dato;
+        [HttpGet("{idAseguradora}")]
+        public List<Polizas> GetPolizas(int idAseguradora)
+        {
+            return _context.Polizas.Where(x => x.IdAseguradoras == idAseguradora).ToList();
         }
         // PUT: api/Polizas/5
         [HttpPut]

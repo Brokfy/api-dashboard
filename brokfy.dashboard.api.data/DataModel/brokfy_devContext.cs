@@ -15,6 +15,7 @@ namespace brokfy.dashboard.api.data.DataModel
             : base(options)
         {
         }
+        public virtual DbSet<ComisionActualModel> ComisionActualModels { get; set; }
         public virtual DbSet<PolizaAuto> PolizaAutos { get; set; }
         public virtual DbSet<PolizaVida> PolizaVidas { get; set; }
         public virtual DbSet<PolizaPagoModel> PolizaPagoModels { get; set; }

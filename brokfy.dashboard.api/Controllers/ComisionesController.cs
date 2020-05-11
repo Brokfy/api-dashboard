@@ -8,6 +8,7 @@ using brokfy.dashboard.api.data.DataModel;
 using Microsoft.Extensions.Configuration;
 using brokfy.dashboard.api.Models;
 using System;
+using brokfy.dashboard.api.data.ViewModel;
 
 namespace brokfy.dashboard.api.Controllers
 {
@@ -25,9 +26,9 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/AseguradorasComisiones
         [HttpGet]
-        public IEnumerable<AseguradorasComisiones> GetAseguradorasComisiones()
+        public List<ComisionActualModel> GetAseguradorasComisiones()
         {
-            return _context.AseguradorasComisiones.ToList();
+            return _context.ComisionActualModels.FromSqlRaw("Select * From brokfy_dev.vwAseguradorasComisionesActuales").ToList();
         }
 
         // GET: api/AseguradorasComisiones/5

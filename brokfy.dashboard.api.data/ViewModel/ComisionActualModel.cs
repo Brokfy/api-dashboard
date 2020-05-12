@@ -18,6 +18,6 @@ namespace brokfy.dashboard.api.data.ViewModel
         public double Mascota { get; set; }
         public double Viaje { get; set; }
         public double Retiro { get; set; }
-        public double Pym { get; set; }
+        public double Pyme { get; set; }
     }
 }

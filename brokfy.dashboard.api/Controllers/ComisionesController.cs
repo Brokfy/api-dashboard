@@ -56,11 +56,29 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/AseguradorasComisiones
         [HttpPost]
-        public ResponseModel PostAseguradorasComisiones([FromBody] AseguradorasComisiones data)
+        public ResponseModel PostAseguradorasComisiones([FromBody] ComisionActualModel data)
         {
             try
             {
-                _context.AseguradorasComisiones.Add(data);
+                List<AseguradorasComisiones> comisiones = (from com in _context.AseguradorasComisiones
+                                                           where com.FechaInicioVigencia <= DateTime.Now 
+                                                           && com.FechaFinVigencia >= DateTime.Now 
+                                                           && com.IdAseguradora == data.id_aseguradora
+                                                           select com).ToList();
+                
+                ArmarObjeto(comisiones, data.id_aseguradora, 1, data.Auto);
+                ArmarObjeto(comisiones, data.id_aseguradora, 2, data.Moto);
+                ArmarObjeto(comisiones, data.id_aseguradora, 3, data.Hogar);
+                ArmarObjeto(comisiones, data.id_aseguradora, 4, data.Salud);
+                ArmarObjeto(comisiones, data.id_aseguradora, 5, data.Vida);
+                ArmarObjeto(comisiones, data.id_aseguradora, 6, data.Gadget);
+                ArmarObjeto(comisiones, data.id_aseguradora, 7, data.Mascota);
+                ArmarObjeto(comisiones, data.id_aseguradora, 8, data.Viaje);
+                ArmarObjeto(comisiones, data.id_aseguradora, 9, data.Retiro);
+                ArmarObjeto(comisiones, data.id_aseguradora, 10, data.Pyme);
+
+
+
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
@@ -87,6 +105,37 @@ namespace brokfy.dashboard.api.Controllers
             catch (Exception ex)
             {
                 return new ResponseModel { Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message, Result = null, Success = false };
+            }
+        }
+
+
+        private void ArmarObjeto(List<AseguradorasComisiones> comisiones, int IdAseguradora, int IdTipoPoliza, double Valor)
+        {
+            bool Saltar = false;
+
+            if (comisiones.Where(x => x.IdTipoPoliza == IdTipoPoliza).Count() > 0)
+            {
+                AseguradorasComisiones Existe = comisiones.Where(x => x.IdTipoPoliza == IdTipoPoliza).FirstOrDefault();
+                if (Existe.Valor == Valor)
+                    Saltar = true;
+                else
+                {
+                    Existe.FechaFinVigencia = DateTime.Now.AddSeconds(-1);
+                    _context.AseguradorasComisiones.Update(Existe);
+                }
+
+            }
+            if (!Saltar)
+            {
+                AseguradorasComisiones registro = new AseguradorasComisiones()
+                {
+                    FechaInicioVigencia = DateTime.Now,
+                    FechaFinVigencia = DateTime.Now.AddYears(1),
+                    IdAseguradora = IdAseguradora,
+                    IdTipoPoliza = IdTipoPoliza,
+                    Valor = Valor
+                };
+                _context.AseguradorasComisiones.Add(registro);
             }
         }
     }

@@ -27,7 +27,7 @@ namespace brokfy.dashboard.api.Controllers
         [HttpGet("{NoPoliza}")]
         public PolizaDetalleModel GetPolizaDetalle(string NoPoliza)
         {
-            PolizaDetalleModel detalle;
+            
             try
             {
                 Polizas original = _context.Polizas.Where(x => x.NoPoliza == NoPoliza).FirstOrDefault();
@@ -37,14 +37,14 @@ namespace brokfy.dashboard.api.Controllers
                     && DateTime.Now >= x.FechaInicioVigencia
                     && x.FechaFinVigencia == null).ToList();
 
-                detalle = (from p in _context.Polizas
+                PolizaDetalleModel detalle = (from p in _context.Polizas
                            join ase in _context.Aseguradoras on p.IdAseguradoras equals ase.IdAseguradora
-                           join pr in _context.Productos on p.ProductoId equals pr.IdProductos
-                           join usu in _context.Usuario on p.Username equals usu.Username
+                           join pr in _context.Productos on p.ProductoId equals pr.Id
+                           join usu in _context.Perfil on p.Username equals usu.Username
                            where p.NoPoliza == NoPoliza
                            select new data.ViewModel.PolizaDetalleModel
                            {
-                               Poliza =
+                               Poliza = new DetallePoliza
                                               {
                                                 TipoPoliza = p.TipoPoliza ,
                                                 NoPoliza = p.NoPoliza ,
@@ -70,11 +70,20 @@ namespace brokfy.dashboard.api.Controllers
                                                 IdEstadoPoliza = p.IdEstadoPoliza ,
                                               },
                                Usuario = usu,
-                               Pagos = null,
-                               Tipo = getTipoDetalle(original)
+                               Pagos = new List<DetallePago>(),
+                               Auto = p.Auto,
+                               //Moto = p.Moto,
+                               //Hogar = p.Hogar,
+                               //Salud = p.Salud,
+                               Vida = p.Vida,
+                               //Gadget = p.Gadget,
+                               //Mascota = p.Mascota,
+                               //Viaje = p.Viaje,
+                               //Retiro = p.Retiro,
+                               //Pyme = p.Pyme,
                            }).FirstOrDefault();
 
-
+                //detalle.Tipo = getTipoDetalle(original);
                 return detalle;
             }
             catch (Exception ex)
@@ -86,7 +95,7 @@ namespace brokfy.dashboard.api.Controllers
             
         }
 
-        private dynamic getTipoDetalle(Polizas original)
+        private dynamic? getTipoDetalle(Polizas original)
         {
             switch (original.TipoPoliza)
             {

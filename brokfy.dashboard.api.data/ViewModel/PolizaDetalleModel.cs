@@ -9,10 +9,20 @@ namespace brokfy.dashboard.api.data.ViewModel
         public class PolizaDetalleModel
         {
             public DetallePoliza Poliza { get; set; }
-            public Usuario Usuario { get; set; }
+            public Perfil Usuario { get; set; }
             public List<DetallePago> Pagos { get; set; }
-            public dynamic Tipo { get; set; }
-        }
+            public Auto Auto { get; set; } 
+
+        //public Moto Moto { get; set; }
+        //public Hogar Hogar { get; set; }
+        //public Salud Salud { get; set; }
+            public Vida Vida { get; set; }
+        //public Gadget Gadget { get; set; }
+        //public Mascota Mascota { get; set; }
+        //public Viaje Viaje { get; set; }
+        //public Retiro Retiro { get; set; }
+        //public Pyme Pyme { get; set; }
+    }
 
         public class DetallePago
         {

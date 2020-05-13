@@ -130,7 +130,7 @@ namespace brokfy.dashboard.api.Controllers
                 AseguradorasComisiones registro = new AseguradorasComisiones()
                 {
                     FechaInicioVigencia = DateTime.Now,
-                    FechaFinVigencia = DateTime.Now.AddYears(1),
+                    FechaFinVigencia = null,
                     IdAseguradora = IdAseguradora,
                     IdTipoPoliza = IdTipoPoliza,
                     Valor = Valor

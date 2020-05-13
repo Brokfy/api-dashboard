@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using brokfy.dashboard.api.data.DataModel;
 using Microsoft.Extensions.Configuration;
-using brokfy.dashboard.api.Models;
 using System;
 using brokfy.dashboard.api.data.ViewModel;
 using Newtonsoft.Json;
@@ -28,25 +27,92 @@ namespace brokfy.dashboard.api.Controllers
         [HttpGet("{NoPoliza}")]
         public PolizaDetalleModel GetPolizaDetalle(string NoPoliza)
         {
-            PolizaDetalleModel dato = new PolizaDetalleModel() 
+            PolizaDetalleModel detalle;
+            try
             {
-                Poliza = _context.Polizas.Where(x => x.NoPoliza == NoPoliza).FirstOrDefault(),
-                Pagos = new List<DetallePago>() { }
-            };
+                Polizas original = _context.Polizas.Where(x => x.NoPoliza == NoPoliza).FirstOrDefault();
+                List<AseguradorasComisiones> aseguradorasComisiones =
+                    _context.AseguradorasComisiones.Where(x =>
+                    x.IdAseguradora == original.IdAseguradoras
+                    && DateTime.Now >= x.FechaInicioVigencia
+                    && x.FechaFinVigencia == null).ToList();
 
-            switch (dato.Poliza.TipoPoliza)
+                detalle = (from p in _context.Polizas
+                           join ase in _context.Aseguradoras on p.IdAseguradoras equals ase.IdAseguradora
+                           join pr in _context.Productos on p.ProductoId equals pr.IdProductos
+                           join usu in _context.Usuario on p.Username equals usu.Username
+                           where p.NoPoliza == NoPoliza
+                           select new data.ViewModel.PolizaDetalleModel
+                           {
+                               Poliza =
+                                              {
+                                                TipoPoliza = p.TipoPoliza ,
+                                                NoPoliza = p.NoPoliza ,
+                                                FormaPago = p.FormaPago ,
+                                                FechaInicio = p.FechaInicio ,
+                                                FechaFin = p.FechaFin ,
+                                                IdAseguradora = p.IdAseguradoras ,
+                                                NombreAseguradora = ase.Nombre ,
+                                                ProductoId = p.ProductoId,
+                                                NombreProducto = pr.Producto,
+                                                Habilitada = p.Habilitada ,
+                                                NoAsegurado = p.NoAsegurado ,
+                                                PolizaPropia = p.PolizaPropia ,
+                                                PolizaPdf = p.PolizaPdf ,
+                                                ReciboPdf = p.ReciboPdf ,
+                                                RcUsaCanada = p.RcUsaCanada ,
+                                                CostoPrimerRecibo = p.CostoPrimerRecibo ,
+                                                CostoRecibosSubsecuentes = p.CostoRecibosSubsecuentes ,
+                                                PrimaTotal = p.Costo ,
+                                                PrimaNeta = p.PrimaNeta ,
+                                                Comision = aseguradorasComisiones.Count() > 0 ? (p.PrimaNeta * aseguradorasComisiones.FirstOrDefault().Valor)/100 : 0,
+                                                Pagado = 0 ,
+                                                IdEstadoPoliza = p.IdEstadoPoliza ,
+                                              },
+                               Usuario = usu,
+                               Pagos = null,
+                               Tipo = getTipoDetalle(original)
+                           }).FirstOrDefault();
+
+
+                return detalle;
+            }
+            catch (Exception ex)
+            {
+                return new PolizaDetalleModel();
+            }
+            
+
+            
+        }
+
+        private dynamic getTipoDetalle(Polizas original)
+        {
+            switch (original.TipoPoliza)
             {
                 case 1:
-                    dato.Poliza.Auto = _context.Auto.Where(x => x.NoPoliza == NoPoliza).FirstOrDefault();
-                    break;
+                    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 2:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 3:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 4:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
                 case 5:
-                    dato.Poliza.Vida = _context.Vida.Where(x => x.NoPoliza == NoPoliza).FirstOrDefault();
-                    break;
+                    return _context.Vida.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 6:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 7:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 8:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 9:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
+                //case 10:
+                //    return _context.Auto.Where(x => x.NoPoliza == original.NoPoliza).FirstOrDefault();
                 default:
-                    break;
+                    return null;
             }
-
-            return dato;
         }
     }
 }

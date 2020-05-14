@@ -14,5 +14,6 @@ namespace brokfy.dashboard.api.data.ViewModel
         public double Comision { get; set; }
         public double MontoPagado { get; set; }
         public double MontoPago { get; set; }
+        public int TipoPoliza { get; set; }
     }
 }

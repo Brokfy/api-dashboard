@@ -42,6 +42,7 @@ namespace brokfy.dashboard.api.Controllers
                           && pol.PolizaPropia == "Si"
                           select new PolizaPagoListModel
                           {
+                              TipoPoliza = pol.TipoPoliza,
                               NoPoliza = pol.NoPoliza,
                               IdEstatusPoliza = pol.IdEstadoPoliza,
                               MontoPagado = 0,

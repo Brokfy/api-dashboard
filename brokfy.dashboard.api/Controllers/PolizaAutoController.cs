@@ -174,7 +174,8 @@ namespace brokfy.dashboard.api.Controllers
                     //ReciboPdf = data.ReciboPdf,
                     RcUsaCanada = data.RcUsaCanada,
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
-                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes
+                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes,
+                    IdEstadoPoliza = 1,
                 };
                 _context.Polizas.Add(poliza);
 

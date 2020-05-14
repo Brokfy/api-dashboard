@@ -8,6 +8,7 @@ using brokfy.dashboard.api.data.DataModel;
 using Microsoft.Extensions.Configuration;
 using brokfy.dashboard.api.Models;
 using System;
+using brokfy.dashboard.api.data.ViewModel;
 
 namespace brokfy.dashboard.api.Controllers
 {
@@ -33,9 +34,30 @@ namespace brokfy.dashboard.api.Controllers
         // GET: api/Polizas/Mapfre
 
         [HttpGet("{idAseguradora}")]
-        public List<Polizas> GetPolizas(int idAseguradora)
+        public List<PolizaPagoListModel> GetPolizas(int idAseguradora)
         {
-            return _context.Polizas.Where(x => x.IdAseguradoras == idAseguradora).ToList();
+            //return _context.Polizas.Where(x => x.IdAseguradoras == idAseguradora ).ToList();
+            var result = (from pol in _context.Polizas
+                          where pol.IdAseguradoras == idAseguradora
+                          && pol.PolizaPropia == "Si"
+                          select new PolizaPagoListModel
+                          {
+                              NoPoliza = pol.NoPoliza,
+                              IdEstatusPoliza = pol.IdEstadoPoliza,
+                              MontoPagado = 0,
+                              MontoPago = 0,
+                              PrimaTotal = pol.Costo,
+                              PrimaNeta = pol.PrimaNeta,
+                              Vencimiento = pol.FechaFin,
+                              Comision = (pol.PrimaNeta * (from ase in _context.AseguradorasComisiones
+                                                         where ase.IdAseguradora == pol.IdAseguradoras
+                                                         && ase.IdTipoPoliza == pol.TipoPoliza
+                                                         && ase.FechaInicioVigencia <= DateTime.Now
+                                                         && ase.FechaFinVigencia == null
+                                                         select ase.Valor).FirstOrDefault()) / 100
+
+                          }).ToList();
+            return result;
         }
         // PUT: api/Polizas/5
         [HttpPut]

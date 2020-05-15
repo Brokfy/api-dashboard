@@ -191,6 +191,10 @@ namespace brokfy.dashboard.api.Controllers
                 };
                 _context.Auto.Add(auto);
 
+                CartasNombramiento carta = _context.CartasNombramiento.Where(x => x.NoPoliza == data.NoPoliza).FirstOrDefault();
+                carta.Revisado = true;
+                _context.CartasNombramiento.Update(carta);
+
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }

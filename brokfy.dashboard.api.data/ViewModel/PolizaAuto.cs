@@ -15,6 +15,7 @@ namespace brokfy.dashboard.api.data.ViewModel
         public DateTime FechaFin { get; set; }
         public int IdAseguradoras { get; set; }
         public double Costo { get; set; }
+        public double PrimaNeta { get; set; }
         public string Username { get; set; }
         public long ProductoId { get; set; }
         public string Habilitada { get; set; }
@@ -31,5 +32,6 @@ namespace brokfy.dashboard.api.data.ViewModel
         public string Placas { get; set; }
         public string Clave { get; set; }
         public string CodigoPostal { get; set; }
+        public int IdEstadoPoliza { get; set; }
     }
 }

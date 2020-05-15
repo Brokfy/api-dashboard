@@ -57,12 +57,13 @@ namespace brokfy.dashboard.api.Controllers
                              Placas = a.Placas,
                              Clave = a.Clave,
                              CodigoPostal = a.CodigoPostal,
+                             IdEstadoPoliza = p.IdEstadoPoliza
                          };
 
             return result.ToList();
         }
 
-        // GET: api/Polizas/5
+        // GET: api/PolizaAuto/1231321
         [HttpGet("{id}")]
         public List<PolizaAuto> GetPolizaAutoDetalle(string id)
         {
@@ -78,6 +79,7 @@ namespace brokfy.dashboard.api.Controllers
                              FechaFin = p.FechaFin,
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
+                             PrimaNeta = p.PrimaNeta,
                              Username = p.Username,
                              ProductoId = p.ProductoId,
                              Habilitada = p.Habilitada,
@@ -94,6 +96,7 @@ namespace brokfy.dashboard.api.Controllers
                              Placas = a.Placas,
                              Clave = a.Clave,
                              CodigoPostal = a.CodigoPostal,
+                             IdEstadoPoliza = p.IdEstadoPoliza
                          };
 
             return result.ToList();
@@ -114,16 +117,18 @@ namespace brokfy.dashboard.api.Controllers
                     FechaFin = data.FechaFin,
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
+                    PrimaNeta = data.PrimaNeta,
                     Username = data.Username,
                     ProductoId = data.ProductoId,
                     Habilitada = data.Habilitada,
                     NoAsegurado = data.NoAsegurado,
                     PolizaPropia = data.PolizaPropia,
-                    PolizaPdf = data.PolizaPdf,
+                    //PolizaPdf = data.PolizaPdf,
                     //ReciboPdf = data.ReciboPdf,
                     RcUsaCanada = data.RcUsaCanada,
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
-                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes
+                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes,
+                    IdEstadoPoliza = data.IdEstadoPoliza
                 };
                 _context.Polizas.Update(poliza);
 
@@ -165,6 +170,7 @@ namespace brokfy.dashboard.api.Controllers
                     FechaFin = data.FechaFin,
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
+                    PrimaNeta = data.PrimaNeta,
                     Username = data.Username,
                     ProductoId = data.ProductoId,
                     Habilitada = data.Habilitada,

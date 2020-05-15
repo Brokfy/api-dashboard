@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace brokfy.dashboard.api.data.ViewModel
@@ -10,7 +11,7 @@ namespace brokfy.dashboard.api.data.ViewModel
         {
             public DetallePoliza Poliza { get; set; }
             public Perfil Usuario { get; set; }
-            public List<DetallePago> Pagos { get; set; }
+            public List<HistoriaPagoPoliza> Pagos { get; set; }
             public Auto Auto { get; set; } 
 
         //public Moto Moto { get; set; }
@@ -59,5 +60,15 @@ namespace brokfy.dashboard.api.data.ViewModel
             public double Pagado { get; set; }
             public int IdEstadoPoliza { get; set; }
         }
-    
+
+        public class HistoriaPagoPoliza
+        {
+            [Key]
+            public string Referencia { get; set; }
+            public DateTime Fecha { get; set; }
+            public double Monto { get; set; }
+            public string FormaPago { get; set; }
+            
+        }
+
 }

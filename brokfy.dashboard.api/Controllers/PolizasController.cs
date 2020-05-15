@@ -34,7 +34,7 @@ namespace brokfy.dashboard.api.Controllers
         // GET: api/Polizas/Mapfre
 
         [HttpGet("{idAseguradora}")]
-        public List<PolizaPagoListModel> GetPolizas(int idAseguradora)
+        public List<PolizaPagoListModel> GetPolizasPorAseguradora(int idAseguradora)
         {
             //return _context.Polizas.Where(x => x.IdAseguradoras == idAseguradora ).ToList();
             var result = (from pol in _context.Polizas
@@ -45,7 +45,9 @@ namespace brokfy.dashboard.api.Controllers
                               TipoPoliza = pol.TipoPoliza,
                               NoPoliza = pol.NoPoliza,
                               IdEstatusPoliza = pol.IdEstadoPoliza,
-                              MontoPagado = 0,
+                              MontoPagado = (from y in _context.PagosDetalle
+                                             where y.NoPoliza == pol.NoPoliza
+                                             select y.Monto).Sum(),
                               MontoPago = 0,
                               PrimaTotal = pol.Costo,
                               PrimaNeta = pol.PrimaNeta,
@@ -55,7 +57,8 @@ namespace brokfy.dashboard.api.Controllers
                                                          && ase.IdTipoPoliza == pol.TipoPoliza
                                                          && ase.FechaInicioVigencia <= DateTime.Now
                                                          && ase.FechaFinVigencia == null
-                                                         select ase.Valor).FirstOrDefault()) / 100
+                                                         select ase.Valor).FirstOrDefault()) / 100,
+                              
 
                           }).ToList();
             return result;

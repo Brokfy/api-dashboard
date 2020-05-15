@@ -19,6 +19,8 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<PolizaAuto> PolizaAutos { get; set; }
         public virtual DbSet<PolizaVida> PolizaVidas { get; set; }
         public virtual DbSet<PolizaPagoModel> PolizaPagoModels { get; set; }
+        public virtual DbSet<HistoriaPagoPoliza> HistoriaPagoPolizas { get; set; }
+
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }
         public virtual DbSet<Aseguradoras> Aseguradoras { get; set; }
@@ -57,6 +59,8 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<OauthCode> OauthCode { get; set; }
         public virtual DbSet<OauthRefreshToken> OauthRefreshToken { get; set; }
         public virtual DbSet<Ocupaciones> Ocupaciones { get; set; }
+        public virtual DbSet<Pagos> Pagos { get; set; }
+        public virtual DbSet<PagosDetalle> PagosDetalle { get; set; }
         public virtual DbSet<Parentesco> Parentesco { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<PerfilAsegurado> PerfilAsegurado { get; set; }
@@ -98,7 +102,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<UsuariosToRoles> UsuariosToRoles { get; set; }
         public virtual DbSet<Vida> Vida { get; set; }
-
+        public virtual DbSet<VwAseguradorasComisionesActuales> VwAseguradorasComisionesActuales { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -1377,6 +1381,81 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<Pagos>(entity =>
+            {
+                entity.HasKey(e => e.IdPago)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("pagos");
+
+                entity.HasIndex(e => e.IdAseguradora)
+                    .HasName("fk_pagos_aseguradoras_idx");
+
+                entity.Property(e => e.IdPago)
+                    .HasColumnName("id_pago")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnName("fecha")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.IdAseguradora)
+                    .HasColumnName("id_aseguradora")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.MetodoPago)
+                    .HasColumnName("metodo_pago")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Monto).HasColumnName("monto");
+
+                entity.Property(e => e.Referencia)
+                    .HasColumnName("referencia")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdAseguradoraNavigation)
+                    .WithMany(p => p.Pagos)
+                    .HasForeignKey(d => d.IdAseguradora)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_pagos_aseguradoras");
+            });
+
+            modelBuilder.Entity<PagosDetalle>(entity =>
+            {
+                entity.HasKey(e => e.IdPagosDetalle)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("pagos_detalle");
+
+                entity.HasIndex(e => e.IdPago)
+                    .HasName("fk_pagos_detalle_pagos_idx");
+
+                entity.Property(e => e.IdPagosDetalle)
+                    .HasColumnName("id_pagos_detalle")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.IdPago)
+                    .HasColumnName("id_pago")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Monto).HasColumnName("monto");
+
+                entity.Property(e => e.NoPoliza)
+                    .IsRequired()
+                    .HasColumnName("no_poliza")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdPagoNavigation)
+                    .WithMany(p => p.PagosDetalle)
+                    .HasForeignKey(d => d.IdPago)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_pagos_detalle_pagos");
             });
 
             modelBuilder.Entity<Parentesco>(entity =>
@@ -2849,6 +2928,17 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasForeignKey<Vida>(d => d.NoPoliza)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_polizas_vida");
+            });
+
+            modelBuilder.Entity<VwAseguradorasComisionesActuales>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vwAseguradorasComisionesActuales");
+
+                entity.Property(e => e.IdAseguradora)
+                    .HasColumnName("id_aseguradora")
+                    .HasColumnType("int(11)");
             });
 
             OnModelCreatingPartial(modelBuilder);

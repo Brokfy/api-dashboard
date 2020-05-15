@@ -9,6 +9,7 @@ namespace brokfy.dashboard.api.data.DataModel
         {
             AseguradorasComisiones = new HashSet<AseguradorasComisiones>();
             CartasNombramiento = new HashSet<CartasNombramiento>();
+            Pagos = new HashSet<Pagos>();
             Polizas = new HashSet<Polizas>();
             Productos = new HashSet<Productos>();
         }
@@ -21,6 +22,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
         public virtual ICollection<AseguradorasComisiones> AseguradorasComisiones { get; set; }
         public virtual ICollection<CartasNombramiento> CartasNombramiento { get; set; }
+        public virtual ICollection<Pagos> Pagos { get; set; }
         public virtual ICollection<Polizas> Polizas { get; set; }
         public virtual ICollection<Productos> Productos { get; set; }
     }

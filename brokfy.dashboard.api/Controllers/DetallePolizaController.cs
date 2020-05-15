@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using brokfy.dashboard.api.data.ViewModel;
 using Newtonsoft.Json;
+using brokfy.dashboard.api.Models;
 
 namespace brokfy.dashboard.api.Controllers
 {
@@ -25,7 +26,7 @@ namespace brokfy.dashboard.api.Controllers
         }
         // GET: api/PolizaDetalle/151412
         [HttpGet("{NoPoliza}")]
-        public PolizaDetalleModel GetPolizaDetalle(string NoPoliza)
+        public data.ViewModel.PolizaDetalleModel GetPolizaDetalle(string NoPoliza)
         {
             
             try
@@ -36,15 +37,16 @@ namespace brokfy.dashboard.api.Controllers
                     x.IdAseguradora == original.IdAseguradoras
                     && DateTime.Now >= x.FechaInicioVigencia
                     && x.FechaFinVigencia == null).ToList();
+                
 
-                PolizaDetalleModel detalle = (from p in _context.Polizas
+                data.ViewModel.PolizaDetalleModel detalle = (from p in _context.Polizas
                            join ase in _context.Aseguradoras on p.IdAseguradoras equals ase.IdAseguradora
                            join pr in _context.Productos on p.ProductoId equals pr.Id
                            join usu in _context.Perfil on p.Username equals usu.Username
                            where p.NoPoliza == NoPoliza
                            select new data.ViewModel.PolizaDetalleModel
                            {
-                               Poliza = new DetallePoliza
+                               Poliza = new data.ViewModel.DetallePoliza
                                               {
                                                 TipoPoliza = p.TipoPoliza ,
                                                 NoPoliza = p.NoPoliza ,
@@ -66,11 +68,28 @@ namespace brokfy.dashboard.api.Controllers
                                                 PrimaTotal = p.Costo ,
                                                 PrimaNeta = p.PrimaNeta ,
                                                 Comision = aseguradorasComisiones.Count() > 0 ? (p.PrimaNeta * aseguradorasComisiones.FirstOrDefault().Valor)/100 : 0,
-                                                Pagado = 0 ,
+                                                Pagado = (from x in _context.PagosDetalle
+                                                          where x.NoPoliza == NoPoliza
+                                                          select x.Monto).Sum(),
                                                 IdEstadoPoliza = p.IdEstadoPoliza ,
                                               },
                                Usuario = usu,
-                               Pagos = new List<DetallePago>(),
+                               //Pagos = from px in _context.Polizas
+                               //        join det in _context.PagosDetalle on px.NoPoliza equals det.NoPoliza
+                               //        join pago in _context.Pagos on det.IdPago equals pago.IdPago
+                               //        where det.NoPoliza == NoPoliza
+                               //        select new HistoriaPagoPoliza
+                               //        {
+                               //            Fecha = pago.Fecha,
+                               //            Monto = det.Monto,
+                               //            Referencia = pago.Referencia,
+                               //            FormaPago = "Transferencia Bancaria"
+                               //            //pago.MetodoPago == 1 ? "Transferencia Bancaria" :
+                               //            //pago.MetodoPago == 2 ? "Deposito Bancario" :
+                               //            //pago.MetodoPago == 3 ? "Punto de Venta Electronico" :
+                               //            //pago.MetodoPago == 4 ? "Efectivo" :
+                               //            //                       "Otro"
+                               //        },
                                Auto = p.Auto,
                                //Moto = p.Moto,
                                //Hogar = p.Hogar,
@@ -84,11 +103,27 @@ namespace brokfy.dashboard.api.Controllers
                            }).FirstOrDefault();
 
                 //detalle.Tipo = getTipoDetalle(original);
+                detalle.Pagos = (from px in _context.Polizas
+                                join det in _context.PagosDetalle on px.NoPoliza equals det.NoPoliza
+                                join pago in _context.Pagos on det.IdPago equals pago.IdPago
+                                where det.NoPoliza == NoPoliza
+                                select new HistoriaPagoPoliza
+                                {
+                                    Fecha = pago.Fecha,
+                                    Monto = det.Monto,
+                                    Referencia = pago.Referencia,
+                                    FormaPago = "Transferencia Bancaria"
+                                    //pago.MetodoPago == 1 ? "Transferencia Bancaria" :
+                                    //pago.MetodoPago == 2 ? "Deposito Bancario" :
+                                    //pago.MetodoPago == 3 ? "Punto de Venta Electronico" :
+                                    //pago.MetodoPago == 4 ? "Efectivo" :
+                                    //                       "Otro"
+                                }).ToList();
                 return detalle;
             }
             catch (Exception ex)
             {
-                return new PolizaDetalleModel();
+                return new data.ViewModel.PolizaDetalleModel();
             }
             
 

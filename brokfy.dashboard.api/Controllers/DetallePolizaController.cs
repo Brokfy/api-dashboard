@@ -112,12 +112,12 @@ namespace brokfy.dashboard.api.Controllers
                                     Fecha = pago.Fecha,
                                     Monto = det.Monto,
                                     Referencia = pago.Referencia,
-                                    FormaPago = "Transferencia Bancaria"
-                                    //pago.MetodoPago == 1 ? "Transferencia Bancaria" :
-                                    //pago.MetodoPago == 2 ? "Deposito Bancario" :
-                                    //pago.MetodoPago == 3 ? "Punto de Venta Electronico" :
-                                    //pago.MetodoPago == 4 ? "Efectivo" :
-                                    //                       "Otro"
+                                    FormaPago = //"Transferencia Bancaria"
+                                    pago.MetodoPago == 1 ? "Transferencia Bancaria" :
+                                    pago.MetodoPago == 2 ? "Deposito Bancario" :
+                                    pago.MetodoPago == 3 ? "Punto de Venta Electronico" :
+                                    pago.MetodoPago == 4 ? "Efectivo" :
+                                                           "Otro"
                                 }).ToList();
                 return detalle;
             }

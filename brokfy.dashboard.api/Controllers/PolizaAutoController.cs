@@ -169,7 +169,7 @@ namespace brokfy.dashboard.api.Controllers
                     ProductoId = data.ProductoId,
                     Habilitada = data.Habilitada,
                     NoAsegurado = data.NoAsegurado,
-                    PolizaPropia = data.PolizaPropia,
+                    PolizaPropia = _context.CartasNombramiento.Where(x => x.NoPoliza == data.NoPoliza).FirstOrDefault().Firmada ? "Si" : "No",
                     PolizaPdf = data.PolizaPdf,
                     //ReciboPdf = data.ReciboPdf,
                     RcUsaCanada = data.RcUsaCanada,

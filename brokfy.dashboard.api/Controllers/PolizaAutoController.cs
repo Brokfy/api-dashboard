@@ -41,6 +41,8 @@ namespace brokfy.dashboard.api.Controllers
                              FechaFin = p.FechaFin,
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
+                             PrimaNeta = p.PrimaNeta,
+                             IdEstadoPoliza = p.IdEstadoPoliza,
                              Username = p.Username,
                              ProductoId = p.ProductoId,
                              Habilitada = p.Habilitada,
@@ -56,8 +58,7 @@ namespace brokfy.dashboard.api.Controllers
                              Ano = a.Ano,
                              Placas = a.Placas,
                              Clave = a.Clave,
-                             CodigoPostal = a.CodigoPostal,
-                             IdEstadoPoliza = p.IdEstadoPoliza
+                             CodigoPostal = a.CodigoPostal
                          };
 
             return result.ToList();
@@ -80,6 +81,7 @@ namespace brokfy.dashboard.api.Controllers
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
                              PrimaNeta = p.PrimaNeta,
+                             IdEstadoPoliza = p.IdEstadoPoliza,
                              Username = p.Username,
                              ProductoId = p.ProductoId,
                              Habilitada = p.Habilitada,
@@ -96,7 +98,6 @@ namespace brokfy.dashboard.api.Controllers
                              Placas = a.Placas,
                              Clave = a.Clave,
                              CodigoPostal = a.CodigoPostal,
-                             IdEstadoPoliza = p.IdEstadoPoliza
                          };
 
             return result.ToList();
@@ -118,6 +119,7 @@ namespace brokfy.dashboard.api.Controllers
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
                     PrimaNeta = data.PrimaNeta,
+                    IdEstadoPoliza = data.IdEstadoPoliza,
                     Username = data.Username,
                     ProductoId = data.ProductoId,
                     Habilitada = data.Habilitada,
@@ -127,8 +129,7 @@ namespace brokfy.dashboard.api.Controllers
                     //ReciboPdf = data.ReciboPdf,
                     RcUsaCanada = data.RcUsaCanada,
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
-                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes,
-                    IdEstadoPoliza = data.IdEstadoPoliza
+                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes    
                 };
                 _context.Polizas.Update(poliza);
 

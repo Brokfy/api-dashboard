@@ -40,6 +40,8 @@ namespace brokfy.dashboard.api.Controllers
             var result = (from pol in _context.Polizas
                           where pol.IdAseguradoras == idAseguradora
                           && pol.PolizaPropia == "Si"
+                          && pol.Habilitada == "Si"
+                          && pol.IdEstadoPoliza == 1
                           select new PolizaPagoListModel
                           {
                               TipoPoliza = pol.TipoPoliza,

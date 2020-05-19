@@ -38,6 +38,7 @@ namespace brokfy.dashboard.api.Controllers
         {
             //return _context.Polizas.Where(x => x.IdAseguradoras == idAseguradora ).ToList();
             var result = (from pol in _context.Polizas
+                          join com in _context.PolizasComisiones on pol.NoPoliza equals com.NoPoliza
                           where pol.IdAseguradoras == idAseguradora
                           && pol.PolizaPropia == "Si"
                           && pol.Habilitada == "Si"
@@ -46,22 +47,13 @@ namespace brokfy.dashboard.api.Controllers
                           {
                               TipoPoliza = pol.TipoPoliza,
                               NoPoliza = pol.NoPoliza,
-                              IdEstatusPoliza = pol.IdEstadoPoliza,
                               MontoPagado = (from y in _context.PagosDetalle
-                                             where y.NoPoliza == pol.NoPoliza
+                                             where y.IdPolizaComision == com.IdPolizaComision
                                              select y.Monto).Sum(),
                               MontoPago = 0,
-                              PrimaTotal = pol.Costo,
-                              PrimaNeta = pol.PrimaNeta,
-                              Vencimiento = pol.FechaFin,
-                              Comision = (pol.PrimaNeta * (from ase in _context.AseguradorasComisiones
-                                                         where ase.IdAseguradora == pol.IdAseguradoras
-                                                         && ase.IdTipoPoliza == pol.TipoPoliza
-                                                         && ase.FechaInicioVigencia <= DateTime.Now
-                                                         && ase.FechaFinVigencia == null
-                                                         select ase.Valor).FirstOrDefault()) / 100,
-                              
-
+                              Valor = com.Valor,
+                              Vencimiento = com.Vencimiento,
+                              IdPolizaComision = com.IdPolizaComision
                           }).ToList();
             return result;
         }

@@ -68,9 +68,10 @@ namespace brokfy.dashboard.api.Controllers
                                                 PrimaTotal = p.Costo ,
                                                 PrimaNeta = p.PrimaNeta ,
                                                 Comision = aseguradorasComisiones.Count() > 0 ? (p.PrimaNeta * aseguradorasComisiones.FirstOrDefault().Valor)/100 : 0,
-                                                Pagado = (from x in _context.PagosDetalle
-                                                          where x.NoPoliza == NoPoliza
-                                                          select x.Monto).Sum(),
+                                                Pagado = (from com in _context.PolizasComisiones
+                                                          join det in _context.PagosDetalle on com.IdPolizaComision equals det.IdPolizaComision
+                                                          where com.NoPoliza == NoPoliza
+                                                          select det.Monto).Sum(),
                                                 IdEstadoPoliza = p.IdEstadoPoliza ,
                                               },
                                Usuario = usu,
@@ -104,9 +105,10 @@ namespace brokfy.dashboard.api.Controllers
 
                 //detalle.Tipo = getTipoDetalle(original);
                 detalle.Pagos = (from px in _context.Polizas
-                                join det in _context.PagosDetalle on px.NoPoliza equals det.NoPoliza
+                                join com in _context.PolizasComisiones on px.NoPoliza equals com.NoPoliza
+                                join det in _context.PagosDetalle on com.IdPolizaComision equals det.IdPolizaComision
                                 join pago in _context.Pagos on det.IdPago equals pago.IdPago
-                                where det.NoPoliza == NoPoliza
+                                where px.NoPoliza == NoPoliza
                                 select new HistoriaPagoPoliza
                                 {
                                     Fecha = pago.Fecha,

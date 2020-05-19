@@ -20,7 +20,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<PolizaVida> PolizaVidas { get; set; }
         public virtual DbSet<PolizaPagoModel> PolizaPagoModels { get; set; }
         public virtual DbSet<HistoriaPagoPoliza> HistoriaPagoPolizas { get; set; }
-
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }
         public virtual DbSet<Aseguradoras> Aseguradoras { get; set; }
@@ -71,6 +70,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<PisosCasas> PisosCasas { get; set; }
         public virtual DbSet<Polizas> Polizas { get; set; }
         public virtual DbSet<PolizasAseguradorasNoAgente> PolizasAseguradorasNoAgente { get; set; }
+        public virtual DbSet<PolizasComisiones> PolizasComisiones { get; set; }
         public virtual DbSet<PolizasGadgets> PolizasGadgets { get; set; }
         public virtual DbSet<PolizasGastosMedicos> PolizasGastosMedicos { get; set; }
         public virtual DbSet<PolizasHogar> PolizasHogar { get; set; }
@@ -103,6 +103,15 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<UsuariosToRoles> UsuariosToRoles { get; set; }
         public virtual DbSet<Vida> Vida { get; set; }
         public virtual DbSet<VwAseguradorasComisionesActuales> VwAseguradorasComisionesActuales { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySql("server=database-1.cyu1bxjzzhpm.us-east-2.rds.amazonaws.com;port=3306;user=dev;password=DevBrokfy18;database=brokfy_dev", x => x.ServerVersion("5.7.22-mysql"));
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -301,9 +310,6 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<BeneficiariosVida>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.NoPoliza })
-                    .HasName("PRIMARY");
-
                 entity.ToTable("beneficiarios_vida");
 
                 entity.HasIndex(e => e.IdParentesco)
@@ -314,14 +320,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(11)")
-                    .ValueGeneratedOnAdd();
-
-                entity.Property(e => e.NoPoliza)
-                    .HasColumnName("no_poliza")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.ApellidoMaterno)
                     .IsRequired()
@@ -347,6 +346,13 @@ namespace brokfy.dashboard.api.data.DataModel
                 entity.Property(e => e.IdParentesco)
                     .HasColumnName("id_parentesco")
                     .HasColumnType("int(11)");
+
+                entity.Property(e => e.NoPoliza)
+                    .IsRequired()
+                    .HasColumnName("no_poliza")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Nombre)
                     .IsRequired()
@@ -1432,7 +1438,14 @@ namespace brokfy.dashboard.api.data.DataModel
                 entity.ToTable("pagos_detalle");
 
                 entity.HasIndex(e => e.IdPago)
-                    .HasName("fk_pagos_detalle_pagos_idx");
+                    .HasName("IX_PAGOS_DETALLE_ID_PAGO");
+
+                entity.HasIndex(e => e.IdPolizaComision)
+                    .HasName("IX_PAGOS_DETALLE_ID_POLIZA_COMISION");
+
+                entity.HasIndex(e => new { e.IdPago, e.IdPolizaComision })
+                    .HasName("UQ_PAGOS_DETALLE")
+                    .IsUnique();
 
                 entity.Property(e => e.IdPagosDetalle)
                     .HasColumnName("id_pagos_detalle")
@@ -1442,20 +1455,17 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnName("id_pago")
                     .HasColumnType("int(11)");
 
+                entity.Property(e => e.IdPolizaComision)
+                    .HasColumnName("id_poliza_comision")
+                    .HasColumnType("int(11)");
+
                 entity.Property(e => e.Monto).HasColumnName("monto");
 
-                entity.Property(e => e.NoPoliza)
-                    .IsRequired()
-                    .HasColumnName("no_poliza")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.HasOne(d => d.IdPagoNavigation)
+                entity.HasOne(d => d.IdPolizaComisionNavigation)
                     .WithMany(p => p.PagosDetalle)
-                    .HasForeignKey(d => d.IdPago)
+                    .HasForeignKey(d => d.IdPolizaComision)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_pagos_detalle_pagos");
+                    .HasConstraintName("FK_PAGOS_DETALLE_POLIZAS_COMISIONES");
             });
 
             modelBuilder.Entity<Parentesco>(entity =>
@@ -1986,6 +1996,44 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasForeignKey(d => d.Username)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_polizas_no_agente_usuarios");
+            });
+
+            modelBuilder.Entity<PolizasComisiones>(entity =>
+            {
+                entity.HasKey(e => e.IdPolizaComision)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("polizas_comisiones");
+
+                entity.HasIndex(e => e.NoPoliza)
+                    .HasName("IX_POLIZAS_COMISIONES_NO_POLIZA");
+
+                entity.HasIndex(e => new { e.NoPoliza, e.Vencimiento })
+                    .HasName("UQ_POLIZAS_COMISIONES")
+                    .IsUnique();
+
+                entity.Property(e => e.IdPolizaComision)
+                    .HasColumnName("id_poliza_comision")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.NoPoliza)
+                    .IsRequired()
+                    .HasColumnName("no_poliza")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Valor).HasColumnName("valor");
+
+                entity.Property(e => e.Vencimiento)
+                    .HasColumnName("vencimiento")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.NoPolizaNavigation)
+                    .WithMany(p => p.PolizasComisiones)
+                    .HasForeignKey(d => d.NoPoliza)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_POLIZAS_COMISIONES_POLIZAS");
             });
 
             modelBuilder.Entity<PolizasGadgets>(entity =>

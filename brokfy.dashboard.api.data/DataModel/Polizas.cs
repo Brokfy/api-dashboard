@@ -5,6 +5,11 @@ namespace brokfy.dashboard.api.data.DataModel
 {
     public partial class Polizas
     {
+        public Polizas()
+        {
+            PolizasComisiones = new HashSet<PolizasComisiones>();
+        }
+
         public int TipoPoliza { get; set; }
         public double Costo { get; set; }
         public string NoPoliza { get; set; }
@@ -33,5 +38,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual Usuario UsernameNavigation { get; set; }
         public virtual Auto Auto { get; set; }
         public virtual Vida Vida { get; set; }
+        public virtual ICollection<PolizasComisiones> PolizasComisiones { get; set; }
     }
 }

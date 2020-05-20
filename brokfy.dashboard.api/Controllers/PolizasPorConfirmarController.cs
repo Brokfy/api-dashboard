@@ -29,5 +29,12 @@ namespace brokfy.dashboard.api.Controllers
         {
             return _context.Polizas.Where(x => x.IdEstadoPoliza == 4).ToList();
         }
+
+        // GET: api/PolizasPorConfirmar/4554654
+        [HttpGet("{poliza}")]
+        public Polizas GetPolizasPorConfirmar(string poliza)
+        {
+            return _context.Polizas.Where(x => x.NoPoliza == poliza).FirstOrDefault();
+        }
     }
 }

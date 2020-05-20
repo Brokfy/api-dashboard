@@ -182,7 +182,7 @@ namespace brokfy.dashboard.api.Controllers
                     RcUsaCanada = data.RcUsaCanada,
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
                     CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes,
-                    IdEstadoPoliza = 1,
+                    IdEstadoPoliza = 4, // ESTADO POR CONFIRMAR
                 };
                 _context.Polizas.Add(poliza);
 

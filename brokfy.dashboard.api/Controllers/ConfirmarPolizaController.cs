@@ -24,12 +24,12 @@ namespace brokfy.dashboard.api.Controllers
         }
 
         // PUT: api/ConfirmarPoliza
-        [HttpPut]
-        public ResponseModel PutConfirmarPoliza([FromBody] string NoPoliza)
+        [HttpPut("{noPoliza}")]
+        public ResponseModel PutConfirmarPoliza(string noPoliza)
         {
             try
             {
-                Polizas poliza = _context.Polizas.Where(x => x.NoPoliza == NoPoliza).FirstOrDefault();
+                Polizas poliza = _context.Polizas.Where(x => x.NoPoliza == noPoliza).FirstOrDefault();
                 poliza.IdEstadoPoliza = 1;
                 _context.Polizas.Update(poliza);
                 _context.SaveChanges();

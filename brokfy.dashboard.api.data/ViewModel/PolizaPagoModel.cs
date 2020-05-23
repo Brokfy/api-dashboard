@@ -18,3 +18,4 @@ namespace brokfy.dashboard.api.data.ViewModel
 
     }
 }
+    

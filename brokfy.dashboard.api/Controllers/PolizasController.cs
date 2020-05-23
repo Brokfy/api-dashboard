@@ -35,8 +35,8 @@ namespace brokfy.dashboard.api.Controllers
 From (
 		Select polizas.tipo_poliza As TipoPoliza,
 			polizas.no_poliza As NoPoliza,
-			Coalesce((Select Sum(monto) As valor from brokfy_dev.pagos_detalle where pagos_detalle .id_poliza_comision = polizas_comisiones.id_poliza_comision), 0) As MontoPagado,
-			0 As MontoPago,
+			Coalesce((Select Sum(monto) As valor from brokfy_dev.pagos_detalle where pagos_detalle.id_poliza_comision = polizas_comisiones.id_poliza_comision), 0.00) As MontoPagado,
+			0.00 As MontoPago,
 			polizas_comisiones.valor As Valor ,
 			polizas_comisiones.vencimiento As Vencimiento,
 			polizas_comisiones.id_poliza_comision As IdPolizaComision

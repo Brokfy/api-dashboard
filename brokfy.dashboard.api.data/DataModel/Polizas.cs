@@ -37,6 +37,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual TipoPoliza TipoPolizaNavigation { get; set; }
         public virtual Usuario UsernameNavigation { get; set; }
         public virtual Auto Auto { get; set; }
+        public virtual Cancelaciones Cancelaciones { get; set; }
         public virtual Vida Vida { get; set; }
         public virtual ICollection<PolizasComisiones> PolizasComisiones { get; set; }
     }

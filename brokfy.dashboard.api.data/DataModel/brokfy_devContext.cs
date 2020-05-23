@@ -15,11 +15,14 @@ namespace brokfy.dashboard.api.data.DataModel
             : base(options)
         {
         }
+
         public virtual DbSet<ComisionActualModel> ComisionActualModels { get; set; }
         public virtual DbSet<PolizaAuto> PolizaAutos { get; set; }
         public virtual DbSet<PolizaVida> PolizaVidas { get; set; }
         public virtual DbSet<PolizaPagoModel> PolizaPagoModels { get; set; }
         public virtual DbSet<HistoriaPagoPoliza> HistoriaPagoPolizas { get; set; }
+
+
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }
         public virtual DbSet<Aseguradoras> Aseguradoras { get; set; }
@@ -30,6 +33,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Bfroles> Bfroles { get; set; }
         public virtual DbSet<Bfroleusers> Bfroleusers { get; set; }
         public virtual DbSet<Bfusers> Bfusers { get; set; }
+        public virtual DbSet<Cancelaciones> Cancelaciones { get; set; }
         public virtual DbSet<CartasNombramiento> CartasNombramiento { get; set; }
         public virtual DbSet<CatalogoHomologado> CatalogoHomologado { get; set; }
         public virtual DbSet<ChatAutomoviles> ChatAutomoviles { get; set; }
@@ -447,6 +451,53 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(100)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<Cancelaciones>(entity =>
+            {
+                entity.HasKey(e => e.NoPoliza)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("cancelaciones");
+
+                entity.HasIndex(e => e.IdAseguradora)
+                    .HasName("fk_cancelaciones_aseguradora_idx");
+
+                entity.Property(e => e.NoPoliza)
+                    .HasColumnName("no_poliza")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.IdAseguradora)
+                    .HasColumnName("id_aseguradora")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Rfc)
+                    .IsRequired()
+                    .HasColumnName("rfc")
+                    .HasColumnType("varchar(14)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.UrlCartaCancelacion)
+                    .IsRequired()
+                    .HasColumnName("url_carta_cancelacion")
+                    .HasColumnType("text")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdAseguradoraNavigation)
+                    .WithMany(p => p.Cancelaciones)
+                    .HasForeignKey(d => d.IdAseguradora)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cancelaciones_aseguradora");
+
+                entity.HasOne(d => d.NoPolizaNavigation)
+                    .WithOne(p => p.Cancelaciones)
+                    .HasForeignKey<Cancelaciones>(d => d.NoPoliza)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_cancelaciones_poliza");
             });
 
             modelBuilder.Entity<CartasNombramiento>(entity =>
@@ -876,26 +927,13 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
 
-                entity.Property(e => e.PrimaAnual)
-                    .IsRequired()
-                    .HasColumnName("prima_anual")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                entity.Property(e => e.ImportePagoFraccionado).HasColumnName("importe_pago_fraccionado");
 
-                entity.Property(e => e.PrimaFraccionada)
-                    .IsRequired()
-                    .HasColumnName("prima_fraccionada")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                entity.Property(e => e.PrimaAnual).HasColumnName("prima_anual");
 
-                entity.Property(e => e.SumaAsegurada)
-                    .IsRequired()
-                    .HasColumnName("suma_asegurada")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                entity.Property(e => e.PrimaDelRecibo).HasColumnName("prima_del_recibo");
+
+                entity.Property(e => e.PrimaNeta).HasColumnName("prima_neta");
 
                 entity.Property(e => e.SumaSeleccionada)
                     .IsRequired()
@@ -903,6 +941,13 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
+
+                entity.Property(e => e.Version)
+                    .IsRequired()
+                    .HasColumnName("version")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
 
             modelBuilder.Entity<Marcas>(entity =>
@@ -1460,6 +1505,12 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.Monto).HasColumnName("monto");
+
+                entity.HasOne(d => d.IdPagoNavigation)
+                    .WithMany(p => p.PagosDetalle)
+                    .HasForeignKey(d => d.IdPago)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PAGOS_DETALLE_PAGOS");
 
                 entity.HasOne(d => d.IdPolizaComisionNavigation)
                     .WithMany(p => p.PagosDetalle)

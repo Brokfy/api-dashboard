@@ -44,7 +44,7 @@ namespace brokfy.dashboard.api.Controllers
             {
                 _context.Pagos.Add(data);
                 _context.SaveChanges();
-                return new ResponseModel { Message = "Ok", Result = null, Success = true };
+                return new ResponseModel { Message = "Ok", Result = data, Success = true };
             }
             catch (Exception ex)
             {

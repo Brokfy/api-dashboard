@@ -11,8 +11,10 @@ namespace brokfy.dashboard.api.data.DataModel
         public string GeneroTitular { get; set; }
         public string Frecuencia { get; set; }
         public bool Fumador { get; set; }
-        public string PrimaAnual { get; set; }
-        public string PrimaFraccionada { get; set; }
-        public string SumaAsegurada { get; set; }
+        public double PrimaAnual { get; set; }
+        public double PrimaNeta { get; set; }
+        public double ImportePagoFraccionado { get; set; }
+        public double PrimaDelRecibo { get; set; }
+        public string Version { get; set; }
     }
 }

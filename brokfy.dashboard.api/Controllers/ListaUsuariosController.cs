@@ -33,7 +33,7 @@ namespace brokfy.dashboard.api.Controllers
             return result.ToList();
         }
 
-        // GET: api/ListaUsuarios/554654516
+        ////GET: api/ListaUsuarios/554654516
         //[HttpGet("{username}")]
         //public CartasNombramiento GetListaUsuarios(string username)
         //{

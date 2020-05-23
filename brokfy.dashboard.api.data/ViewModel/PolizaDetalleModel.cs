@@ -14,7 +14,7 @@ namespace brokfy.dashboard.api.data.ViewModel
             public List<HistoriaPagoPoliza> Pagos { get; set; }
             public Auto Auto { get; set; } 
 
-        //public Moto Moto { get; set; }
+            public Auto Moto { get; set; }
         //public Hogar Hogar { get; set; }
         //public Salud Salud { get; set; }
             public Vida Vida { get; set; }

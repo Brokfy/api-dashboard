@@ -91,8 +91,8 @@ namespace brokfy.dashboard.api.Controllers
                                //            //pago.MetodoPago == 4 ? "Efectivo" :
                                //            //                       "Otro"
                                //        },
-                               Auto = p.Auto,
-                               //Moto = p.Moto,
+                               Auto = p.TipoPoliza == 1 ? p.Auto : null,
+                               Moto = p.TipoPoliza == 2 ? p.Auto : null,
                                //Hogar = p.Hogar,
                                //Salud = p.Salud,
                                Vida = p.Vida,

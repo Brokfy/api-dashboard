@@ -24,37 +24,32 @@ namespace brokfy.dashboard.api.Controllers
             _config = config;
         }
 
-        // GET: api/Polizas
-        [HttpGet]
-        public List<Polizas> GetPolizas()
-        {
-            return _context.Polizas.ToList();
-        }
 
         // GET: api/Polizas/Mapfre
 
-        [HttpGet("{idAseguradora}")]
-        public List<PolizaPagoListModel> GetPolizasPorAseguradora(int idAseguradora)
+        [HttpGet]
+        public List<PolizaPagoModel> GetPolizas([FromQuery] int idAseguradora, [FromQuery] string fecha)
         {
             //return _context.Polizas.Where(x => x.IdAseguradoras == idAseguradora ).ToList();
-            var result = (from pol in _context.Polizas
-                          join com in _context.PolizasComisiones on pol.NoPoliza equals com.NoPoliza
-                          where pol.IdAseguradoras == idAseguradora
-                          && pol.PolizaPropia == "Si"
-                          && pol.Habilitada == "Si"
-                          && pol.IdEstadoPoliza == 1
-                          select new PolizaPagoListModel
-                          {
-                              TipoPoliza = pol.TipoPoliza,
-                              NoPoliza = pol.NoPoliza,
-                              MontoPagado = (from y in _context.PagosDetalle
-                                             where y.IdPolizaComision == com.IdPolizaComision
-                                             select y.Monto).Sum(),
-                              MontoPago = 0,
-                              Valor = com.Valor,
-                              Vencimiento = com.Vencimiento,
-                              IdPolizaComision = com.IdPolizaComision
-                          }).ToList();
+            var result = _context.PolizaPagoModels.FromSqlRaw(string.Format(@"Select *
+From (
+		Select polizas.tipo_poliza As TipoPoliza,
+			polizas.no_poliza As NoPoliza,
+			Coalesce((Select Sum(monto) As valor from brokfy_dev.pagos_detalle where pagos_detalle .id_poliza_comision = polizas_comisiones.id_poliza_comision), 0) As MontoPagado,
+			0 As MontoPago,
+			polizas_comisiones.valor As Valor ,
+			polizas_comisiones.vencimiento As Vencimiento,
+			polizas_comisiones.id_poliza_comision As IdPolizaComision
+		From brokfy_dev.polizas
+			Left Join brokfy_dev.polizas_comisiones
+				On polizas_comisiones.no_poliza = polizas.no_poliza
+		Where polizas.id_aseguradoras = {0}
+			And polizas.poliza_propia = 'Si'
+			And polizas.habilitada = 'Si'
+			And polizas.id_estado_poliza = 1
+            And polizas_comisiones.vencimiento < '{1}'
+	) As Consulta
+Where valor > MontoPagado", idAseguradora, fecha)).ToList();
             return result;
         }
         // PUT: api/Polizas/5

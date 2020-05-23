@@ -39,7 +39,7 @@ From (
 			Coalesce((Select Sum(monto) As valor from brokfy_dev.pagos_detalle where pagos_detalle.id_poliza_comision = polizas_comisiones.id_poliza_comision), 0.00) As MontoPagado,
 			0.00 As MontoPago,
 			polizas_comisiones.valor As Valor ,
-			DATE_FORMAT(polizas_comisiones.vencimiento, '%Y-%m-%d') AS Vencimiento,
+			polizas_comisiones.vencimiento AS Vencimiento,
 			polizas_comisiones.id_poliza_comision As IdPolizaComision
 		From brokfy_dev.polizas
 			Left Join brokfy_dev.polizas_comisiones

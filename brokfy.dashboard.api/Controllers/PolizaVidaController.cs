@@ -40,6 +40,8 @@ namespace brokfy.dashboard.api.Controllers
                              FechaFin = p.FechaFin,
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
+                             PrimaNeta = p.PrimaNeta,
+                             IdEstadoPoliza = p.IdEstadoPoliza,
                              Username = p.Username,
                              ProductoId = p.ProductoId,
                              Habilitada = p.Habilitada,
@@ -50,19 +52,19 @@ namespace brokfy.dashboard.api.Controllers
                              RcUsaCanada = p.RcUsaCanada,
                              CostoPrimerRecibo = p.CostoPrimerRecibo,
                              CostoRecibosSubsecuentes = p.CostoRecibosSubsecuentes,
-                             Fumador = v.Fumador,
                              Estatura = v.Estatura,
-                             Peso = v.Peso,
-                             Ingresos = v.Ingresos,
-                             IdOcupacion = v.IdOcupacion,
+                             Fumador = v.Fumador,
                              IdEstadoCivil = v.IdEstadoCivil,
-                             IdSexo = v.IdSexo
+                             IdOcupacion = v.IdOcupacion,
+                             IdSexo = v.IdSexo,
+                             Ingresos = v.Ingresos,
+                             Peso = v.Peso,
                          };
 
             return result.ToList();
         }
 
-        // GET: api/Polizas/5
+        // GET: api/PolizaVida/1231321
         [HttpGet("{id}")]
         public List<PolizaVida> GetPolizaVidaDetalle(string id)
         {
@@ -78,6 +80,8 @@ namespace brokfy.dashboard.api.Controllers
                              FechaFin = p.FechaFin,
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
+                             PrimaNeta = p.PrimaNeta,
+                             IdEstadoPoliza = p.IdEstadoPoliza,
                              Username = p.Username,
                              ProductoId = p.ProductoId,
                              Habilitada = p.Habilitada,
@@ -88,13 +92,13 @@ namespace brokfy.dashboard.api.Controllers
                              RcUsaCanada = p.RcUsaCanada,
                              CostoPrimerRecibo = p.CostoPrimerRecibo,
                              CostoRecibosSubsecuentes = p.CostoRecibosSubsecuentes,
-                             Fumador = v.Fumador,
                              Estatura = v.Estatura,
-                             Peso = v.Peso,
-                             Ingresos = v.Ingresos,
-                             IdOcupacion = v.IdOcupacion,
+                             Fumador = v.Fumador,
                              IdEstadoCivil = v.IdEstadoCivil,
-                             IdSexo = v.IdSexo
+                             IdOcupacion = v.IdOcupacion,
+                             IdSexo = v.IdSexo,
+                             Ingresos = v.Ingresos,
+                             Peso = v.Peso
                          };
 
             return result.ToList();
@@ -115,12 +119,14 @@ namespace brokfy.dashboard.api.Controllers
                     FechaFin = data.FechaFin,
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
+                    PrimaNeta = data.PrimaNeta,
+                    IdEstadoPoliza = data.IdEstadoPoliza,
                     Username = data.Username,
                     ProductoId = data.ProductoId,
                     Habilitada = data.Habilitada,
                     NoAsegurado = data.NoAsegurado,
                     PolizaPropia = data.PolizaPropia,
-                    PolizaPdf = data.PolizaPdf,
+                    //PolizaPdf = data.PolizaPdf,
                     //ReciboPdf = data.ReciboPdf,
                     RcUsaCanada = data.RcUsaCanada,
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
@@ -130,14 +136,14 @@ namespace brokfy.dashboard.api.Controllers
 
                 Vida vida = new Vida()
                 {
+                    NoPoliza = data.NoPoliza,
                     Fumador = data.Fumador,
                     Estatura = data.Estatura,
                     Peso = data.Peso,
                     Ingresos = data.Ingresos,
                     IdOcupacion = data.IdOcupacion,
                     IdEstadoCivil = data.IdEstadoCivil,
-                    IdSexo = data.IdSexo,
-                    NoPoliza = data.NoPoliza
+                    IdSexo = data.IdSexo
                 };
                 _context.Vida.Update(vida);
 
@@ -167,31 +173,37 @@ namespace brokfy.dashboard.api.Controllers
                     FechaFin = data.FechaFin,
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
+                    PrimaNeta = data.PrimaNeta,
                     Username = data.Username,
                     ProductoId = data.ProductoId,
                     Habilitada = data.Habilitada,
                     NoAsegurado = data.NoAsegurado,
-                    PolizaPropia = data.PolizaPropia,
+                    PolizaPropia = _context.CartasNombramiento.Where(x => x.NoPoliza == data.NoPoliza).FirstOrDefault().Firmada ? "Si" : "No",
                     PolizaPdf = data.PolizaPdf,
                     //ReciboPdf = data.ReciboPdf,
                     RcUsaCanada = data.RcUsaCanada,
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
-                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes
+                    CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes,
+                    IdEstadoPoliza = 4, // ESTADO POR CONFIRMAR
                 };
                 _context.Polizas.Add(poliza);
 
                 Vida vida = new Vida()
                 {
+                    NoPoliza = data.NoPoliza,
                     Fumador = data.Fumador,
                     Estatura = data.Estatura,
                     Peso = data.Peso,
                     Ingresos = data.Ingresos,
                     IdOcupacion = data.IdOcupacion,
                     IdEstadoCivil = data.IdEstadoCivil,
-                    IdSexo = data.IdSexo,
-                    NoPoliza = data.NoPoliza
+                    IdSexo = data.IdSexo
                 };
                 _context.Vida.Add(vida);
+
+                CartasNombramiento carta = _context.CartasNombramiento.Where(x => x.NoPoliza == data.NoPoliza).FirstOrDefault();
+                carta.Revisado = true;
+                _context.CartasNombramiento.Update(carta);
 
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };

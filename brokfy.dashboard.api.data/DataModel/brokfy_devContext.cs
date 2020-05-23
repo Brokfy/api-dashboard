@@ -119,6 +119,12 @@ namespace brokfy.dashboard.api.data.DataModel
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PolizaPagoModel>(entity =>
+            {
+                entity.HasKey(e => new { e.NoPoliza, e.Vencimiento });
+
+            });
+
             modelBuilder.Entity<Actividades>(entity =>
             {
                 entity.ToTable("actividades");

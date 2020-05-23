@@ -30,6 +30,7 @@ namespace brokfy.dashboard.api.Controllers
         [HttpGet]
         public List<PolizaPagoModel> GetPolizas([FromQuery] int idAseguradora, [FromQuery] string fecha)
         {
+            
             //return _context.Polizas.Where(x => x.IdAseguradoras == idAseguradora ).ToList();
             var result = _context.PolizaPagoModels.FromSqlRaw(string.Format(@"Select *
 From (
@@ -38,7 +39,7 @@ From (
 			Coalesce((Select Sum(monto) As valor from brokfy_dev.pagos_detalle where pagos_detalle.id_poliza_comision = polizas_comisiones.id_poliza_comision), 0.00) As MontoPagado,
 			0.00 As MontoPago,
 			polizas_comisiones.valor As Valor ,
-			polizas_comisiones.vencimiento As Vencimiento,
+			DATE_FORMAT(polizas_comisiones.vencimiento, '%Y-%m-%d') AS Vencimiento,
 			polizas_comisiones.id_poliza_comision As IdPolizaComision
 		From brokfy_dev.polizas
 			Left Join brokfy_dev.polizas_comisiones

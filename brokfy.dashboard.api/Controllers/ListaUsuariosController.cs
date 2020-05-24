@@ -33,14 +33,18 @@ namespace brokfy.dashboard.api.Controllers
             return result.ToList();
         }
 
-        ////GET: api/ListaUsuarios/554654516
-        //[HttpGet("{username}")]
-        //public CartasNombramiento GetListaUsuarios(string username)
-        //{
-        //    var dato = from us in _context.Usuario
-        //               join perf in _context.PerfilAsegurado on us.
-
-        //    return dato;
-        //}
+        //GET: api/ListaUsuarios/554654516
+        [HttpGet("{username}")]
+        public DetalleCliente GetListaUsuarios(string username)
+        {
+            var dato = (from us in _context.Perfil
+                        join perf in _context.PerfilAsegurado on us.Username equals perf.IdPerfil
+                        select new DetalleCliente { 
+                            DatosPersonales = us,
+                            PerfilAsegurado = perf
+                        }).FirstOrDefault();
+            dato.Polizas = _context.Polizas.Where(x => x.Username == username).ToList();
+            return dato;
+        }
     }
 }

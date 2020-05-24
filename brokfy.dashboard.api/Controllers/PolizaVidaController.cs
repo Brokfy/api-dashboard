@@ -30,7 +30,7 @@ namespace brokfy.dashboard.api.Controllers
         {
             var result = from p in _context.Polizas
                          join v in _context.Vida on p.NoPoliza equals v.NoPoliza
-                         where p.PolizaPropia == propia
+                         where p.PolizaPropia == propia & p.TipoPoliza == 5
                          select new PolizaVida
                          {
                              NoPoliza = p.NoPoliza,

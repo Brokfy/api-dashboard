@@ -31,7 +31,7 @@ namespace brokfy.dashboard.api.Controllers
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
-                         where p.PolizaPropia == propia
+                         where p.PolizaPropia == propia & p.TipoPoliza == 1
                          select new PolizaAuto
                          {
                              NoPoliza = p.NoPoliza,

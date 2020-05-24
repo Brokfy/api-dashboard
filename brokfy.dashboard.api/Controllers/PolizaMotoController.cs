@@ -24,13 +24,13 @@ namespace brokfy.dashboard.api.Controllers
             _config = config;
         }
 
-        // GET: api/Polizas/
+        // GET: api/PolizaMoto/
         [HttpGet]
-        public List<PolizaAuto> GetPolizaAuto([FromQuery] string propia)
+        public List<PolizaAuto> GetPolizaMoto([FromQuery] string propia)
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
-                         where p.PolizaPropia == propia
+                         where p.PolizaPropia == propia & p.TipoPoliza == 2
                          select new PolizaAuto
                          {
                              NoPoliza = p.NoPoliza,
@@ -65,7 +65,7 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/PolizaAuto/1231321
         [HttpGet("{id}")]
-        public List<PolizaAuto> GetPolizaAutoDetalle(string id)
+        public List<PolizaAuto> GetPolizaMotoDetalle(string id)
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
@@ -101,9 +101,9 @@ namespace brokfy.dashboard.api.Controllers
 
             return result.ToList();
         }
-        // PUT: api/Polizas/5
+        // PUT: api/PolizaMoto
         [HttpPut]
-        public ResponseModel PutPolizaAuto([FromBody] PolizaAuto data)
+        public ResponseModel PutPolizaMoto([FromBody] PolizaAuto data)
         {
             try
             {

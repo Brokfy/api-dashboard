@@ -37,14 +37,62 @@ namespace brokfy.dashboard.api.Controllers
         [HttpGet("{username}")]
         public DetalleCliente GetListaUsuarios(string username)
         {
-            var dato = (from us in _context.Perfil
-                        join perf in _context.PerfilAsegurado on us.Username equals perf.IdPerfil
-                        select new DetalleCliente { 
-                            DatosPersonales = us,
-                            PerfilAsegurado = perf
-                        }).FirstOrDefault();
-            dato.Polizas = _context.Polizas.Where(x => x.Username == username).ToList();
-            return dato;
+            
+            Perfil perfil = _context.Perfil.Where(x => x.Username == username).FirstOrDefault();
+            PerfilAseguradoModel perfilAsegurado = (from pf in _context.PerfilAsegurado
+                                               join prof in _context.Profesiones on pf.IdProfesion equals prof.Id
+                                               where pf.IdPerfil == username
+                                               select new PerfilAseguradoModel
+                                               {
+                                                   IdPerfil = pf.IdPerfil,
+                                                   Municipio = pf.Municipio,
+                                                   CodigoPostal = pf.CodigoPostal,
+                                                   Estado = pf.Estado,
+                                                   Hijos = pf.Hijos,
+                                                   Edad = pf.Edad,
+                                                   RegimenVivienda = pf.RegimenVivienda,
+                                                   SituacionLaboral = pf.SituacionLaboral,
+                                                   Hipoteca = pf.Hipoteca,
+                                                   Viaja = pf.Viaja,
+                                                   Mascotas = pf.Mascotas,
+                                                   EstadoCivil = pf.EstadoCivil,
+                                                   Profesion = prof.Descripcion
+                                               }).FirstOrDefault();
+            List<PolizasModel> polizas = (from pol in _context.Polizas
+                                          join tp in _context.TipoPoliza on pol.TipoPoliza equals tp.Id
+                                          join aseg in _context.Aseguradoras on pol.IdAseguradoras equals aseg.IdAseguradora
+                                          join prod in _context.Productos on pol.ProductoId equals prod.Id
+                                          join edo in _context.EstadosPolizas on pol.IdEstadoPoliza equals edo.Id
+                                          where pol.Username == username
+                                          select new PolizasModel {
+                                              TipoPoliza = tp.Tipo,
+                                              Costo = pol.Costo,
+                                              NoPoliza = pol.NoPoliza,
+                                              FormaPago = pol.FormaPago,
+                                              ProximoPago = pol.ProximoPago,
+                                              FechaInicio = pol.FechaInicio,
+                                              FechaFin = pol.FechaFin,
+                                              Aseguradora = aseg.Nombre,
+                                              Username = pol.Username,
+                                              Producto = prod.Producto,
+                                              Habilitada = pol.Habilitada,
+                                              NoAsegurado = pol.NoAsegurado,
+                                              PolizaPropia = pol.PolizaPropia,
+                                              PolizaPdf = pol.PolizaPdf,
+                                              ReciboPdf = pol.ReciboPdf,
+                                              RcUsaCanada = pol.RcUsaCanada,
+                                              CostoPrimerRecibo = pol.CostoPrimerRecibo,
+                                              CostoRecibosSubsecuentes = pol.CostoRecibosSubsecuentes,
+                                              PrimaNeta = pol.PrimaNeta,
+                                              EstadoPoliza = edo.Nombre
+                                          }).ToList();
+
+
+            return new DetalleCliente() { 
+                DatosPersonales = perfil,
+                PerfilAsegurado = perfilAsegurado,
+                Polizas = polizas
+            };
         }
     }
 }

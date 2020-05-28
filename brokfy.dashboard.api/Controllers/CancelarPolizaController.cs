@@ -31,7 +31,7 @@ namespace brokfy.dashboard.api.Controllers
             try
             {
                 Polizas poliza = _context.Polizas.Where(x => x.NoPoliza == noPoliza).FirstOrDefault();
-                poliza.IdEstadoPoliza = 3;
+                poliza.IdEstadoPoliza = 2;
                 _context.Polizas.Update(poliza);
                 _context.SaveChanges();
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };

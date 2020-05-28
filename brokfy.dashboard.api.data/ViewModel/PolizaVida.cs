@@ -1,4 +1,5 @@
-﻿using System;
+﻿using brokfy.dashboard.api.data.DataModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -34,5 +35,6 @@ namespace brokfy.dashboard.api.data.ViewModel
         public int IdEstadoCivil { get; set; }
         public int IdSexo { get; set; }
         public int IdEstadoPoliza { get; set; }
+        public List<BeneficiariosVida> Beneficiarios { get; set; }
     }
 }

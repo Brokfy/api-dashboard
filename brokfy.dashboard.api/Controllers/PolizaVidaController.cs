@@ -197,7 +197,8 @@ namespace brokfy.dashboard.api.Controllers
                     Ingresos = data.Ingresos,
                     IdOcupacion = data.IdOcupacion,
                     IdEstadoCivil = data.IdEstadoCivil,
-                    IdSexo = data.IdSexo
+                    IdSexo = data.IdSexo,
+                    BeneficiariosVida = data.Beneficiarios
                 };
                 _context.Vida.Add(vida);
 

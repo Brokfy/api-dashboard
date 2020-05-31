@@ -56,7 +56,13 @@ namespace brokfy.dashboard.api.Controllers
                                                    Viaja = pf.Viaja,
                                                    Mascotas = pf.Mascotas,
                                                    EstadoCivil = pf.EstadoCivil,
-                                                   Profesion = prof.Descripcion
+                                                   Profesion = prof.Descripcion,
+                                                   //DetallePerfilAsegurado = new DetallePerfilAsegurado()
+                                                   //{
+                                                   //    Actividades = (from act in _context.PerfilAseguradoToActividades
+                                                   //                   where act.IdPerfil == username
+                                                   //                   select act).ToList()
+                                                   //}
                                                }).FirstOrDefault();
             List<PolizasModel> polizas = (from pol in _context.Polizas
                                           join tp in _context.TipoPoliza on pol.TipoPoliza equals tp.Id
@@ -86,6 +92,11 @@ namespace brokfy.dashboard.api.Controllers
                                               PrimaNeta = pol.PrimaNeta,
                                               EstadoPoliza = edo.Nombre
                                           }).ToList();
+            //PerfilAseguradoToActividades actividades = _context.PerfilAseguradoToActividades.Where(x => x.IdPerfil == username)
+            //perfilAsegurado.DetallePerfilAsegurado.Actividades = .Count() > 0 ? _context.PerfilAseguradoToActividades.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoToActividades>();
+            //perfilAsegurado.DetallePerfilAsegurado.Gadgets = _context.PerfilAseguradoTieneGadgets.Where(x => x.IdPerfil == username).Count() > 0 ? _context.PerfilAseguradoTieneGadgets.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoTieneGadgets>();
+            //perfilAsegurado.DetallePerfilAsegurado.Propiedades = _context.PerfilAseguradoToPropiedades.Where(x => x.IdPerfil == username).Count() > 0 ? _context.PerfilAseguradoToPropiedades.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoToPropiedades>();
+            //perfilAsegurado.DetallePerfilAsegurado.Salud = _context.PerfilAseguradoToSalud.Where(x => x.IdPerfil == username).Count() > 0 ? _context.PerfilAseguradoToSalud.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoToSalud>();
 
 
             return new DetalleCliente() { 

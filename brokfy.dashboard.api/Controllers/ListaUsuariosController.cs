@@ -84,25 +84,34 @@ namespace brokfy.dashboard.api.Controllers
                                               Habilitada = pol.Habilitada,
                                               NoAsegurado = pol.NoAsegurado,
                                               PolizaPropia = pol.PolizaPropia,
-                                              PolizaPdf = pol.PolizaPdf,
-                                              ReciboPdf = pol.ReciboPdf,
-                                              RcUsaCanada = pol.RcUsaCanada,
                                               CostoPrimerRecibo = pol.CostoPrimerRecibo,
                                               CostoRecibosSubsecuentes = pol.CostoRecibosSubsecuentes,
                                               PrimaNeta = pol.PrimaNeta,
                                               EstadoPoliza = edo.Nombre
                                           }).ToList();
-            //PerfilAseguradoToActividades actividades = _context.PerfilAseguradoToActividades.Where(x => x.IdPerfil == username)
-            //perfilAsegurado.DetallePerfilAsegurado.Actividades = .Count() > 0 ? _context.PerfilAseguradoToActividades.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoToActividades>();
-            //perfilAsegurado.DetallePerfilAsegurado.Gadgets = _context.PerfilAseguradoTieneGadgets.Where(x => x.IdPerfil == username).Count() > 0 ? _context.PerfilAseguradoTieneGadgets.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoTieneGadgets>();
-            //perfilAsegurado.DetallePerfilAsegurado.Propiedades = _context.PerfilAseguradoToPropiedades.Where(x => x.IdPerfil == username).Count() > 0 ? _context.PerfilAseguradoToPropiedades.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoToPropiedades>();
-            //perfilAsegurado.DetallePerfilAsegurado.Salud = _context.PerfilAseguradoToSalud.Where(x => x.IdPerfil == username).Count() > 0 ? _context.PerfilAseguradoToSalud.Where(x => x.IdPerfil == username).ToList() : new List<PerfilAseguradoToSalud>();
+
+            DetallePerfilAsegurado detallePerfil = new DetallePerfilAsegurado()
+            {
+                Actividades = (from pAct in _context.PerfilAseguradoToActividades 
+                               join act in _context.Actividades on pAct.IdActividad equals act.Id
+                               select act).ToList(),
+                Gadgets = (from pGad in _context.PerfilAseguradoTieneGadgets
+                           join gad in _context.Gadgets on pGad.IdGadgets equals gad.Id
+                           select gad).ToList(),
+                Propiedades = (from pProp in _context.PerfilAseguradoToPropiedades
+                               join prop in _context.Propiedades on pProp.IdPropiedades equals prop.Id
+                               select prop).ToList(),
+                Salud = (from pSal in _context.PerfilAseguradoToSalud
+                         join sal in _context.Salud on pSal.IdSalud equals sal.Id
+                         select sal).ToList()
+            };
 
 
             return new DetalleCliente() { 
                 DatosPersonales = perfil,
                 PerfilAsegurado = perfilAsegurado,
-                Polizas = polizas
+                Polizas = polizas,
+                DetallePerfil = detallePerfil
             };
         }
     }

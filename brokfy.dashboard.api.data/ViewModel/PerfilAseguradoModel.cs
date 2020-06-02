@@ -21,14 +21,7 @@ namespace brokfy.dashboard.api.data.ViewModel
         public bool Mascotas { get; set; }
         public string EstadoCivil { get; set; }
         public string Profesion { get; set; }
-        public DetallePerfilAsegurado DetallePerfilAsegurado { get; set; }
     }
 
-    public class DetallePerfilAsegurado
-    {
-        public List<PerfilAseguradoTieneGadgets> Gadgets { get; set; }
-        public List<PerfilAseguradoToActividades> Actividades { get; set; }
-        public List<PerfilAseguradoToPropiedades> Propiedades { get; set; }
-        public List<PerfilAseguradoToSalud> Salud { get; set; }
-    }
+    
 }

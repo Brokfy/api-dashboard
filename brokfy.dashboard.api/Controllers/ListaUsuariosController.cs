@@ -94,15 +94,19 @@ namespace brokfy.dashboard.api.Controllers
             {
                 Actividades = (from pAct in _context.PerfilAseguradoToActividades 
                                join act in _context.Actividades on pAct.IdActividad equals act.Id
+                               where pAct.IdPerfil == username
                                select act).ToList(),
                 Gadgets = (from pGad in _context.PerfilAseguradoTieneGadgets
                            join gad in _context.Gadgets on pGad.IdGadgets equals gad.Id
+                           where pGad.IdPerfil == username
                            select gad).ToList(),
                 Propiedades = (from pProp in _context.PerfilAseguradoToPropiedades
                                join prop in _context.Propiedades on pProp.IdPropiedades equals prop.Id
+                               where pProp.IdPerfil == username
                                select prop).ToList(),
                 Salud = (from pSal in _context.PerfilAseguradoToSalud
                          join sal in _context.Salud on pSal.IdSalud equals sal.Id
+                         where pSal.IdPerfil == username
                          select sal).ToList()
             };
 

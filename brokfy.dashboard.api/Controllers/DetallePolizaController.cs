@@ -67,7 +67,10 @@ namespace brokfy.dashboard.api.Controllers
                                                 CostoRecibosSubsecuentes = p.CostoRecibosSubsecuentes ,
                                                 PrimaTotal = p.Costo ,
                                                 PrimaNeta = p.PrimaNeta ,
-                                                Comision = aseguradorasComisiones.Count() > 0 ? (p.PrimaNeta * aseguradorasComisiones.FirstOrDefault().Valor)/100 : 0,
+                                                Comision = (from com in _context.PolizasComisiones
+                                                            where com.NoPoliza == NoPoliza
+                                                            select com.Valor).Sum(),
+                                                //aseguradorasComisiones.Count() > 0 ? (p.PrimaNeta * aseguradorasComisiones.FirstOrDefault().Valor)/100 : 0,
                                                 Pagado = (from com in _context.PolizasComisiones
                                                           join det in _context.PagosDetalle on com.IdPolizaComision equals det.IdPolizaComision
                                                           where com.NoPoliza == NoPoliza

@@ -15,13 +15,12 @@ namespace brokfy.dashboard.api.data.DataModel
             : base(options)
         {
         }
-
         public virtual DbSet<ComisionActualModel> ComisionActualModels { get; set; }
         public virtual DbSet<PolizaAuto> PolizaAutos { get; set; }
         public virtual DbSet<PolizaVida> PolizaVidas { get; set; }
         public virtual DbSet<PolizaPagoModel> PolizaPagoModels { get; set; }
         public virtual DbSet<HistoriaPagoPoliza> HistoriaPagoPolizas { get; set; }
-
+        public virtual DbQuery<ReporteFacturacionTotal> ReporteFacturacionTotales { get; set; }
 
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }
@@ -41,6 +40,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<ChatVida> ChatVida { get; set; }
         public virtual DbSet<Coberturas> Coberturas { get; set; }
         public virtual DbSet<Codigospostales> Codigospostales { get; set; }
+        public virtual DbSet<CorreosCancelacionAseguradoras> CorreosCancelacionAseguradoras { get; set; }
         public virtual DbSet<DatosVerificacionMati> DatosVerificacionMati { get; set; }
         public virtual DbSet<EstadoCivil> EstadoCivil { get; set; }
         public virtual DbSet<EstadosMexico> EstadosMexico { get; set; }
@@ -108,14 +108,17 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Vida> Vida { get; set; }
         public virtual DbSet<VwAseguradorasComisionesActuales> VwAseguradorasComisionesActuales { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySql("server=database-1.cyu1bxjzzhpm.us-east-2.rds.amazonaws.com;port=3306;user=dev;password=DevBrokfy18;database=brokfy_dev", x => x.ServerVersion("5.7.26-mysql"));
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PolizaPagoModel>(entity =>
-            {
-                entity.HasKey(e => new { e.NoPoliza, e.Vencimiento });
-
-            });
-
             modelBuilder.Entity<Actividades>(entity =>
             {
                 entity.ToTable("actividades");
@@ -291,7 +294,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<Bankcode>(entity =>
             {
-                entity.HasKey(e => new { e.Banco, e.CodQualitas })
+                entity.HasKey(e => e.Banco)
                     .HasName("PRIMARY");
 
                 entity.ToTable("bankcode");
@@ -302,8 +305,14 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 
+                entity.Property(e => e.CodAna)
+                    .HasColumnName("cod_ana")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
                 entity.Property(e => e.CodQualitas)
-                    .HasColumnName("codQualitas")
+                    .HasColumnName("cod_qualitas")
                     .HasColumnType("varchar(2)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
@@ -705,6 +714,40 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCollation("latin1_swedish_ci");
             });
 
+            modelBuilder.Entity<CorreosCancelacionAseguradoras>(entity =>
+            {
+                entity.HasKey(e => e.IdAseguradora)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("correos_cancelacion_aseguradoras");
+
+                entity.HasIndex(e => e.IdAseguradora)
+                    .HasName("fk_correos_cancelacion_aseguradoras_aseguradoras_idx");
+
+                entity.Property(e => e.IdAseguradora)
+                    .HasColumnName("id_aseguradora")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Copia)
+                    .HasColumnName("copia")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Correo)
+                    .IsRequired()
+                    .HasColumnName("correo")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdAseguradoraNavigation)
+                    .WithOne(p => p.CorreosCancelacionAseguradoras)
+                    .HasForeignKey<CorreosCancelacionAseguradoras>(d => d.IdAseguradora)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_correos_cancelacion_aseguradoras_aseguradoras");
+            });
+
             modelBuilder.Entity<DatosVerificacionMati>(entity =>
             {
                 entity.HasKey(e => e.Username)
@@ -737,13 +780,13 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.FechaExpiracion)
-                    .HasColumnName("fechaExpiracion")
+                    .HasColumnName("fecha_expiracion")
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.FechaNacimiento)
-                    .HasColumnName("fechaNacimiento")
+                    .HasColumnName("fecha_nacimiento")
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
@@ -763,7 +806,7 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.FullName)
-                    .HasColumnName("fullName")
+                    .HasColumnName("full_name")
                     .HasColumnType("varchar(145)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
@@ -787,13 +830,13 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.NumDocumento)
-                    .HasColumnName("numDocumento")
+                    .HasColumnName("num_documento")
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.OcrNumber)
-                    .HasColumnName("ocrNumber")
+                    .HasColumnName("ocr_number")
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
@@ -1483,7 +1526,7 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasName("IX_PAGOS_DETALLE_ID_PAGO");
 
                 entity.HasIndex(e => e.IdPolizaComision)
-                    .HasName("IX_PAGOS_DETALLE_ID_POLIZA_COMISION");
+                    .HasName("FK_PAGOS_DETALLE_POLIZAS_COMISIONES_idx");
 
                 entity.HasIndex(e => new { e.IdPago, e.IdPolizaComision })
                     .HasName("UQ_PAGOS_DETALLE")

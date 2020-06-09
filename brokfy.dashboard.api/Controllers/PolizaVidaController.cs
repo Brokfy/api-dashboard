@@ -198,15 +198,44 @@ namespace brokfy.dashboard.api.Controllers
                     IdOcupacion = data.IdOcupacion,
                     IdEstadoCivil = data.IdEstadoCivil,
                     IdSexo = data.IdSexo,
-                    BeneficiariosVida = data.Beneficiarios
+                    //BeneficiariosVida = data.Beneficiarios
                 };
                 _context.Vida.Add(vida);
+
+
+                
 
                 CartasNombramiento carta = _context.CartasNombramiento.Where(x => x.NoPoliza == data.NoPoliza).FirstOrDefault();
                 carta.Revisado = true;
                 _context.CartasNombramiento.Update(carta);
 
                 _context.SaveChanges();
+
+                foreach (var item in data.Beneficiarios)
+                {
+                    _context.Database.ExecuteSqlCommand(string.Format(@"INSERT INTO `brokfy_dev`.`beneficiarios_vida`
+                    (`nombre`,
+                    `segundo_nombre`,
+                    `apellido_paterno`,
+                    `apellido_materno`,
+                    `curp`,
+                    `pct_asignado`,
+                    `id_parentesco`,
+                    `no_poliza`)
+                    VALUES
+                    ('{0}',
+                    '{1}',
+                    '{2}',
+                    '{3}',
+                    '{4}',
+                    {5},
+                    {6},
+                    '{7}')", 
+                    item.Nombre, item.SegundoNombre, item.ApellidoPaterno, item.ApellidoMaterno, item.Curp, item.PctAsignado, item.IdParentesco, data.NoPoliza));
+
+                }
+
+
                 return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)

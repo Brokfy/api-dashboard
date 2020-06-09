@@ -21,6 +21,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public string Enabled { get; set; }
         public string CveCopsis { get; set; }
 
+        public virtual CorreosCancelacionAseguradoras CorreosCancelacionAseguradoras { get; set; }
         public virtual ICollection<AseguradorasComisiones> AseguradorasComisiones { get; set; }
         public virtual ICollection<Cancelaciones> Cancelaciones { get; set; }
         public virtual ICollection<CartasNombramiento> CartasNombramiento { get; set; }

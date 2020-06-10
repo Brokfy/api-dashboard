@@ -24,7 +24,7 @@ namespace brokfy.dashboard.api.Controllers
             _config = config;
         }
         [HttpGet]
-        public dynamic GetReportes([FromBody] ReportesModel data)
+        public dynamic GetReportes(ReportesModel data)
         {
     
             //return _context.ReporteFacturacionTotales.FromSqlRaw(Where).ToList();

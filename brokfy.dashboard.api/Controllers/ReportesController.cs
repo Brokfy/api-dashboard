@@ -23,10 +23,17 @@ namespace brokfy.dashboard.api.Controllers
             _context = context;
             _config = config;
         }
-        [HttpGet]
-        public dynamic GetReportes(ReportesModel data)
+		[HttpGet]
+		public dynamic GetReportes([FromQuery] string Nombre, [FromQuery] string FechaInicio, [FromQuery] string FechaFin, [FromQuery] int? IdAseguradora, [FromQuery] int? IdTipoPoliza)
         {
-    
+			ReportesModel data = new ReportesModel() { 
+				Nombre = Nombre,
+				FechaInicio = FechaInicio,
+				FechaFin = FechaFin,
+				IdAseguradora = IdAseguradora,
+				IdTipoPoliza = IdTipoPoliza
+			};
+
             //return _context.ReporteFacturacionTotales.FromSqlRaw(Where).ToList();
             return data.Nombre switch
             {

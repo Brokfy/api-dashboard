@@ -25,9 +25,9 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/InfoReportes
         [HttpGet]
-        public IEnumerable<Productos> GetProductos()
+        public IEnumerable<Reportes> GetInfoReportes()
         {
-            return _context.Productos.ToList();
+            return _context.Reportes.ToList();
         }
     }
 }

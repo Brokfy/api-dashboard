@@ -29,7 +29,7 @@ namespace brokfy.dashboard.api.Controllers
 			ReportesModel data = new ReportesModel() { 
 				Nombre = Nombre,
 				FechaInicio = FechaInicio,
-				FechaFin = FechaFin,
+				FechaFin = FechaFin,	
 				IdAseguradora = IdAseguradora,
 				IdTipoPoliza = IdTipoPoliza
 			};

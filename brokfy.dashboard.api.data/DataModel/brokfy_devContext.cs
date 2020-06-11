@@ -92,6 +92,8 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<ProductosBrokfy> ProductosBrokfy { get; set; }
         public virtual DbSet<Profesiones> Profesiones { get; set; }
         public virtual DbSet<Propiedades> Propiedades { get; set; }
+        public virtual DbSet<RegimenViviendas> RegimenViviendas { get; set; }
+        public virtual DbSet<Reportes> Reportes { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Salud> Salud { get; set; }
         public virtual DbSet<Sexo> Sexo { get; set; }
@@ -2591,6 +2593,55 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
+            });
+
+            modelBuilder.Entity<RegimenViviendas>(entity =>
+            {
+                entity.ToTable("regimen_viviendas");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Descripcion)
+                    .IsRequired()
+                    .HasColumnName("descripcion")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<Reportes>(entity =>
+            {
+                entity.HasKey(e => e.IdReporte)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("reportes");
+
+                entity.Property(e => e.IdReporte)
+                    .HasColumnName("id_reporte")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Descripcion)
+                    .IsRequired()
+                    .HasColumnName("descripcion")
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnName("nombre")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Path)
+                    .IsRequired()
+                    .HasColumnName("path")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
 
             modelBuilder.Entity<Roles>(entity =>

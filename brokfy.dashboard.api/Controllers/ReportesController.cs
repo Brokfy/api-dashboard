@@ -174,7 +174,7 @@ Union All
 
 Select 5 As TipoRegistro
 	, aseguradoras.nombre As Aseguradora
-    , Null As TipoPoliza
+    , 'ZZZZZZZZZZZ' As TipoPoliza
 	, Null As NumeroPoliza
     , Null As Usuario
     , Null As NombreUsuario
@@ -223,7 +223,7 @@ Where polizas.fecha_inicio between @FechaIni and @FechaFin
             Or @TipoPoliza = 0
 		)
 
-Order By Aseguradora, TipoRegistro, FechaInicio, NumeroPoliza;", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
+Order By Aseguradora, TipoPoliza, TipoRegistro, FechaInicio, NumeroPoliza;", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
             return _context.ReporteFacturacionTotales.FromSqlRaw(Where).ToList();
         }
 

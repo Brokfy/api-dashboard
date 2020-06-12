@@ -22,6 +22,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<HistoriaPagoPoliza> HistoriaPagoPolizas { get; set; }
         public virtual DbQuery<ReporteFacturacionTotal> ReporteFacturacionTotales { get; set; }
         public virtual DbQuery<ReporteComisiones> ReporteComisiones { get; set; }
+        public virtual DbQuery<ReporteComisionesPendientes> ReporteComisionesPendientes { get; set; }
 
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }

@@ -423,7 +423,7 @@ Order By Aseguradora, TipoPoliza, TipoRegistro, FechaPago, NumeroPoliza;
             return _context.ReporteComisiones.FromSqlRaw(Where).ToList();
         }
 
-		private List<ReporteComisiones> ComisionesPendientes(ReportesModel data)
+		private List<ReporteComisionesPendientes> ComisionesPendientes(ReportesModel data)
 		{
 			string Where = string.Format(@"Set @FechaIni = '{0}';
 Set @FechaFin = '{1}';
@@ -736,7 +736,7 @@ From (
 Group By Consulta.TipoRegistro
 
 Order By Aseguradora, TipoPoliza, TipoRegistro, FechaPago, NumeroPoliza;", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
-			return _context.ReporteComisiones.FromSqlRaw(Where).ToList();
+			return _context.ReporteComisionesPendientes.FromSqlRaw(Where).ToList();
 		}
 	}
 }

@@ -253,6 +253,14 @@ From pagos
 	Inner Join aseguradoras
 		On aseguradoras.id_aseguradora = polizas.id_aseguradoras
 Where pagos.fecha between @FechaIni and @FechaFin
+    And (
+			( polizas.id_aseguradoras = @Aseguradora And @Aseguradora <> 0 )
+            Or @Aseguradora = 0
+		)
+    And (
+			( polizas.tipo_poliza = @TipoPoliza And @TipoPoliza <> 0 )
+            Or @TipoPoliza = 0
+		)
 Group By aseguradoras.nombre
 
 Union All 
@@ -277,6 +285,14 @@ From pagos
 	Inner Join tipo_poliza
 		On tipo_poliza.id = polizas.tipo_poliza
 Where pagos.fecha between @FechaIni and @FechaFin
+    And (
+			( polizas.id_aseguradoras = @Aseguradora And @Aseguradora <> 0 )
+            Or @Aseguradora = 0
+		)
+    And (
+			( polizas.tipo_poliza = @TipoPoliza And @TipoPoliza <> 0 )
+            Or @TipoPoliza = 0
+		)
 Group By aseguradoras.nombre
 	, tipo_poliza.tipo
     
@@ -304,7 +320,15 @@ From pagos
 	Inner Join perfil
 		On perfil.username = polizas.username
 Where pagos.fecha between @FechaIni and @FechaFin
-
+    And (
+			( polizas.id_aseguradoras = @Aseguradora And @Aseguradora <> 0 )
+            Or @Aseguradora = 0
+		)
+    And (
+			( polizas.tipo_poliza = @TipoPoliza And @TipoPoliza <> 0 )
+            Or @TipoPoliza = 0
+		)
+        
 Union All 
 
 Select 4 As TipoRegistro
@@ -327,6 +351,14 @@ From pagos
 	Inner Join tipo_poliza
 		On tipo_poliza.id = polizas.tipo_poliza
 Where pagos.fecha between @FechaIni and @FechaFin
+    And (
+			( polizas.id_aseguradoras = @Aseguradora And @Aseguradora <> 0 )
+            Or @Aseguradora = 0
+		)
+    And (
+			( polizas.tipo_poliza = @TipoPoliza And @TipoPoliza <> 0 )
+            Or @TipoPoliza = 0
+		)
 Group By aseguradoras.nombre
 	, tipo_poliza.tipo
     
@@ -334,7 +366,7 @@ Union All
 
 Select 5 As TipoRegistro
 	, aseguradoras.nombre As Aseguradora
-	, Null As TipoPoliza
+	, 'ZZZZZZZZZZZ' As TipoPoliza
     , Null As FechaPago
 	, Null As NumeroPoliza
     , Null As Usuario
@@ -376,6 +408,16 @@ From pagos
 	Inner Join tipo_poliza
 		On tipo_poliza.id = polizas.tipo_poliza
 Where pagos.fecha between @FechaIni and @FechaFin
+    And (
+			( polizas.id_aseguradoras = @Aseguradora And @Aseguradora <> 0 )
+            Or @Aseguradora = 0
+		)
+    And (
+			( polizas.tipo_poliza = @TipoPoliza And @TipoPoliza <> 0 )
+            Or @TipoPoliza = 0
+		)
+        
+Order By Aseguradora, TipoPoliza, TipoRegistro, FechaPago, NumeroPoliza;
 ;", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
             return _context.ReporteComisiones.FromSqlRaw(Where).ToList();
         }

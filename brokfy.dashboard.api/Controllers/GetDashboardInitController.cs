@@ -35,7 +35,7 @@ namespace brokfy.dashboard.api.Controllers
                     clientes = (from cl in _context.Perfil
                                 select new Clientes
                                 {
-                                    Nombre = string.Format(@"{0} {1} {2}", cl.Nombre, cl.ApellidoPaterno, cl.ApellidoMaterno),
+                                    Nombre = string.Format(@"{0} {1} {2} ({3})", cl.Nombre, cl.ApellidoPaterno, cl.ApellidoMaterno, cl.Username),
                                     Username = cl.Username
                                 }).ToList(),
                     tipoPoliza = _context.TipoPoliza.ToList()

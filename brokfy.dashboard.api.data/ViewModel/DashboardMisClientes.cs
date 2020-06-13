@@ -10,5 +10,7 @@ namespace brokfy.dashboard.api.data.ViewModel
         public string Nombre { get; set; }
         public string Username { get; set; }
         public string TipoPoliza { get; set; }
+        public string EstadoPoliza { get; set; }
+        public string Aseguradora { get; set; }
     }
 }

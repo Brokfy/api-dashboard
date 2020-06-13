@@ -30,7 +30,6 @@ namespace brokfy.dashboard.api.Controllers
         {
             try
             {
-                DateTime proximaSemana = new DateTime().AddDays(7);
                 List<DashboardMisClientes> consulta = (from pol in _context.Polizas
                                                        join ase in _context.Aseguradoras on pol.IdAseguradoras equals ase.IdAseguradora
                                                        join usu in _context.Perfil on pol.Username equals usu.Username
@@ -39,11 +38,12 @@ namespace brokfy.dashboard.api.Controllers
                                                        where pol.Username == username
                                                        select new DashboardMisClientes
                                                        {
-                                                           //Aseguradora = ase.Nombre,
-                                                           Nombre = string.Format(@"{0} {1} {2}", usu.Nombre, usu.ApellidoPaterno, usu.ApellidoMaterno),
+                                                           Aseguradora = ase.Nombre,
+                                                           //Nombre = string.Format(@"{0} {1} {2}", usu.Nombre, usu.ApellidoPaterno, usu.ApellidoMaterno),
                                                            Username = username,
                                                            NoPoliza = pol.NoPoliza,
-                                                           TipoPoliza = tip.Tipo
+                                                           TipoPoliza = tip.Tipo,
+                                                           EstadoPoliza = edo.Nombre
                                                        }).ToList();
                 return consulta;
             }

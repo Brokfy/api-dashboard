@@ -70,6 +70,7 @@ namespace brokfy.dashboard.api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHsts();
             app.UseHttpsRedirection();
 
             app.UseRouting();

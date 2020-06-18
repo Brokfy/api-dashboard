@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using brokfy.dashboard.api.data.DataModel;
 using brokfy.dashboard.api.Middleware;
@@ -36,10 +38,23 @@ namespace brokfy.dashboard.api
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-
-
             services.AddDbContext<brokfy_devContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("brokfy")));
+
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 4300;
+            });
+
+            services.AddHttpClient();
+
+            var chainedClient = new X509Certificate2("server.p12", "Brokfy2020");
+            var handlerChainedClient = new HttpClientHandler();
+            handlerChainedClient.ClientCertificates.Add(chainedClient);
+
+            services.AddHttpClient("chained_client", c => { })
+                .ConfigurePrimaryHttpMessageHandler(() => handlerChainedClient);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

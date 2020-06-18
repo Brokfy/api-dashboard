@@ -38,8 +38,15 @@ namespace brokfy.dashboard.api.Controllers
                                     Nombre = string.Format(@"{0} {1} {2} ({3})", cl.Nombre, cl.ApellidoPaterno, cl.ApellidoMaterno, cl.Username),
                                     Username = cl.Username
                                 }).ToList(),
-                    tipoPoliza = _context.TipoPoliza.ToList()
-                };
+                    tipoPoliza = _context.TipoPoliza.ToList(),
+                    grafico = (from pol in _context.Polizas
+                               group pol by pol.TipoPoliza into polGroup
+                               select new DashboardGraficoModel
+                               {
+                                   TipoPoliza = (from tipo in _context.TipoPoliza where tipo.Id == polGroup.Key select tipo.Tipo).FirstOrDefault(),
+                                   CantidadPolizas = polGroup.Count(),
+                               }).ToList()
+            };
                 return modelos;
             }
             catch (Exception ex)

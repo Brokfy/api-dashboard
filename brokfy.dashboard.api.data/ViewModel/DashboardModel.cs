@@ -10,11 +10,7 @@ namespace brokfy.dashboard.api.data.ViewModel
         public List<Clientes> clientes { get; set; }
         public List<TipoPoliza> tipoPoliza { get; set; }
         public Descargas descargas { get; set; }
-        public Grafico grafico { get; set; }
-    }
-
-    public class Grafico
-    {
+        public List<DashboardGraficoModel> grafico { get; set; }
     }
 
     public class Descargas

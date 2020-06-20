@@ -39,7 +39,7 @@ namespace brokfy.dashboard.api
             { 
                 option.Listen(IPAddress.Any, 4300, listenOptions => { listenOptions.UseHttps("server.p12", "Brokfy2020"); }); 
             })
-            .UseUrls("https://ec2-3-136-94-107.us-east-2.compute.amazonaws.com:4300")
+            .UseUrls("https://apipruebas.brokfy.com:4300")
             .UseStartup<Startup>();
     }
 }

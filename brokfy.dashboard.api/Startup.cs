@@ -41,20 +41,20 @@ namespace brokfy.dashboard.api
             services.AddDbContext<brokfy_devContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("brokfy")));
 
-            services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-                options.HttpsPort = 4300;
-            });
+            //services.AddHttpsRedirection(options =>
+            //{
+            //    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+            //    options.HttpsPort = 4300;
+            //});
 
-            services.AddHttpClient();
+            //services.AddHttpClient();
 
-            var chainedClient = new X509Certificate2("server.p12", "Brokfy2020");
-            var handlerChainedClient = new HttpClientHandler();
-            handlerChainedClient.ClientCertificates.Add(chainedClient);
+            //var chainedClient = new X509Certificate2("server.p12", "Brokfy2020");
+            //var handlerChainedClient = new HttpClientHandler();
+            //handlerChainedClient.ClientCertificates.Add(chainedClient);
 
-            services.AddHttpClient("chained_client", c => { })
-                .ConfigurePrimaryHttpMessageHandler(() => handlerChainedClient);
+            //services.AddHttpClient("chained_client", c => { })
+            //    .ConfigurePrimaryHttpMessageHandler(() => handlerChainedClient);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

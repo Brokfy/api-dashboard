@@ -5,6 +5,7 @@ namespace brokfy.dashboard.api.data.DataModel
 {
     public partial class PerfilAseguradoTieneGadgets
     {
+        public long Id { get; set; }
         public string IdPerfil { get; set; }
         public int IdGadgets { get; set; }
         public bool? Seguro { get; set; }

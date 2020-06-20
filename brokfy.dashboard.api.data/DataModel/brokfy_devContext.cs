@@ -24,6 +24,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbQuery<ReporteComisiones> ReporteComisiones { get; set; }
         public virtual DbQuery<ReporteComisionesPendientes> ReporteComisionesPendientes { get; set; }
 
+
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }
         public virtual DbSet<Aseguradoras> Aseguradoras { get; set; }
@@ -35,15 +36,18 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Bfroleusers> Bfroleusers { get; set; }
         public virtual DbSet<Bfusers> Bfusers { get; set; }
         public virtual DbSet<Cancelaciones> Cancelaciones { get; set; }
+        public virtual DbSet<CantidadHijos> CantidadHijos { get; set; }
         public virtual DbSet<CartasNombramiento> CartasNombramiento { get; set; }
         public virtual DbSet<CatalogoHomologado> CatalogoHomologado { get; set; }
         public virtual DbSet<ChatAutomoviles> ChatAutomoviles { get; set; }
         public virtual DbSet<ChatHogar> ChatHogar { get; set; }
+        public virtual DbSet<ChatPyme> ChatPyme { get; set; }
         public virtual DbSet<ChatVida> ChatVida { get; set; }
         public virtual DbSet<Coberturas> Coberturas { get; set; }
         public virtual DbSet<Codigospostales> Codigospostales { get; set; }
         public virtual DbSet<CorreosCancelacionAseguradoras> CorreosCancelacionAseguradoras { get; set; }
         public virtual DbSet<DatosVerificacionMati> DatosVerificacionMati { get; set; }
+        public virtual DbSet<Descargables> Descargables { get; set; }
         public virtual DbSet<EstadoCivil> EstadoCivil { get; set; }
         public virtual DbSet<EstadosMexico> EstadosMexico { get; set; }
         public virtual DbSet<EstadosPolizas> EstadosPolizas { get; set; }
@@ -52,6 +56,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Marcas> Marcas { get; set; }
         public virtual DbSet<MarcasAseguradoras> MarcasAseguradoras { get; set; }
         public virtual DbSet<MedidasSeguridad> MedidasSeguridad { get; set; }
+        public virtual DbSet<Menu> Menu { get; set; }
         public virtual DbSet<MetodosPagoReg> MetodosPagoReg { get; set; }
         public virtual DbSet<Modelo> Modelo { get; set; }
         public virtual DbSet<ModelosAseguradoras> ModelosAseguradoras { get; set; }
@@ -77,11 +82,9 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Polizas> Polizas { get; set; }
         public virtual DbSet<PolizasAseguradorasNoAgente> PolizasAseguradorasNoAgente { get; set; }
         public virtual DbSet<PolizasComisiones> PolizasComisiones { get; set; }
-        public virtual DbSet<PolizasGadgets> PolizasGadgets { get; set; }
         public virtual DbSet<PolizasGastosMedicos> PolizasGastosMedicos { get; set; }
-        public virtual DbSet<PolizasHogar> PolizasHogar { get; set; }
         public virtual DbSet<PolizasMascotas> PolizasMascotas { get; set; }
-        public virtual DbSet<PolizasMoto> PolizasMoto { get; set; }
+        public virtual DbSet<PolizasPorSubirPerfilAsegurado> PolizasPorSubirPerfilAsegurado { get; set; }
         public virtual DbSet<PolizasRc> PolizasRc { get; set; }
         public virtual DbSet<PolizasViajes> PolizasViajes { get; set; }
         public virtual DbSet<PolizasVida> PolizasVida { get; set; }
@@ -95,6 +98,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Propiedades> Propiedades { get; set; }
         public virtual DbSet<RegimenViviendas> RegimenViviendas { get; set; }
         public virtual DbSet<Reportes> Reportes { get; set; }
+        public virtual DbSet<RestriccionesUsuarioMenu> RestriccionesUsuarioMenu { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Salud> Salud { get; set; }
         public virtual DbSet<Sexo> Sexo { get; set; }
@@ -510,6 +514,22 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasConstraintName("fk_cancelaciones_poliza");
             });
 
+            modelBuilder.Entity<CantidadHijos>(entity =>
+            {
+                entity.ToTable("cantidad_hijos");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Descripcion)
+                    .IsRequired()
+                    .HasColumnName("descripcion")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
             modelBuilder.Entity<CartasNombramiento>(entity =>
             {
                 entity.HasKey(e => e.NoPoliza)
@@ -623,6 +643,19 @@ namespace brokfy.dashboard.api.data.DataModel
             modelBuilder.Entity<ChatHogar>(entity =>
             {
                 entity.ToTable("chat_hogar");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.TipoRespuesta)
+                    .HasColumnName("tipo_respuesta")
+                    .HasColumnType("int(11)");
+            });
+
+            modelBuilder.Entity<ChatPyme>(entity =>
+            {
+                entity.ToTable("chat_pyme");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -858,6 +891,51 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCollation("utf8_general_ci");
             });
 
+            modelBuilder.Entity<Descargables>(entity =>
+            {
+                entity.HasKey(e => e.IdDescargable)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("descargables");
+
+                entity.HasIndex(e => e.Titulo)
+                    .HasName("titulo_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Url)
+                    .HasName("url_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.IdDescargable)
+                    .HasColumnName("id_descargable")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Descripcion)
+                    .IsRequired()
+                    .HasColumnName("descripcion")
+                    .HasColumnType("varchar(254)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Orden)
+                    .HasColumnName("orden")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Titulo)
+                    .IsRequired()
+                    .HasColumnName("titulo")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Url)
+                    .IsRequired()
+                    .HasColumnName("url")
+                    .HasColumnType("varchar(254)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+            });
+
             modelBuilder.Entity<EstadoCivil>(entity =>
             {
                 entity.ToTable("estado_civil");
@@ -1063,6 +1141,54 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
+            });
+
+            modelBuilder.Entity<Menu>(entity =>
+            {
+                entity.HasKey(e => e.IdMenu)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("menu");
+
+                entity.HasIndex(e => e.IdMenuPadre)
+                    .HasName("FK_MENU_MENU_idx");
+
+                entity.HasIndex(e => e.Ruta)
+                    .HasName("ruta_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.IdMenu)
+                    .HasColumnName("id_menu")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Icono)
+                    .HasColumnName("icono")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.IdMenuPadre)
+                    .HasColumnName("id_menu_padre")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasColumnName("nombre")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Ruta)
+                    .IsRequired()
+                    .HasColumnName("ruta")
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdMenuPadreNavigation)
+                    .WithMany(p => p.InverseIdMenuPadreNavigation)
+                    .HasForeignKey(d => d.IdMenuPadre)
+                    .HasConstraintName("FK_MENU_MENU");
             });
 
             modelBuilder.Entity<MetodosPagoReg>(entity =>
@@ -1661,6 +1787,8 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
 
+                entity.Property(e => e.DeportesRiesgo).HasColumnName("deportes_riesgo");
+
                 entity.Property(e => e.Edad)
                     .IsRequired()
                     .HasColumnName("edad")
@@ -1735,9 +1863,6 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<PerfilAseguradoTieneGadgets>(entity =>
             {
-                entity.HasKey(e => new { e.IdPerfil, e.IdGadgets })
-                    .HasName("PRIMARY");
-
                 entity.ToTable("perfil_asegurado_tiene_gadgets");
 
                 entity.HasIndex(e => e.IdGadgets)
@@ -1746,17 +1871,24 @@ namespace brokfy.dashboard.api.data.DataModel
                 entity.HasIndex(e => e.IdPerfil)
                     .HasName("fk_perfil_asegurado_has_gadgets_perfil_asegurado1_idx");
 
-                entity.Property(e => e.IdPerfil)
-                    .HasColumnName("id_perfil")
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
 
                 entity.Property(e => e.IdGadgets)
                     .HasColumnName("id_gadgets")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.Seguro).HasColumnName("seguro");
+                entity.Property(e => e.IdPerfil)
+                    .IsRequired()
+                    .HasColumnName("id_perfil")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Seguro)
+                    .HasColumnName("seguro")
+                    .HasDefaultValueSql("'0'");
 
                 entity.HasOne(d => d.IdGadgetsNavigation)
                     .WithMany(p => p.PerfilAseguradoTieneGadgets)
@@ -1808,8 +1940,6 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<PerfilAseguradoToPropiedades>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("perfil_asegurado_to_propiedades");
 
                 entity.HasIndex(e => e.IdPerfil)
@@ -1817,6 +1947,10 @@ namespace brokfy.dashboard.api.data.DataModel
 
                 entity.HasIndex(e => e.IdPropiedades)
                     .HasName("fk_perfil_asegurado_has_propiedades_propiedades1_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
 
                 entity.Property(e => e.IdPerfil)
                     .IsRequired()
@@ -1829,14 +1963,16 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnName("id_propiedades")
                     .HasColumnType("int(11)");
 
+                entity.Property(e => e.Seguro).HasColumnName("seguro");
+
                 entity.HasOne(d => d.IdPerfilNavigation)
-                    .WithMany()
+                    .WithMany(p => p.PerfilAseguradoToPropiedades)
                     .HasForeignKey(d => d.IdPerfil)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_perfil_asegurado_has_perfil");
 
                 entity.HasOne(d => d.IdPropiedadesNavigation)
-                    .WithMany()
+                    .WithMany(p => p.PerfilAseguradoToPropiedades)
                     .HasForeignKey(d => d.IdPropiedades)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_perfil_asegurado_has_propiedades_propiedades1");
@@ -2131,36 +2267,6 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasConstraintName("FK_POLIZAS_COMISIONES_POLIZAS");
             });
 
-            modelBuilder.Entity<PolizasGadgets>(entity =>
-            {
-                entity.HasKey(e => e.NoPoliza)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("polizas_gadgets");
-
-                entity.HasIndex(e => e.Username)
-                    .HasName("fk_usuarios_gadgets_idx");
-
-                entity.Property(e => e.NoPoliza)
-                    .HasColumnName("no_poliza")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasColumnName("username")
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.HasOne(d => d.UsernameNavigation)
-                    .WithMany(p => p.PolizasGadgets)
-                    .HasForeignKey(d => d.Username)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_usuarios_gadgets");
-            });
-
             modelBuilder.Entity<PolizasGastosMedicos>(entity =>
             {
                 entity.HasKey(e => e.NoPoliza)
@@ -2198,36 +2304,6 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasConstraintName("fk_usuarios_gastos_medicos");
             });
 
-            modelBuilder.Entity<PolizasHogar>(entity =>
-            {
-                entity.HasKey(e => e.NoPoliza)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("polizas_hogar");
-
-                entity.HasIndex(e => e.Username)
-                    .HasName("fk_usuarios_hogar_idx");
-
-                entity.Property(e => e.NoPoliza)
-                    .HasColumnName("no_poliza")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasColumnName("username")
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.HasOne(d => d.UsernameNavigation)
-                    .WithMany(p => p.PolizasHogar)
-                    .HasForeignKey(d => d.Username)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_usuarios_hogar");
-            });
-
             modelBuilder.Entity<PolizasMascotas>(entity =>
             {
                 entity.HasKey(e => e.NoPoliza)
@@ -2258,34 +2334,36 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasConstraintName("fk_usuarios_mascotas");
             });
 
-            modelBuilder.Entity<PolizasMoto>(entity =>
+            modelBuilder.Entity<PolizasPorSubirPerfilAsegurado>(entity =>
             {
-                entity.HasKey(e => e.NoPoliza)
-                    .HasName("PRIMARY");
+                entity.ToTable("polizas_por_subir_perfil_asegurado");
 
-                entity.ToTable("polizas_moto");
+                entity.HasIndex(e => e.IdPerfil)
+                    .HasName("FK_POLIZAS_POR_SUBIR_PERFIL_idx");
 
-                entity.HasIndex(e => e.Username)
-                    .HasName("fk_usuarios_moto");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
 
-                entity.Property(e => e.NoPoliza)
-                    .HasColumnName("no_poliza")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Username)
+                entity.Property(e => e.IdPerfil)
                     .IsRequired()
-                    .HasColumnName("username")
+                    .HasColumnName("id_perfil")
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 
-                entity.HasOne(d => d.UsernameNavigation)
-                    .WithMany(p => p.PolizasMoto)
-                    .HasForeignKey(d => d.Username)
+                entity.Property(e => e.UrlPoliza)
+                    .IsRequired()
+                    .HasColumnName("url_poliza")
+                    .HasColumnType("text")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdPerfilNavigation)
+                    .WithMany(p => p.PolizasPorSubirPerfilAsegurado)
+                    .HasForeignKey(d => d.IdPerfil)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_usuarios_moto");
+                    .HasConstraintName("FK_POLIZAS_POR_SUBIR_PERFIL");
             });
 
             modelBuilder.Entity<PolizasRc>(entity =>
@@ -2411,6 +2489,9 @@ namespace brokfy.dashboard.api.data.DataModel
                 entity.HasIndex(e => e.IdHogar)
                     .HasName("chat_hogar_idx");
 
+                entity.HasIndex(e => e.IdPyme)
+                    .HasName("fk_chat_pyme_idx");
+
                 entity.HasIndex(e => e.IdVida)
                     .HasName("fk_chat_vida_idx");
 
@@ -2432,6 +2513,10 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnName("id_hogar")
                     .HasColumnType("int(11)");
 
+                entity.Property(e => e.IdPyme)
+                    .HasColumnName("id_pyme")
+                    .HasColumnType("int(11)");
+
                 entity.Property(e => e.IdVida)
                     .HasColumnName("id_vida")
                     .HasColumnType("int(11)");
@@ -2445,6 +2530,11 @@ namespace brokfy.dashboard.api.data.DataModel
                     .WithMany(p => p.PreguntasChat)
                     .HasForeignKey(d => d.IdHogar)
                     .HasConstraintName("chat_hogar");
+
+                entity.HasOne(d => d.IdPymeNavigation)
+                    .WithMany(p => p.PreguntasChat)
+                    .HasForeignKey(d => d.IdPyme)
+                    .HasConstraintName("fk_chat_pyme");
 
                 entity.HasOne(d => d.IdVidaNavigation)
                     .WithMany(p => p.PreguntasChat)
@@ -2643,6 +2733,39 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<RestriccionesUsuarioMenu>(entity =>
+            {
+                entity.HasKey(e => new { e.Username, e.IdMenu })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("restricciones_usuario_menu");
+
+                entity.HasIndex(e => e.IdMenu)
+                    .HasName("FK_RESTRICCIONES_USUARIO_MENU_MENU_idx");
+
+                entity.Property(e => e.Username)
+                    .HasColumnName("username")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.IdMenu)
+                    .HasColumnName("id_menu")
+                    .HasColumnType("int(11)");
+
+                entity.HasOne(d => d.IdMenuNavigation)
+                    .WithMany(p => p.RestriccionesUsuarioMenu)
+                    .HasForeignKey(d => d.IdMenu)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RESTRICCIONES_USUARIO_MENU_MENU");
+
+                entity.HasOne(d => d.UsernameNavigation)
+                    .WithMany(p => p.RestriccionesUsuarioMenu)
+                    .HasForeignKey(d => d.Username)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RESTRICCIONES_USUARIO_MENU_USUARIO");
             });
 
             modelBuilder.Entity<Roles>(entity =>

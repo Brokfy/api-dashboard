@@ -41,17 +41,31 @@ namespace brokfy.dashboard.api.Controllers
                 "Comisiones" => Comisiones(data),
 				"ComisionesPendientes" => ComisionesPendientes(data),
 				"Siniestros" => FacturacionTotal(data),
-                "PolizasPorVencer" => _context.ComisionActualModels.FromSqlRaw("Select * From brokfy_dev.vwAseguradorasComisionesActuales").ToList(),
+                "PolizasPorVencer" => PolizasPorVencer(data),
                 "BrokfyVSOtras" => _context.ComisionActualModels.FromSqlRaw("Select * From brokfy_dev.vwAseguradorasComisionesActuales").ToList(),
                 "PolizasOtras" => _context.ComisionActualModels.FromSqlRaw("Select * From brokfy_dev.vwAseguradorasComisionesActuales").ToList(),
-                _ => null,
+				"HistoricoPorcentajeComisiones" => HistoricoPorcentajeComisiones(data),
+
+				_ => null,
             };
         }
-
+		//SpRptPolizasPorVencer
 		private List<ReporteFacturacionTotal> FacturacionTotal(ReportesModel data)
 		{
 			string Where = string.Format(@"Call SpRptFacturacionTotal('{0}', '{1}', {2}, {3});", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
 			return _context.ReporteFacturacionTotales.FromSqlRaw(Where).ToList();
+		}
+
+		private List<ReportePolizasPorVencer> PolizasPorVencer(ReportesModel data)
+		{
+			string Where = string.Format(@"Call SpRptPolizasPorVencer('{0}', '{1}', {2}, {3});", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
+			return _context.ReportePolizasPorVencer.FromSqlRaw(Where).ToList();
+		}
+
+		private List<ReporteHistoricoPorcentajeComisiones> HistoricoPorcentajeComisiones(ReportesModel data)
+		{
+			string Where = string.Format(@"Call SpRptHistoricoPorcentajeComisiones ('{0}', '{1}', {2}, {3});", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
+			return _context.ReporteHistoricoPorcentajeComisiones.FromSqlRaw(Where).ToList();
 		}
 
 

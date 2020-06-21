@@ -43,7 +43,9 @@ namespace brokfy.dashboard.api.Controllers
                                                         FechaFin = pol.FechaFin,
                                                         NoPoliza = pol.NoPoliza,
                                                         TipoPoliza = tip.Tipo
-                                                    }).ToList();
+                                                    }).OrderBy(x => x.FechaFin)
+                                                    .ThenBy(x => x.NoPoliza)
+                                                    .ToList();
                 return consulta;
             }
             catch (Exception ex)

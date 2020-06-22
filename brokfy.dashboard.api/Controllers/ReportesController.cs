@@ -42,14 +42,14 @@ namespace brokfy.dashboard.api.Controllers
 				"ComisionesPendientes" => ComisionesPendientes(data),
 				"Siniestros" => FacturacionTotal(data),
                 "PolizasPorVencer" => PolizasPorVencer(data),
-                "BrokfyVSOtras" => _context.ComisionActualModels.FromSqlRaw("Select * From brokfy_dev.vwAseguradorasComisionesActuales").ToList(),
+                "BrokfyVSOtras" => PolizasBrokfyVsOtras(data),
                 "PolizasOtras" => _context.ComisionActualModels.FromSqlRaw("Select * From brokfy_dev.vwAseguradorasComisionesActuales").ToList(),
 				"HistoricoPorcentajeComisiones" => HistoricoPorcentajeComisiones(data),
 
 				_ => null,
             };
         }
-		//SpRptPolizasPorVencer
+		//SpRptPolizasBrokfyVsOtras
 		private List<ReporteFacturacionTotal> FacturacionTotal(ReportesModel data)
 		{
 			string Where = string.Format(@"Call SpRptFacturacionTotal('{0}', '{1}', {2}, {3});", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
@@ -66,6 +66,12 @@ namespace brokfy.dashboard.api.Controllers
 		{
 			string Where = string.Format(@"Call SpRptHistoricoPorcentajeComisiones ('{0}', '{1}', {2}, {3});", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
 			return _context.ReporteHistoricoPorcentajeComisiones.FromSqlRaw(Where).ToList();
+		}
+
+		private List<ReportesPolizasBrokfyVsOtras> PolizasBrokfyVsOtras(ReportesModel data)
+		{
+			string Where = string.Format(@"Call SpRptPolizasBrokfyVsOtras ('{0}', '{1}', {2}, {3});", data.FechaInicio, data.FechaFin, data.IdAseguradora == null ? 0 : data.IdAseguradora, data.IdTipoPoliza == null ? 0 : data.IdTipoPoliza);
+			return _context.ReportesPolizasBrokfyVsOtras.FromSqlRaw(Where).ToList();
 		}
 
 

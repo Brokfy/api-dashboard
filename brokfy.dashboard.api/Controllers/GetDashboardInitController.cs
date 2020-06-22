@@ -37,7 +37,9 @@ namespace brokfy.dashboard.api.Controllers
                                 {
                                     Nombre = string.Format(@"{0} {1} {2} ({3})", cl.Nombre, cl.ApellidoPaterno, cl.ApellidoMaterno, cl.Username),
                                     Username = cl.Username
-                                }).ToList(),
+                                }).ToList().OrderBy(x => x.Nombre)
+                                .ThenBy(x => x.Username)
+                                .ToList(),
                     tipoPoliza = _context.TipoPoliza.ToList(),
                     grafico = (from pol in _context.Polizas
                                group pol by pol.TipoPoliza into polGroup

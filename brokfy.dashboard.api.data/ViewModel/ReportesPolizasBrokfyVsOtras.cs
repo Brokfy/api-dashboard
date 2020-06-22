@@ -8,9 +8,9 @@ namespace brokfy.dashboard.api.data.ViewModel
     {
         public int TipoRegistro { get; set; }
         public string Aseguradora { get; set; }
-        public string TipoPoliza { get; set; }
-        public double PrimaTotal { get; set; }
-        public double ComisionesGeneradas { get; set; }
-        public int Totalizador { get; set; }
+        public string ?TipoPoliza { get; set; }
+        public double ?PrimaTotal { get; set; }
+        public double ?ComisionesGeneradas { get; set; }
+        public int ?Totalizador { get; set; }
     }
 }

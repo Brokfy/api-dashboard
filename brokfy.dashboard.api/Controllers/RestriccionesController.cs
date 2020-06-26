@@ -25,12 +25,13 @@ namespace brokfy.dashboard.api.Controllers
         }
 
         // GET: api/Restricciones/
-        [HttpGet("{username}")]
-        public List<Menu> GetRestricciones(string username)
+        [HttpGet("{token}")]
+        public List<Menu> GetRestricciones(string token)
         {
             var result = from p in _context.Menu
                          join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
-                         where r.Username == username
+                         join u in _context.Usuario on r.Username equals u.Username
+                         where u.TokenF == token
                          select p;
 
             return result.ToList();

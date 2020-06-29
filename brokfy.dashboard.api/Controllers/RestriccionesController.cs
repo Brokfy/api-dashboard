@@ -24,18 +24,39 @@ namespace brokfy.dashboard.api.Controllers
             _config = config;
         }
 
-        // GET: api/Restricciones/
-        [HttpGet("{token}")]
-        public List<Menu> GetRestricciones(string token)
+        // GET: api/Restricciones?username=456456
+        [HttpGet]
+        public List<Menu> GetRestricciones([FromQuery] string dato, [FromQuery] string campo)
         {
-            var result = from p in _context.Menu
+            List<Menu> menu = new List<Menu>();
+            if(campo == "username")
+                menu = (from p in _context.Menu
                          join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
                          join u in _context.Usuario on r.Username equals u.Username
-                         where u.TokenF == token
-                         select p;
+                         where u.Username == dato
+                         select p).ToList();
+            else if(campo == "token")
+                menu = (from p in _context.Menu
+                       join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
+                       join u in _context.Usuario on r.Username equals u.Username
+                       where u.TokenF == dato
+                       select p).ToList();
 
-            return result.ToList();
+            return menu;
         }
+
+        //// GET: api/Restricciones/
+        //[HttpGet("{token}")]
+        //public List<Menu> GetRestricciones(string token)
+        //{
+        //    var result = from p in _context.Menu
+        //                 join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
+        //                 join u in _context.Usuario on r.Username equals u.Username
+        //                 where u.TokenF == token
+        //                 select p;
+
+        //    return result.ToList();
+        //}
 
 
         // POST: api/Aprobaciones

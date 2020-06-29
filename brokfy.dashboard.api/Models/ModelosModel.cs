@@ -10,5 +10,6 @@ namespace brokfy.dashboard.api.Models
         public string Marca { get; set; }
         public string Year { get; set; }
         public string Modelo { get; set; }
+        public string Clave { get; set; }
     }
 }

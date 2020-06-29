@@ -140,7 +140,7 @@ namespace brokfy.dashboard.api.Controllers
         }
     
         [HttpPost]
-        public ResponseModel PostListaUsuarios(PostDetallePerfilAseguradoModel data)
+        public ResponseModel PostListaUsuarios([FromBody] PostDetallePerfilAseguradoModel data)
         {
             try
             {

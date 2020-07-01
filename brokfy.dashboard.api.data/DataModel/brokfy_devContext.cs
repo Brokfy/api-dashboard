@@ -15,6 +15,7 @@ namespace brokfy.dashboard.api.data.DataModel
             : base(options)
         {
         }
+
         public virtual DbSet<ComisionActualModel> ComisionActualModels { get; set; }
         public virtual DbSet<PolizaAuto> PolizaAutos { get; set; }
         public virtual DbSet<PolizaVida> PolizaVidas { get; set; }
@@ -26,8 +27,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbQuery<ReportePolizasPorVencer> ReportePolizasPorVencer { get; set; }
         public virtual DbQuery<ReporteHistoricoPorcentajeComisiones> ReporteHistoricoPorcentajeComisiones { get; set; }
         public virtual DbQuery<ReportesPolizasBrokfyVsOtras> ReportesPolizasBrokfyVsOtras { get; set; }
-
-        
 
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }
@@ -100,6 +99,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<ProductosBrokfy> ProductosBrokfy { get; set; }
         public virtual DbSet<Profesiones> Profesiones { get; set; }
         public virtual DbSet<Propiedades> Propiedades { get; set; }
+        public virtual DbSet<Pyme> Pyme { get; set; }
         public virtual DbSet<RegimenViviendas> RegimenViviendas { get; set; }
         public virtual DbSet<Reportes> Reportes { get; set; }
         public virtual DbSet<RestriccionesUsuarioMenu> RestriccionesUsuarioMenu { get; set; }
@@ -2688,6 +2688,79 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
+            });
+
+            modelBuilder.Entity<Pyme>(entity =>
+            {
+                entity.HasKey(e => e.NoPoliza)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("pyme");
+
+                entity.Property(e => e.NoPoliza)
+                    .HasColumnName("no_poliza")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.CantidadNiveles)
+                    .HasColumnName("cantidad_niveles")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CercaMar)
+                    .IsRequired()
+                    .HasColumnName("cerca_mar")
+                    .HasColumnType("enum('Si','No')")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Giro)
+                    .IsRequired()
+                    .HasColumnName("giro")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.RazonSocial)
+                    .IsRequired()
+                    .HasColumnName("razon_social")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Rfc)
+                    .IsRequired()
+                    .HasColumnName("rfc")
+                    .HasColumnType("varchar(14)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Subgiro)
+                    .IsRequired()
+                    .HasColumnName("subgiro")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.TipoMuro)
+                    .IsRequired()
+                    .HasColumnName("tipo_muro")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.TipoTecho)
+                    .IsRequired()
+                    .HasColumnName("tipo_techo")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.NoPolizaNavigation)
+                    .WithOne(p => p.Pyme)
+                    .HasForeignKey<Pyme>(d => d.NoPoliza)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_polizas_pyme");
             });
 
             modelBuilder.Entity<RegimenViviendas>(entity =>

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace brokfy.dashboard.api.data.DataModel
+namespace brokfy.dashboard.api.data.ViewModel
 {
-    public partial class Polizas
+    public class PolizaPyme
     {
-        public Polizas()
-        {
-            PolizasComisiones = new HashSet<PolizasComisiones>();
-        }
-
         public int TipoPoliza { get; set; }
         public double Costo { get; set; }
         public string NoPoliza { get; set; }
@@ -30,16 +26,13 @@ namespace brokfy.dashboard.api.data.DataModel
         public string CostoRecibosSubsecuentes { get; set; }
         public double PrimaNeta { get; set; }
         public int IdEstadoPoliza { get; set; }
-
-        public virtual Aseguradoras IdAseguradorasNavigation { get; set; }
-        public virtual EstadosPolizas IdEstadoPolizaNavigation { get; set; }
-        public virtual Productos Producto { get; set; }
-        public virtual TipoPoliza TipoPolizaNavigation { get; set; }
-        public virtual Usuario UsernameNavigation { get; set; }
-        public virtual Auto Auto { get; set; }
-        public virtual Cancelaciones Cancelaciones { get; set; }
-        public virtual Pyme Pyme { get; set; }
-        public virtual Vida Vida { get; set; }
-        public virtual ICollection<PolizasComisiones> PolizasComisiones { get; set; }
+        public string RazonSocial { get; set; }
+        public string Rfc { get; set; }
+        public string Giro { get; set; }
+        public string Subgiro { get; set; }
+        public string TipoTecho { get; set; }
+        public string TipoMuro { get; set; }
+        public int CantidadNiveles { get; set; }
+        public string CercaMar { get; set; }
     }
 }

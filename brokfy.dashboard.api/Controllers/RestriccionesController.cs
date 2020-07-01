@@ -25,16 +25,31 @@ namespace brokfy.dashboard.api.Controllers
         }
 
         // GET: api/Restricciones/
-        [HttpGet("{token}")]
-        public List<Menu> GetRestricciones(string token)
+        [HttpGet]
+        public List<Menu> GetRestricciones([FromQuery] string dato, [FromQuery] string campo)
         {
-            var result = from p in _context.Menu
-                         join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
-                         join u in _context.Usuario on r.Username equals u.Username
-                         where u.TokenF == token
-                         select p;
+            List<Menu> respuesta = new List<Menu>();
+            switch (campo)
+            {
+                case "token":
+                    respuesta = (from p in _context.Menu
+                                join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
+                                join u in _context.Usuario on r.Username equals u.Username
+                                where u.TokenF == dato
+                                select p).ToList();
+                    break;
+                case "username":
+                    respuesta = (from p in _context.Menu
+                                 join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
+                                 join u in _context.Usuario on r.Username equals u.Username
+                                 where u.Username == dato
+                                 select p).ToList();
+                    break;
+                default:
+                    break;
+            }
 
-            return result.ToList();
+            return respuesta;
         }
 
 

@@ -54,18 +54,27 @@ namespace brokfy.dashboard.api.Controllers
 
 
         // POST: api/Aprobaciones
-        [HttpPost("{username}")]
-        public ResponseModel PostRestricciones([FromBody] List<RestriccionesUsuarioMenu> data, string username)
+        [HttpPost]
+        public ResponseModel PostRestricciones([FromBody] RestriccionesEdicionModel data)
         {
             try
             {
-                _context.RestriccionesUsuarioMenu.RemoveRange(_context.RestriccionesUsuarioMenu.Where(x => x.Username == username));
+                var existe = _context.RestriccionesUsuarioMenu.Where(x => x.Username == data.Username && x.IdMenu == data.IdMenu);
+
+                if(existe.Count() > 0)
+                    _context.RestriccionesUsuarioMenu.Remove(existe.FirstOrDefault());
+                else
+                    _context.RestriccionesUsuarioMenu.Add(new RestriccionesUsuarioMenu() { IdMenu = data.IdMenu, Username = data.Username });
+
                 _context.SaveChanges();
 
-                _context.RestriccionesUsuarioMenu.AddRange(data);
-                _context.SaveChanges();
+                var respuesta = (from p in _context.Menu
+                                 join r in _context.RestriccionesUsuarioMenu on p.IdMenu equals r.IdMenu
+                                 join u in _context.Usuario on r.Username equals u.Username
+                                 where u.Username == data.Username
+                                 select p).ToList();
 
-                return new ResponseModel { Message = "Ok", Result = null, Success = true };
+                return new ResponseModel { Message = "Ok", Result = respuesta, Success = true };
             }
             catch (Exception ex)
             {

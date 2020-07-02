@@ -29,7 +29,7 @@ namespace brokfy.dashboard.api.Controllers
         {
             try
             {
-                List<ModelosModel> modelos = _context.ModelosMoto.Where(x => x.Marca == Marca && x.AnioComercializacion == Year).Select(x => new ModelosModel { Marca = x.Marca, Modelo = x.NomModelo, Year = x.AnioComercializacion }).Distinct().OrderBy(x => x.Modelo).ToList();
+                List<ModelosModel> modelos = _context.ModelosMoto.Where(x => x.Marca == Marca && x.AnioComercializacion == Year).Select(x => new ModelosModel { Marca = x.Marca, Modelo = x.NomModelo, Year = x.AnioComercializacion, Clave = x.CodModelo }).Distinct().OrderBy(x => x.Modelo).ToList();
                 return modelos;
             }
             catch (Exception ex)

@@ -16,9 +16,16 @@ namespace brokfy.dashboard.api.data.ViewModel
 
     public class DetallePerfilAsegurado
     {
-        public List<Gadgets> Gadgets { get; set; }
-        public List<Actividades> Actividades { get; set; }
-        public List<Propiedades> Propiedades { get; set; }
-        public List<Salud> Salud { get; set; }
+        public List<DescripcionValor> Gadgets { get; set; }
+        public List<DescripcionValor> Actividades { get; set; }
+        public List<DescripcionValor> Propiedades { get; set; }
+        public List<DescripcionValor> Salud { get; set; }
+    }
+
+    public class DescripcionValor 
+    { 
+        public int Id { get; set; }
+        public string Descripcion { get; set; }
+        public bool Aplica { get; set; }
     }
 }

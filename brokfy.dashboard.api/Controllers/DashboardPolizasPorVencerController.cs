@@ -34,10 +34,10 @@ namespace brokfy.dashboard.api.Controllers
                 List<DashboardPolizasPorVencer> consulta = (from pol in _context.Polizas
                                                     join ase in _context.Aseguradoras on pol.IdAseguradoras equals ase.IdAseguradora
                                                     join tip in _context.TipoPoliza on pol.TipoPoliza equals tip.Id
-                                                    where pol.TipoPoliza == tipoPoliza 
-                                                    //&& pol.FechaFin < proximaSemana
-                                                    //&& pol.FechaFin > DateTime.Now
-                                                    select new DashboardPolizasPorVencer
+                                                    where pol.TipoPoliza == tipoPoliza
+                                                    && pol.FechaFin <= proximaSemana
+                                                    && pol.FechaFin >= DateTime.Now
+                                                            select new DashboardPolizasPorVencer
                                                     {
                                                         Aseguradora = ase.Nombre,
                                                         FechaFin = pol.FechaFin,

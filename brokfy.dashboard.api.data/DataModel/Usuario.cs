@@ -12,10 +12,9 @@ namespace brokfy.dashboard.api.data.DataModel
             Polizas = new HashSet<Polizas>();
             PolizasAseguradorasNoAgente = new HashSet<PolizasAseguradorasNoAgente>();
             PolizasGastosMedicos = new HashSet<PolizasGastosMedicos>();
-            PolizasMascotas = new HashSet<PolizasMascotas>();
-            PolizasRc = new HashSet<PolizasRc>();
             PolizasVida = new HashSet<PolizasVida>();
             RestriccionesUsuarioMenu = new HashSet<RestriccionesUsuarioMenu>();
+            SeguimientoSiniestro = new HashSet<SeguimientoSiniestro>();
             Siniestros = new HashSet<Siniestros>();
             UsuariosToRoles = new HashSet<UsuariosToRoles>();
         }
@@ -36,10 +35,9 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual ICollection<Polizas> Polizas { get; set; }
         public virtual ICollection<PolizasAseguradorasNoAgente> PolizasAseguradorasNoAgente { get; set; }
         public virtual ICollection<PolizasGastosMedicos> PolizasGastosMedicos { get; set; }
-        public virtual ICollection<PolizasMascotas> PolizasMascotas { get; set; }
-        public virtual ICollection<PolizasRc> PolizasRc { get; set; }
         public virtual ICollection<PolizasVida> PolizasVida { get; set; }
         public virtual ICollection<RestriccionesUsuarioMenu> RestriccionesUsuarioMenu { get; set; }
+        public virtual ICollection<SeguimientoSiniestro> SeguimientoSiniestro { get; set; }
         public virtual ICollection<Siniestros> Siniestros { get; set; }
         public virtual ICollection<UsuariosToRoles> UsuariosToRoles { get; set; }
     }

@@ -103,7 +103,7 @@ namespace brokfy.dashboard.api.Controllers
                                //Mascota = p.Mascota,
                                //Viaje = p.Viaje,
                                //Retiro = p.Retiro,
-                               //Pyme = p.Pyme,
+                               Pyme = p.Pyme,
                            }).FirstOrDefault();
 
                 //detalle.Tipo = getTipoDetalle(original);

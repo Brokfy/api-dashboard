@@ -22,7 +22,7 @@ namespace brokfy.dashboard.api.data.ViewModel
         //public Mascota Mascota { get; set; }
         //public Viaje Viaje { get; set; }
         //public Retiro Retiro { get; set; }
-        //public Pyme Pyme { get; set; }
+            public Pyme Pyme { get; set; }
     }
 
         public class DetallePago

@@ -86,6 +86,9 @@ namespace brokfy.dashboard.api.Controllers
                         case "estadocivil":
                             model.Data = _context.EstadoCivil.ToList();
                             break;
+                        case "estadosiniestro":
+                            model.Data = _context.EstadoSiniestro.ToList();
+                            break;
                         default:
                             break;
                     }

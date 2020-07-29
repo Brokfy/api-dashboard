@@ -71,5 +71,23 @@ namespace brokfy.dashboard.api.Controllers
             }
             
         }
+
+
+        // POST: api/Siniestros
+        [HttpPost]
+        public ResponseModel PostEstadoSiniestros([FromBody] SeguimientoSiniestro data)
+        {
+            try
+            {
+                _context.SeguimientoSiniestro.Add(data);
+                _context.SaveChanges();
+                return new ResponseModel { Message = "Ok", Result = null, Success = true };
+            }
+            catch (Exception ex)
+            {
+
+                return new ResponseModel { Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message, Result = null, Success = false };
+            }
+        }
     }
 }

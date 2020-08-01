@@ -75,13 +75,14 @@ namespace brokfy.dashboard.api.Controllers
 
         // POST: api/Siniestros
         [HttpPost]
-        public ResponseModel PostEstadoSiniestros([FromBody] SeguimientoSiniestro data)
+        public async Task<ResponseModel> PostEstadoSiniestrosAsync([FromBody] SeguimientoSiniestro data)
         {
             try
             {
                 _context.SeguimientoSiniestro.Add(data);
-                _context.SaveChanges();
-                return new ResponseModel { Message = "Ok", Result = null, Success = true };
+                await _context.SaveChangesAsync();
+                var result = GetSiniestrosSeguimiento(data.IdPolizaSiniestro);
+                return new ResponseModel { Message = "Ok", Result = result, Success = true };
             }
             catch (Exception ex)
             {

@@ -32,7 +32,7 @@ namespace brokfy.dashboard.api.Controllers
                          join polsin in _context.PolizaSiniestro on pol.NoPoliza equals polsin.NoPoliza
                          join poltip in _context.TipoPoliza on pol.TipoPoliza equals poltip.Id
                          join aseg in _context.Aseguradoras on pol.IdAseguradoras equals aseg.IdAseguradora
-                         where pol.IdEstadoPoliza == 3 && polsin.Activo == activo
+                         where polsin.Activo == activo
                          orderby polsin.IdPolizaSiniestro descending
                          select new SiniestroPolizaModel
                          {
@@ -83,6 +83,33 @@ namespace brokfy.dashboard.api.Controllers
                 await _context.SaveChangesAsync();
                 var result = GetSiniestrosSeguimiento(data.IdPolizaSiniestro);
                 return new ResponseModel { Message = "Ok", Result = result, Success = true };
+            }
+            catch (Exception ex)
+            {
+
+                return new ResponseModel { Message = ex.InnerException != null ? ex.InnerException.Message : ex.Message, Result = null, Success = false };
+            }
+        }
+
+
+        // PUT: api/Siniestros
+        [HttpPut("{IdPolizaSiniestro}")]
+        public async Task<ResponseModel> PutSiniestrosAsync(int IdPolizaSiniestro)
+        {
+            try
+            {
+                var polizaSiniestro = _context.PolizaSiniestro.Where(x => x.IdPolizaSiniestro == IdPolizaSiniestro).FirstOrDefault();
+                polizaSiniestro.Activo = 0;
+                _context.PolizaSiniestro.Update(polizaSiniestro);
+
+                var poliza = _context.Polizas.Where(x => x.NoPoliza == polizaSiniestro.NoPoliza).FirstOrDefault();
+                poliza.IdEstadoPoliza = 1;
+                _context.Polizas.Update(poliza);
+
+                await _context.SaveChangesAsync();
+
+                
+                return new ResponseModel { Message = "Ok", Result = null, Success = true };
             }
             catch (Exception ex)
             {

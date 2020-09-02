@@ -28,7 +28,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbQuery<ReporteHistoricoPorcentajeComisiones> ReporteHistoricoPorcentajeComisiones { get; set; }
         public virtual DbQuery<ReportesPolizasBrokfyVsOtras> ReportesPolizasBrokfyVsOtras { get; set; }
 
-
         public virtual DbSet<Actividades> Actividades { get; set; }
         public virtual DbSet<AnosMarca> AnosMarca { get; set; }
         public virtual DbSet<Aseguradoras> Aseguradoras { get; set; }
@@ -43,20 +42,25 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<CantidadHijos> CantidadHijos { get; set; }
         public virtual DbSet<CartasNombramiento> CartasNombramiento { get; set; }
         public virtual DbSet<CatalogoHomologado> CatalogoHomologado { get; set; }
+        public virtual DbSet<ChatAuto> ChatAuto { get; set; }
         public virtual DbSet<ChatAutomoviles> ChatAutomoviles { get; set; }
+        public virtual DbSet<ChatBienvenida> ChatBienvenida { get; set; }
         public virtual DbSet<ChatHogar> ChatHogar { get; set; }
+        public virtual DbSet<ChatHogar2> ChatHogar2 { get; set; }
         public virtual DbSet<ChatPyme> ChatPyme { get; set; }
+        public virtual DbSet<ChatSubirPoliza> ChatSubirPoliza { get; set; }
         public virtual DbSet<ChatVida> ChatVida { get; set; }
         public virtual DbSet<Coberturas> Coberturas { get; set; }
         public virtual DbSet<Codigospostales> Codigospostales { get; set; }
         public virtual DbSet<CorreosCancelacionAseguradoras> CorreosCancelacionAseguradoras { get; set; }
-        public virtual DbSet<DatosVerificacionMati> DatosVerificacionMati { get; set; }
         public virtual DbSet<Descargables> Descargables { get; set; }
+        public virtual DbSet<Documentos> Documentos { get; set; }
         public virtual DbSet<EstadoCivil> EstadoCivil { get; set; }
         public virtual DbSet<EstadoSiniestro> EstadoSiniestro { get; set; }
         public virtual DbSet<EstadosMexico> EstadosMexico { get; set; }
         public virtual DbSet<EstadosPolizas> EstadosPolizas { get; set; }
         public virtual DbSet<Gadgets> Gadgets { get; set; }
+        public virtual DbSet<HistoricoDocumentos> HistoricoDocumentos { get; set; }
         public virtual DbSet<InsigniaCotizacion> InsigniaCotizacion { get; set; }
         public virtual DbSet<Marcas> Marcas { get; set; }
         public virtual DbSet<MarcasAseguradoras> MarcasAseguradoras { get; set; }
@@ -74,6 +78,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<OauthCode> OauthCode { get; set; }
         public virtual DbSet<OauthRefreshToken> OauthRefreshToken { get; set; }
         public virtual DbSet<Ocupaciones> Ocupaciones { get; set; }
+        public virtual DbSet<OpcionesChat> OpcionesChat { get; set; }
         public virtual DbSet<Pagos> Pagos { get; set; }
         public virtual DbSet<PagosDetalle> PagosDetalle { get; set; }
         public virtual DbSet<Parentesco> Parentesco { get; set; }
@@ -93,9 +98,13 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<PolizasViajes> PolizasViajes { get; set; }
         public virtual DbSet<PolizasVida> PolizasVida { get; set; }
         public virtual DbSet<Preguntas> Preguntas { get; set; }
+        public virtual DbSet<PreguntasAuto> PreguntasAuto { get; set; }
+        public virtual DbSet<PreguntasBienvenida> PreguntasBienvenida { get; set; }
         public virtual DbSet<PreguntasChat> PreguntasChat { get; set; }
+        public virtual DbSet<PreguntasChatHogar> PreguntasChatHogar { get; set; }
         public virtual DbSet<PreguntasHogar> PreguntasHogar { get; set; }
         public virtual DbSet<PreguntasPerfil> PreguntasPerfil { get; set; }
+        public virtual DbSet<PreguntasSubirPoliza> PreguntasSubirPoliza { get; set; }
         public virtual DbSet<Productos> Productos { get; set; }
         public virtual DbSet<ProductosBrokfy> ProductosBrokfy { get; set; }
         public virtual DbSet<Profesiones> Profesiones { get; set; }
@@ -122,6 +131,14 @@ namespace brokfy.dashboard.api.data.DataModel
         public virtual DbSet<Vida> Vida { get; set; }
         public virtual DbSet<VwAseguradorasComisionesActuales> VwAseguradorasComisionesActuales { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySql("server=database-1.cyu1bxjzzhpm.us-east-2.rds.amazonaws.com;port=3306;user=dev;password=DevBrokfy18;database=brokfy_dev", x => x.ServerVersion("5.7.26-mysql"));
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -625,6 +642,15 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCollation("utf8_general_ci");
             });
 
+            modelBuilder.Entity<ChatAuto>(entity =>
+            {
+                entity.ToTable("chat_auto");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+            });
+
             modelBuilder.Entity<ChatAutomoviles>(entity =>
             {
                 entity.ToTable("chat_automoviles");
@@ -636,6 +662,15 @@ namespace brokfy.dashboard.api.data.DataModel
                 entity.Property(e => e.TipoRespuesta)
                     .HasColumnName("tipo_respuesta")
                     .HasColumnType("int(11)");
+            });
+
+            modelBuilder.Entity<ChatBienvenida>(entity =>
+            {
+                entity.ToTable("chat_bienvenida");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
             });
 
             modelBuilder.Entity<ChatHogar>(entity =>
@@ -651,6 +686,15 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("int(11)");
             });
 
+            modelBuilder.Entity<ChatHogar2>(entity =>
+            {
+                entity.ToTable("chat_hogar_2");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+            });
+
             modelBuilder.Entity<ChatPyme>(entity =>
             {
                 entity.ToTable("chat_pyme");
@@ -661,6 +705,15 @@ namespace brokfy.dashboard.api.data.DataModel
 
                 entity.Property(e => e.TipoRespuesta)
                     .HasColumnName("tipo_respuesta")
+                    .HasColumnType("int(11)");
+            });
+
+            modelBuilder.Entity<ChatSubirPoliza>(entity =>
+            {
+                entity.ToTable("chat_subir_poliza");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
                     .HasColumnType("int(11)");
             });
 
@@ -783,112 +836,6 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasConstraintName("fk_correos_cancelacion_aseguradoras_aseguradoras");
             });
 
-            modelBuilder.Entity<DatosVerificacionMati>(entity =>
-            {
-                entity.HasKey(e => e.Username)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("datos_verificacion_mati");
-
-                entity.Property(e => e.Username)
-                    .HasColumnName("username")
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Curp)
-                    .HasColumnName("curp")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Direccion)
-                    .HasColumnName("direccion")
-                    .HasColumnType("text")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Emision)
-                    .HasColumnName("emision")
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.FechaExpiracion)
-                    .HasColumnName("fecha_expiracion")
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.FechaNacimiento)
-                    .HasColumnName("fecha_nacimiento")
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.FotoDelantera)
-                    .IsRequired()
-                    .HasColumnName("foto_delantera")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.FotoTrasera)
-                    .IsRequired()
-                    .HasColumnName("foto_trasera")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.FullName)
-                    .HasColumnName("full_name")
-                    .HasColumnType("varchar(145)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Genero)
-                    .HasColumnName("genero")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Nacionalidad)
-                    .HasColumnName("nacionalidad")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.NacionalidadIdentificacion)
-                    .HasColumnName("nacionalidad_identificacion")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.NumDocumento)
-                    .HasColumnName("num_documento")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.OcrNumber)
-                    .HasColumnName("ocr_number")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Selfie)
-                    .HasColumnName("selfie")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.TipoDocumento)
-                    .HasColumnName("tipo_documento")
-                    .HasColumnType("varchar(25)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-            });
-
             modelBuilder.Entity<Descargables>(entity =>
             {
                 entity.HasKey(e => e.IdDescargable)
@@ -934,6 +881,184 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasCollation("utf8_general_ci");
             });
 
+            modelBuilder.Entity<Documentos>(entity =>
+            {
+                entity.ToTable("documentos");
+
+                entity.HasIndex(e => e.Username)
+                    .HasName("fk_documentos_usuario_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.Authority)
+                    .HasColumnName("authority")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.CrcSection)
+                    .HasColumnName("crc_section")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Curp)
+                    .HasColumnName("curp")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Direccion)
+                    .HasColumnName("direccion")
+                    .HasColumnType("text")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.DocNumber)
+                    .HasColumnName("doc_number")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.ElectorId)
+                    .HasColumnName("elector_id")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Emision)
+                    .HasColumnName("emision")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Expeditor)
+                    .HasColumnName("expeditor")
+                    .HasColumnType("varchar(5)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FechaExpiracion)
+                    .HasColumnName("fecha_expiracion")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FechaNacimiento)
+                    .HasColumnName("fecha_nacimiento")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FotoDelantera)
+                    .IsRequired()
+                    .HasColumnName("foto_delantera")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FotoTrasera)
+                    .HasColumnName("foto_trasera")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FullName)
+                    .HasColumnName("full_name")
+                    .HasColumnType("varchar(145)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Genero)
+                    .HasColumnName("genero")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Locality)
+                    .HasColumnName("locality")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.LugarNacimiento)
+                    .HasColumnName("lugar_nacimiento")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Municipality)
+                    .HasColumnName("municipality")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Nacionalidad)
+                    .HasColumnName("nacionalidad")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.NumDocumento)
+                    .HasColumnName("num_documento")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.RegistryYear)
+                    .HasColumnName("registry_year")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Section)
+                    .HasColumnName("section")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Selfie)
+                    .HasColumnName("selfie")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.State)
+                    .HasColumnName("state")
+                    .HasColumnType("varchar(3)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasColumnName("status")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.TipoDocumento)
+                    .IsRequired()
+                    .HasColumnName("tipo_documento")
+                    .HasColumnType("varchar(25)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasColumnName("username")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.UsernameNavigation)
+                    .WithMany(p => p.Documentos)
+                    .HasForeignKey(d => d.Username)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_documentos_usuario");
+            });
+
             modelBuilder.Entity<EstadoCivil>(entity =>
             {
                 entity.ToTable("estado_civil");
@@ -957,6 +1082,9 @@ namespace brokfy.dashboard.api.data.DataModel
 
                 entity.ToTable("estado_siniestro");
 
+                entity.HasIndex(e => e.IdTipoPoliza)
+                    .HasName("FK_ESTADO_SINIESTRO_TIPO_POLIZA_idx");
+
                 entity.Property(e => e.IdEstadoSiniestro)
                     .HasColumnName("id_estado_siniestro")
                     .HasColumnType("int(11)");
@@ -966,12 +1094,27 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'1'");
 
+                entity.Property(e => e.IdTipoPoliza)
+                    .HasColumnName("id_tipo_poliza")
+                    .HasColumnType("int(11)");
+
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnName("nombre")
                     .HasColumnType("varchar(254)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Orden)
+                    .HasColumnName("orden")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'1'");
+
+                entity.HasOne(d => d.IdTipoPolizaNavigation)
+                    .WithMany(p => p.EstadoSiniestro)
+                    .HasForeignKey(d => d.IdTipoPoliza)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ESTADO_SINIESTRO_TIPO_POLIZA");
             });
 
             modelBuilder.Entity<EstadosMexico>(entity =>
@@ -1038,6 +1181,168 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
+            });
+
+            modelBuilder.Entity<HistoricoDocumentos>(entity =>
+            {
+                entity.ToTable("historico_documentos");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.Authority)
+                    .HasColumnName("authority")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.CrcSection)
+                    .HasColumnName("crc_section")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Curp)
+                    .HasColumnName("curp")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Direccion)
+                    .HasColumnName("direccion")
+                    .HasColumnType("text")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.DocNumber)
+                    .HasColumnName("doc_number")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.ElectorId)
+                    .HasColumnName("elector_id")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Emision)
+                    .HasColumnName("emision")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Expeditor)
+                    .HasColumnName("expeditor")
+                    .HasColumnType("varchar(5)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FechaExpiracion)
+                    .HasColumnName("fecha_expiracion")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FechaNacimiento)
+                    .HasColumnName("fecha_nacimiento")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FotoDelantera)
+                    .IsRequired()
+                    .HasColumnName("foto_delantera")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FotoTrasera)
+                    .HasColumnName("foto_trasera")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.FullName)
+                    .HasColumnName("full_name")
+                    .HasColumnType("varchar(145)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Genero)
+                    .HasColumnName("genero")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Locality)
+                    .HasColumnName("locality")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.LugarNacimiento)
+                    .HasColumnName("lugar_nacimiento")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Municipality)
+                    .HasColumnName("municipality")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Nacionalidad)
+                    .HasColumnName("nacionalidad")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.NumDocumento)
+                    .HasColumnName("num_documento")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.RegistryYear)
+                    .HasColumnName("registry_year")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Section)
+                    .HasColumnName("section")
+                    .HasColumnType("varchar(15)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Selfie)
+                    .HasColumnName("selfie")
+                    .HasColumnType("longtext")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.State)
+                    .HasColumnName("state")
+                    .HasColumnType("varchar(3)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.TipoDocumento)
+                    .IsRequired()
+                    .HasColumnName("tipo_documento")
+                    .HasColumnType("varchar(25)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasColumnName("username")
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
 
             modelBuilder.Entity<InsigniaCotizacion>(entity =>
@@ -1277,40 +1582,23 @@ namespace brokfy.dashboard.api.data.DataModel
 
             modelBuilder.Entity<ModelosAseguradoras>(entity =>
             {
-                entity.ToTable("modelos_aseguradoras");
+                entity.HasKey(e => new { e.CodModelo, e.AnioComercializacion })
+                    .HasName("PRIMARY");
 
-                entity.HasIndex(e => e.CodBrokfy)
-                    .HasName("fk_modelos_aseguradoras_marcas_brokfy_idx");
+                entity.ToTable("modelos_aseguradoras");
 
                 entity.HasIndex(e => e.Marcas)
                     .HasName("fk_modelos_aseguradoras_marcas_aseguradoras1_idx");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.AnioComercializacion)
-                    .IsRequired()
-                    .HasColumnName("anio_comercializacion")
-                    .HasColumnType("varchar(4)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Aseguradora)
-                    .IsRequired()
-                    .HasColumnName("aseguradora")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.CodBrokfy)
-                    .HasColumnName("cod_brokfy")
-                    .HasColumnType("bigint(20)");
-
                 entity.Property(e => e.CodModelo)
-                    .IsRequired()
                     .HasColumnName("cod_modelo")
                     .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.AnioComercializacion)
+                    .HasColumnName("anio_comercializacion")
+                    .HasColumnType("varchar(4)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 
@@ -1327,11 +1615,6 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(145)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
-
-                entity.HasOne(d => d.CodBrokfyNavigation)
-                    .WithMany(p => p.ModelosAseguradoras)
-                    .HasForeignKey(d => d.CodBrokfy)
-                    .HasConstraintName("fk_modelos_aseguradoras_marcas_brokfy");
             });
 
             modelBuilder.Entity<ModelosMoto>(entity =>
@@ -1624,6 +1907,85 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
+            });
+
+            modelBuilder.Entity<OpcionesChat>(entity =>
+            {
+                entity.ToTable("opciones_chat");
+
+                entity.HasIndex(e => e.IdChatAuto)
+                    .HasName("opciones_chat_chat_auto_idx");
+
+                entity.HasIndex(e => e.IdChatBienvenida)
+                    .HasName("opciones_chat_chat_bienvenida_idx");
+
+                entity.HasIndex(e => e.IdChatSubirPoliza)
+                    .HasName("opciones_chat_chat_subir_poliza_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Action)
+                    .HasColumnName("action")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Endpoint)
+                    .HasColumnName("endpoint")
+                    .HasColumnType("varchar(145)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.IdChatAuto)
+                    .HasColumnName("id_chat_auto")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.IdChatBienvenida)
+                    .HasColumnName("id_chat_bienvenida")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.IdChatHogar2)
+                    .HasColumnName("id_chat_hogar_2")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.IdChatSubirPoliza)
+                    .HasColumnName("id_chat_subir_poliza")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Opcion)
+                    .HasColumnName("opcion")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Url)
+                    .HasColumnName("url")
+                    .HasColumnType("varchar(145)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Valor)
+                    .HasColumnName("valor")
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdChatAutoNavigation)
+                    .WithMany(p => p.OpcionesChat)
+                    .HasForeignKey(d => d.IdChatAuto)
+                    .HasConstraintName("opciones_chat_chat_auto");
+
+                entity.HasOne(d => d.IdChatBienvenidaNavigation)
+                    .WithMany(p => p.OpcionesChat)
+                    .HasForeignKey(d => d.IdChatBienvenida)
+                    .HasConstraintName("opciones_chat_chat_bienvenida");
+
+                entity.HasOne(d => d.IdChatSubirPolizaNavigation)
+                    .WithMany(p => p.OpcionesChat)
+                    .HasForeignKey(d => d.IdChatSubirPoliza)
+                    .HasConstraintName("opciones_chat_chat_subir_poliza");
             });
 
             modelBuilder.Entity<Pagos>(entity =>
@@ -2476,6 +2838,63 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasConstraintName("fk_preguntas_tipo_seguro1");
             });
 
+            modelBuilder.Entity<PreguntasAuto>(entity =>
+            {
+                entity.ToTable("preguntas_auto");
+
+                entity.HasIndex(e => e.IdChatAuto)
+                    .HasName("preguntas_auto_chat_auto_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.IdChatAuto)
+                    .HasColumnName("id_chat_auto")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.Pregunta)
+                    .HasColumnName("pregunta")
+                    .HasColumnType("varchar(255)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdChatAutoNavigation)
+                    .WithMany(p => p.PreguntasAuto)
+                    .HasForeignKey(d => d.IdChatAuto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("preguntas_auto_chat_auto");
+            });
+
+            modelBuilder.Entity<PreguntasBienvenida>(entity =>
+            {
+                entity.ToTable("preguntas_bienvenida");
+
+                entity.HasIndex(e => e.IdChatBienvenida)
+                    .HasName("preguntas_bienvenida_chat_bienvenida_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.IdChatBienvenida)
+                    .HasColumnName("id_chat_bienvenida")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.Pregunta)
+                    .IsRequired()
+                    .HasColumnName("pregunta")
+                    .HasColumnType("varchar(145)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdChatBienvenidaNavigation)
+                    .WithMany(p => p.PreguntasBienvenida)
+                    .HasForeignKey(d => d.IdChatBienvenida)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("preguntas_bienvenida_chat_bienvenida");
+            });
+
             modelBuilder.Entity<PreguntasChat>(entity =>
             {
                 entity.HasKey(e => new { e.IdPregunta, e.Pregunta })
@@ -2542,6 +2961,35 @@ namespace brokfy.dashboard.api.data.DataModel
                     .HasConstraintName("fk_chat_vida");
             });
 
+            modelBuilder.Entity<PreguntasChatHogar>(entity =>
+            {
+                entity.ToTable("preguntas_chat_hogar");
+
+                entity.HasIndex(e => e.IdChatHogar2)
+                    .HasName("preguntas_chat_hogar_chat_hogar_2_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.IdChatHogar2)
+                    .HasColumnName("id_chat_hogar_2")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Pregunta)
+                    .IsRequired()
+                    .HasColumnName("pregunta")
+                    .HasColumnType("text")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdChatHogar2Navigation)
+                    .WithMany(p => p.PreguntasChatHogar)
+                    .HasForeignKey(d => d.IdChatHogar2)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("preguntas_chat_hogar_chat_hogar_2");
+            });
+
             modelBuilder.Entity<PreguntasHogar>(entity =>
             {
                 entity.ToTable("preguntasHogar");
@@ -2581,6 +3029,33 @@ namespace brokfy.dashboard.api.data.DataModel
                 entity.Property(e => e.TipoRespuesta)
                     .HasColumnName("tipo_respuesta")
                     .HasColumnType("int(11)");
+            });
+
+            modelBuilder.Entity<PreguntasSubirPoliza>(entity =>
+            {
+                entity.ToTable("preguntas_subir_poliza");
+
+                entity.HasIndex(e => e.IdChatSubirPoliza)
+                    .HasName("preguntas_subir_poliza_chat_subir_poliza_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.IdChatSubirPoliza)
+                    .HasColumnName("id_chat_subir_poliza")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Pregunta)
+                    .HasColumnName("pregunta")
+                    .HasColumnType("text")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.HasOne(d => d.IdChatSubirPolizaNavigation)
+                    .WithMany(p => p.PreguntasSubirPoliza)
+                    .HasForeignKey(d => d.IdChatSubirPoliza)
+                    .HasConstraintName("preguntas_subir_poliza_chat_subir_poliza");
             });
 
             modelBuilder.Entity<Productos>(entity =>
@@ -2897,6 +3372,7 @@ namespace brokfy.dashboard.api.data.DataModel
                     .IsRequired()
                     .HasColumnName("comentario")
                     .HasColumnType("varchar(500)")
+                    .HasDefaultValueSql("' '")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
 

@@ -7,6 +7,7 @@ namespace brokfy.dashboard.api.data.DataModel
     {
         public int Id { get; set; }
         public string Pregunta { get; set; }
+        public string Anexos { get; set; }
         public int? IdChatSubirPoliza { get; set; }
 
         public virtual ChatSubirPoliza IdChatSubirPolizaNavigation { get; set; }

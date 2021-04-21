@@ -40,23 +40,23 @@ namespace brokfy.dashboard.api.Controllers
 
             Perfil perfil = _context.Perfil.Where(x => x.Username == username).FirstOrDefault();
             PerfilAseguradoModel perfilAsegurado = (from pf in _context.PerfilAsegurado
-                                                    join prof in _context.Profesiones on pf.IdProfesion equals prof.Id
+                                                   // join prof in _context.Profesiones on pf.IdProfesion equals prof.Id
                                                     where pf.IdPerfil == username
                                                     select new PerfilAseguradoModel
                                                     {
                                                         IdPerfil = pf.IdPerfil,
-                                                        Municipio = pf.Municipio,
-                                                        CodigoPostal = pf.CodigoPostal,
-                                                        Estado = pf.Estado,
+                                                        //Municipio = pf.Municipio,
+                                                        //CodigoPostal = pf.CodigoPostal,
+                                                        //Estado = pf.Estado,
                                                         Hijos = pf.Hijos,
-                                                        Edad = pf.Edad,
+                                                        //Edad = pf.Edad,
                                                         RegimenVivienda = pf.RegimenVivienda,
-                                                        SituacionLaboral = pf.SituacionLaboral,
-                                                        Hipoteca = pf.Hipoteca,
+                                                        //SituacionLaboral = pf.SituacionLaboral,
+                                                        //Hipoteca = pf.Hipoteca,
                                                         Viaja = pf.Viaja,
-                                                        Mascotas = pf.Mascotas,
+                                                        //Mascotas = pf.Mascotas,
                                                         EstadoCivil = pf.EstadoCivil,
-                                                        Profesion = prof.Descripcion,
+                                                        //Profesion = prof.Descripcion,
                                                     }).FirstOrDefault();
             List<PolizasModel> polizas = (from pol in _context.Polizas
                                           join tp in _context.TipoPoliza on pol.TipoPoliza equals tp.Id
@@ -84,15 +84,15 @@ namespace brokfy.dashboard.api.Controllers
                                               EstadoPoliza = edo.Nombre
                                           }).ToList();
 
-            IQueryable<PerfilAseguradoToActividades> preAct = from pre in _context.PerfilAseguradoToActividades where pre.IdPerfil == username select pre;
+            /*IQueryable<PerfilAseguradoToActividades> preAct = from pre in _context.PerfilAseguradoToActividades where pre.IdPerfil == username select pre;
             IQueryable<PerfilAseguradoTieneGadgets> preGad = from pre in _context.PerfilAseguradoTieneGadgets where pre.IdPerfil == username select pre;
             IQueryable<PerfilAseguradoToPropiedades> preProp = from pre in _context.PerfilAseguradoToPropiedades where pre.IdPerfil == username select pre;
-            IQueryable<PerfilAseguradoToSalud> preSal = from pre in _context.PerfilAseguradoToSalud where pre.IdPerfil == username select pre;
+            IQueryable<PerfilAseguradoToSalud> preSal = from pre in _context.PerfilAseguradoToSalud where pre.IdPerfil == username select pre;*/
 
 
             DetallePerfilAsegurado detallePerfil = new DetallePerfilAsegurado()
             {
-                Actividades = (from act in _context.Actividades
+                /*Actividades = (from act in _context.Actividades
                                join pAct in preAct on act.Id equals pAct.IdActividad into ps
                                from pAct in ps.DefaultIfEmpty()
                                select new DescripcionValor
@@ -127,7 +127,7 @@ namespace brokfy.dashboard.api.Controllers
                              Id = sal.Id,
                              Descripcion = sal.Descripcion,
                              Aplica = pSal != null
-                         }).ToList(),
+                         }).ToList(),*/
             };
 
 
@@ -144,7 +144,7 @@ namespace brokfy.dashboard.api.Controllers
         {
             try
             {
-                switch (data.Modulo)
+                /*switch (data.Modulo)
                 {
                     case "actividades":
                         if (data.Aplica)
@@ -176,7 +176,7 @@ namespace brokfy.dashboard.api.Controllers
 
                     default:
                         break;
-                }
+                }*/
 
                 _context.SaveChanges();
 

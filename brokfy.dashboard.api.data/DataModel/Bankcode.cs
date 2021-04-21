@@ -8,5 +8,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public string Banco { get; set; }
         public string CodQualitas { get; set; }
         public string CodAna { get; set; }
+        public string CodZurich { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public string Telefono { get; set; }
         public string Enabled { get; set; }
         public string CveCopsis { get; set; }
+        public string Logo { get; set; }
 
         public virtual CorreosCancelacionAseguradoras CorreosCancelacionAseguradoras { get; set; }
         public virtual ICollection<AseguradorasComisiones> AseguradorasComisiones { get; set; }

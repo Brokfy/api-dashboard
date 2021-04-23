@@ -1,23 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using brokfy.dashboard.api.data.DataModel;
 using brokfy.dashboard.api.Middleware;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace brokfy.dashboard.api
 {
@@ -49,7 +40,7 @@ namespace brokfy.dashboard.api
 
             services.AddHttpClient();
 
-            var chainedClient = new X509Certificate2("server.p12", "Brokfy2020");
+            var chainedClient = new X509Certificate2("server.p12", "@Brokfy2020");
             var handlerChainedClient = new HttpClientHandler();
             handlerChainedClient.ClientCertificates.Add(chainedClient);
 
@@ -63,7 +54,7 @@ namespace brokfy.dashboard.api
             app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()
             );
-            
+
 
             if (env.IsDevelopment())
             {
@@ -75,7 +66,8 @@ namespace brokfy.dashboard.api
 
             app.UseRouting();
             app.UseMiddleware<ADAuthMiddleware>();
-            app.UseAuthorization();
+            app.UseAuthorization(); 
+            
 
             app.UseEndpoints(endpoints =>
             {

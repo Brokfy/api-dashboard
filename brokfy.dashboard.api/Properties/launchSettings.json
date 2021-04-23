@@ -14,8 +14,9 @@
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "https://apipruebas.brokfy.com:4300"
     },
     "brokfy.dashboard.api": {
       "commandName": "Project",

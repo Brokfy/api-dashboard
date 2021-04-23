@@ -15,24 +15,24 @@ namespace brokfy.dashboard.api
     {
         public static void Main(string[] args)
         {
-            //CreateWebHostBuilder(args).Build().Run();
-            CreateHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
+            //CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        /*public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                });*/
 
-        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        //    WebHost.CreateDefaultBuilder(args)
-        //    .UseKestrel(option =>
-        //    {
-        //        option.Listen(IPAddress.Any, 4300, listenOptions => { listenOptions.UseHttps("server.p12", "Brokfy2020"); });
-        //    })
-        //    .UseUrls("https://apipruebas.brokfy.com:4300")
-        //    .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+            .UseKestrel(option =>
+            {
+                option.Listen(IPAddress.Any, 4300, listenOptions => { listenOptions.UseHttps("server.p12", "@Brokfy2020"); });
+            })
+            .UseUrls("https://apipruebas.brokfy.com:4300")
+            .UseStartup<Startup>();
     }
 }

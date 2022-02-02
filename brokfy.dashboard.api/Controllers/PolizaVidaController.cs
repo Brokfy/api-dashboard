@@ -30,6 +30,7 @@ namespace brokfy.dashboard.api.Controllers
         {
             var result = from p in _context.Polizas
                          join v in _context.Vida on p.NoPoliza equals v.NoPoliza
+                         join u in _context.Perfil on p.Username equals u.Username
                          where p.PolizaPropia == propia & p.TipoPoliza == 5
                          select new PolizaVida
                          {
@@ -37,7 +38,7 @@ namespace brokfy.dashboard.api.Controllers
                              FormaPago = p.FormaPago,
                              ProximoPago = p.ProximoPago,
                              FechaInicio = p.FechaInicio,
-                             FechaFin = p.FechaFin,
+                             FechaFin = (DateTime)p.FechaFin,
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
                              PrimaNeta = p.PrimaNeta,
@@ -59,6 +60,7 @@ namespace brokfy.dashboard.api.Controllers
                              IdSexo = v.IdSexo,
                              Ingresos = v.Ingresos,
                              Peso = v.Peso,
+                             fullName = u.Nombre + " " + u.ApellidoPaterno + " " + u.ApellidoMaterno
                          };
 
             return result.ToList();
@@ -77,7 +79,7 @@ namespace brokfy.dashboard.api.Controllers
                              FormaPago = p.FormaPago,
                              ProximoPago = p.ProximoPago,
                              FechaInicio = p.FechaInicio,
-                             FechaFin = p.FechaFin,
+                             FechaFin = (DateTime)p.FechaFin,
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
                              PrimaNeta = p.PrimaNeta,

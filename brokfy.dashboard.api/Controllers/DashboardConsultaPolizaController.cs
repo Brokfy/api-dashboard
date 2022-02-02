@@ -42,7 +42,7 @@ namespace brokfy.dashboard.api.Controllers
                                                         Cliente = string.Format(@"{0} {1} {2}", usu.Nombre, usu.ApellidoPaterno, usu.ApellidoMaterno),
                                                         EstadoPoliza = edo.Nombre,
                                                         FechaInicio = pol.FechaInicio,
-                                                        FechaFin = pol.FechaFin,
+                                                        FechaFin = (DateTime)pol.FechaFin,
                                                         NoPoliza = noPoliza,
                                                         PolizaPropia = pol.PolizaPropia,
                                                         TipoPoliza = tip.Tipo

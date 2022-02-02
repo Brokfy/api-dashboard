@@ -9,6 +9,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public int IdPago { get; set; }
         public int IdPolizaComision { get; set; }
         public double Monto { get; set; }
+        public string NoPoliza { get; set; }
 
         public virtual Pagos IdPagoNavigation { get; set; }
         public virtual PolizasComisiones IdPolizaComisionNavigation { get; set; }

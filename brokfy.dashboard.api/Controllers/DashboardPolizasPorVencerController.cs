@@ -40,7 +40,7 @@ namespace brokfy.dashboard.api.Controllers
                                                             select new DashboardPolizasPorVencer
                                                     {
                                                         Aseguradora = ase.Nombre,
-                                                        FechaFin = pol.FechaFin,
+                                                        FechaFin = (DateTime)pol.FechaFin,
                                                         NoPoliza = pol.NoPoliza,
                                                         TipoPoliza = tip.Tipo
                                                     }).OrderBy(x => x.FechaFin)

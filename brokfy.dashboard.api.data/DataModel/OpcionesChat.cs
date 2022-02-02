@@ -20,6 +20,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
         public virtual ChatAuto IdChatAutoNavigation { get; set; }
         public virtual ChatBienvenida IdChatBienvenidaNavigation { get; set; }
+        public virtual ChatHogar2 IdChatHogar2Navigation { get; set; }
         public virtual ChatMoto IdChatMotoNavigation { get; set; }
         public virtual ChatSubirPoliza IdChatSubirPolizaNavigation { get; set; }
         public virtual ChatVida2 IdChatVida2Navigation { get; set; }

@@ -36,5 +36,7 @@ namespace brokfy.dashboard.api.data.ViewModel
         public int IdSexo { get; set; }
         public int IdEstadoPoliza { get; set; }
         public List<BeneficiariosVida> Beneficiarios { get; set; }
+
+        public string fullName { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace brokfy.dashboard.api
 
             services.AddHttpClient();
 
-            var chainedClient = new X509Certificate2("server.p12", "@Brokfy2020");
+            var chainedClient = new X509Certificate2("server.p12", "Brokfy$2022");
             var handlerChainedClient = new HttpClientHandler();
             handlerChainedClient.ClientCertificates.Add(chainedClient);
 

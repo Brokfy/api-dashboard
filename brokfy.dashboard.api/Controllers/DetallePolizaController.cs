@@ -52,7 +52,7 @@ namespace brokfy.dashboard.api.Controllers
                                                 NoPoliza = p.NoPoliza ,
                                                 FormaPago = p.FormaPago ,
                                                 FechaInicio = p.FechaInicio ,
-                                                FechaFin = p.FechaFin ,
+                                                FechaFin = (DateTime)p.FechaFin ,
                                                 IdAseguradora = p.IdAseguradoras ,
                                                 NombreAseguradora = ase.Nombre ,
                                                 ProductoId = p.ProductoId,
@@ -78,35 +78,11 @@ namespace brokfy.dashboard.api.Controllers
                                                 IdEstadoPoliza = p.IdEstadoPoliza ,
                                               },
                                Usuario = usu,
-                               //Pagos = from px in _context.Polizas
-                               //        join det in _context.PagosDetalle on px.NoPoliza equals det.NoPoliza
-                               //        join pago in _context.Pagos on det.IdPago equals pago.IdPago
-                               //        where det.NoPoliza == NoPoliza
-                               //        select new HistoriaPagoPoliza
-                               //        {
-                               //            Fecha = pago.Fecha,
-                               //            Monto = det.Monto,
-                               //            Referencia = pago.Referencia,
-                               //            FormaPago = "Transferencia Bancaria"
-                               //            //pago.MetodoPago == 1 ? "Transferencia Bancaria" :
-                               //            //pago.MetodoPago == 2 ? "Deposito Bancario" :
-                               //            //pago.MetodoPago == 3 ? "Punto de Venta Electronico" :
-                               //            //pago.MetodoPago == 4 ? "Efectivo" :
-                               //            //                       "Otro"
-                               //        },
                                Auto = p.TipoPoliza == 1 ? p.Auto : null,
                                Moto = p.TipoPoliza == 2 ? p.Auto : null,
-                               //Hogar = p.Hogar,
-                               //Salud = p.Salud,
                                Vida = p.Vida,
-                               //Gadget = p.Gadget,
-                               //Mascota = p.Mascota,
-                               //Viaje = p.Viaje,
-                               //Retiro = p.Retiro,
                                Pyme = p.Pyme,
                            }).FirstOrDefault();
-
-                //detalle.Tipo = getTipoDetalle(original);
                 detalle.Pagos = (from px in _context.Polizas
                                 join com in _context.PolizasComisiones on px.NoPoliza equals com.NoPoliza
                                 join det in _context.PagosDetalle on com.IdPolizaComision equals det.IdPolizaComision
@@ -124,6 +100,18 @@ namespace brokfy.dashboard.api.Controllers
                                     pago.MetodoPago == 4 ? "Efectivo" :
                                                            "Otro"
                                 }).ToList();
+                detalle.HistoricoPagos = (
+                        from comisiones in _context.PolizasComisiones
+                        where comisiones.NoPoliza == NoPoliza
+                        select new HistoriaPagosPoliza
+                        {
+                            Vencimiento = comisiones.Vencimiento,
+                            Pagado = comisiones.Pagado,
+                            IdPolizaComision = comisiones.IdPolizaComision,
+                            valor = comisiones.Valor
+                        }
+                    ).ToList();
+
                 return detalle;
             }
             catch (Exception ex)
@@ -133,6 +121,35 @@ namespace brokfy.dashboard.api.Controllers
             
 
             
+        }
+
+        [HttpPut("{idAseguradora}")]
+        public ResponseModel PutPolizaComisiones([FromBody] data.ViewModel.PagosDetalleModel detalle, int idAseguradora)
+        {
+            var row = _context.PolizasComisiones.Single(x => x.IdPolizaComision == detalle.Comisiones.IdPolizaComision);
+            row.Pagado = detalle.Comisiones.Pagado;
+            
+            Pagos pagos = new Pagos()
+            {
+                IdAseguradora = idAseguradora,
+                Monto = detalle.Comisiones.Valor,
+                Fecha = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd")),
+                MetodoPago = detalle.Pagos.MetodoPago,
+                Referencia = detalle.Pagos.Referencia
+            };
+            Pagos p =_context.Pagos.Update(pagos).Entity;
+            Console.WriteLine("Id PAgo :" + p.IdPago);
+            _context.SaveChanges();
+            PagosDetalle pagosDetalle = new PagosDetalle()
+            {
+                IdPago = p.IdPago,
+                IdPolizaComision = detalle.Comisiones.IdPolizaComision,
+                Monto = p.Monto,
+                NoPoliza = detalle.Comisiones.NoPoliza
+            };
+            _context.PagosDetalle.Update(pagosDetalle);
+            _context.SaveChanges();
+            return new ResponseModel { Message = "Ok", Result = null, Success = true };
         }
 
         private dynamic? getTipoDetalle(Polizas original)

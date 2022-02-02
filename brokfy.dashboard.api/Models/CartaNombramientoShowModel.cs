@@ -11,11 +11,12 @@ namespace brokfy.dashboard.api.Models
         public string FullName { get; set; }
         public int Tipo { get; set; }
         public int Aseguradora { get; set; }
-        public DateTime Fecha { get; set; }
+        public string Fecha { get; set; }
         public string NoPoliza { get; set; }
         public bool? Revisado { get; set; }
         public string UrlPoliza { get; set; }
         public string UrlCartaNombramiento { get; set; }
         public bool Firmada { get; set; }
+        public string tokenF { get; set; }
     }
 }

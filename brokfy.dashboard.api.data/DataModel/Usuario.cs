@@ -9,8 +9,9 @@ namespace brokfy.dashboard.api.data.DataModel
         {
             CartasNombramiento = new HashSet<CartasNombramiento>();
             Documentos = new HashSet<Documentos>();
+            Identificaciones = new HashSet<Identificaciones>();
             MetodosPagoReg = new HashSet<MetodosPagoReg>();
-            Notificaciones = new HashSet<Notificaciones>();
+            NotificacionesNavigation = new HashSet<Notificaciones>();
             Polizas = new HashSet<Polizas>();
             PolizasAseguradorasNoAgente = new HashSet<PolizasAseguradorasNoAgente>();
             PolizasGastosMedicos = new HashSet<PolizasGastosMedicos>();
@@ -30,14 +31,16 @@ namespace brokfy.dashboard.api.data.DataModel
         public string NameAws { get; set; }
         public string TokenF { get; set; }
         public bool? Online { get; set; }
-        public DateTime FechaRegistro { get; set; }
+        public bool? Notificaciones { get; set; }
+        public DateTime? FechaRegistro { get; set; }
 
         public virtual Message Message { get; set; }
         public virtual Perfil Perfil { get; set; }
         public virtual ICollection<CartasNombramiento> CartasNombramiento { get; set; }
         public virtual ICollection<Documentos> Documentos { get; set; }
+        public virtual ICollection<Identificaciones> Identificaciones { get; set; }
         public virtual ICollection<MetodosPagoReg> MetodosPagoReg { get; set; }
-        public virtual ICollection<Notificaciones> Notificaciones { get; set; }
+        public virtual ICollection<Notificaciones> NotificacionesNavigation { get; set; }
         public virtual ICollection<Polizas> Polizas { get; set; }
         public virtual ICollection<PolizasAseguradorasNoAgente> PolizasAseguradorasNoAgente { get; set; }
         public virtual ICollection<PolizasGastosMedicos> PolizasGastosMedicos { get; set; }

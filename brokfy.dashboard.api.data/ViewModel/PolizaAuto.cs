@@ -10,9 +10,9 @@ namespace brokfy.dashboard.api.data.ViewModel
         [Key]
         public string NoPoliza { get; set; }
         public string FormaPago { get; set; }
-        public DateTime ProximoPago { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public string ProximoPago { get; set; }
+        public string FechaInicio { get; set; }
+        public string FechaFin { get; set; }
         public int IdAseguradoras { get; set; }
         public double Costo { get; set; }
         public double PrimaNeta { get; set; }
@@ -33,5 +33,9 @@ namespace brokfy.dashboard.api.data.ViewModel
         public string Clave { get; set; }
         public string CodigoPostal { get; set; }
         public int IdEstadoPoliza { get; set; }
+
+        public int IdTipoPoliza { get; set; }
+
+        public string fullName { get; set; }
     }
 }

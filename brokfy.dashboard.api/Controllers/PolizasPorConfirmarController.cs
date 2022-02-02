@@ -1,13 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using brokfy.dashboard.api.data.DataModel;
 using Microsoft.Extensions.Configuration;
 using brokfy.dashboard.api.Models;
-using System;
 
 namespace brokfy.dashboard.api.Controllers
 {
@@ -25,16 +21,72 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/PolizasPorConfirmar
         [HttpGet]
-        public IEnumerable<Polizas> GetPolizasPorConfirmar()
+        public List<PolizaAutoPostModel> GetPolizasPorConfirmar()
         {
-            return _context.Polizas.Where(x => x.IdEstadoPoliza == 4).ToList();
+            var polizas = from p in _context.Polizas
+                          where p.IdEstadoPoliza == 4 orderby p.FechaInicio descending
+                          select new PolizaAutoPostModel
+                          {
+                              NoPoliza = p.NoPoliza,
+                              FormaPago = p.FormaPago,
+                              ProximoPago = p.ProximoPago.ToString("yyyy-MM-dd"),
+                              FechaInicio = p.FechaInicio.ToString("yyyy-MM-dd"),
+                              FechaFin = p.FechaFin.ToString("yyyy-MM-dd"),
+                              IdAseguradoras = p.IdAseguradoras,
+                              Costo = p.Costo,
+                              Username = p.Username,
+                              ProductoId = p.ProductoId,
+                              Habilitada = p.Habilitada.Equals("Si") ? true:false,
+                              NoAsegurado = p.NoAsegurado,
+                              PolizaPropia = p.PolizaPropia,
+                              PolizaPdf = p.PolizaPdf,
+                              ReciboPdf = p.ReciboPdf,
+                              RcUsaCanada = p.RcUsaCanada,
+                              CostoPrimerRecibo = p.CostoPrimerRecibo,
+                              CostoRecibosSubsecuentes = p.CostoRecibosSubsecuentes,
+                              Marca = p.Auto.Marca,
+                              Modelo = p.Auto.Modelo,
+                              Ano = p.Auto.Ano,
+                              Placas = p.Auto.Placas,
+                              Clave = p.Auto.Clave,
+                              CodigoPostal = p.Auto.CodigoPostal,
+                          };
+            return polizas.ToList();
         }
 
         // GET: api/PolizasPorConfirmar/4554654
         [HttpGet("{poliza}")]
-        public Polizas GetPolizasPorConfirmar(string poliza)
+        public PolizaAutoPostModel GetPolizasPorConfirmar(string poliza)
         {
-            return _context.Polizas.Where(x => x.NoPoliza == poliza).FirstOrDefault();
+            var polizas = from p in _context.Polizas
+                          where p.IdEstadoPoliza == 4 orderby p.FechaInicio descending
+                          select new PolizaAutoPostModel
+                          {
+                              NoPoliza = p.NoPoliza,
+                              FormaPago = p.FormaPago,
+                              ProximoPago = p.ProximoPago.ToString("yyyy-MM-dd"),
+                              FechaInicio = p.FechaInicio.ToString("yyyy-MM-dd"),
+                              FechaFin = p.FechaFin.ToString("yyyy-MM-dd"),
+                              IdAseguradoras = p.IdAseguradoras,
+                              Costo = p.Costo,
+                              Username = p.Username,
+                              ProductoId = p.ProductoId,
+                              Habilitada = p.Habilitada.Equals("Si") ? true : false,
+                              NoAsegurado = p.NoAsegurado,
+                              PolizaPropia = p.PolizaPropia,
+                              PolizaPdf = p.PolizaPdf,
+                              ReciboPdf = p.ReciboPdf,
+                              RcUsaCanada = p.RcUsaCanada,
+                              CostoPrimerRecibo = p.CostoPrimerRecibo,
+                              CostoRecibosSubsecuentes = p.CostoRecibosSubsecuentes,
+                              Marca = p.Auto.Marca,
+                              Modelo = p.Auto.Modelo,
+                              Ano = p.Auto.Ano,
+                              Placas = p.Auto.Placas,
+                              Clave = p.Auto.Clave,
+                              CodigoPostal = p.Auto.CodigoPostal,
+                          };
+            return polizas.First();
         }
     }
 }

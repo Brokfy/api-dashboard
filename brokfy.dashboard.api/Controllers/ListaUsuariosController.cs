@@ -55,7 +55,7 @@ namespace brokfy.dashboard.api.Controllers
                                                         //Hipoteca = pf.Hipoteca,
                                                         Viaja = pf.Viaja,
                                                         //Mascotas = pf.Mascotas,
-                                                        EstadoCivil = pf.EstadoCivil,
+                                                       // EstadoCivil = pf.EstadoCivil,
                                                         //Profesion = prof.Descripcion,
                                                     }).FirstOrDefault();
             List<PolizasModel> polizas = (from pol in _context.Polizas
@@ -71,7 +71,7 @@ namespace brokfy.dashboard.api.Controllers
                                               FormaPago = pol.FormaPago,
                                               ProximoPago = pol.ProximoPago,
                                               FechaInicio = pol.FechaInicio,
-                                              FechaFin = pol.FechaFin,
+                                              FechaFin = (DateTime)pol.FechaFin,
                                               Aseguradora = aseg.Nombre,
                                               Username = pol.Username,
                                               Producto = prod.Producto,

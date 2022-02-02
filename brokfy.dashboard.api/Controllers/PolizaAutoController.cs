@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using brokfy.dashboard.api.data.DataModel;
 using Microsoft.Extensions.Configuration;
 using brokfy.dashboard.api.Models;
 using System;
 using brokfy.dashboard.api.data.ViewModel;
-using Newtonsoft.Json;
 
 namespace brokfy.dashboard.api.Controllers
 {
@@ -27,18 +23,19 @@ namespace brokfy.dashboard.api.Controllers
 
         // GET: api/Polizas/
         [HttpGet]
-        public List<PolizaAuto> GetPolizaAuto([FromQuery] string propia)
+        public List<PolizaAuto> GetPolizaAuto([FromQuery] string propia, [FromQuery] int tipoPoliza)
         {
             var result = from p in _context.Polizas
-                         join a in _context.Auto on p.NoPoliza equals a.NoPoliza
-                         where p.PolizaPropia == propia & p.TipoPoliza == 1
+                         join u in _context.Perfil on p.Username equals u.Username
+                         where p.PolizaPropia == propia & p.TipoPoliza == tipoPoliza
                          select new PolizaAuto
                          {
+                             IdTipoPoliza = p.TipoPoliza,
                              NoPoliza = p.NoPoliza,
                              FormaPago = p.FormaPago,
-                             ProximoPago = p.ProximoPago,
-                             FechaInicio = p.FechaInicio,
-                             FechaFin = p.FechaFin,
+                             ProximoPago = p.ProximoPago.ToString("yyyy-MM-dd"),
+                             FechaInicio = p.FechaInicio.ToString("yyyy-MM-dd"),
+                             FechaFin = p.FechaFin.ToString("yyyy-MM-dd"),
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
                              PrimaNeta = p.PrimaNeta,
@@ -53,12 +50,13 @@ namespace brokfy.dashboard.api.Controllers
                              RcUsaCanada = p.RcUsaCanada,
                              CostoPrimerRecibo = p.CostoPrimerRecibo,
                              CostoRecibosSubsecuentes = p.CostoRecibosSubsecuentes,
-                             Marca = a.Marca,
-                             Modelo = a.Modelo,
-                             Ano = a.Ano,
-                             Placas = a.Placas,
-                             Clave = a.Clave,
-                             CodigoPostal = a.CodigoPostal
+                             Marca = p.Auto.Marca,
+                             Modelo = p.Auto.Modelo,
+                             Ano = p.Auto.Ano,
+
+
+                             fullName = u.Nombre + " " + u.ApellidoPaterno + " "+ u.ApellidoMaterno
+                             
                          };
 
             return result.ToList();
@@ -73,11 +71,12 @@ namespace brokfy.dashboard.api.Controllers
                          where p.NoPoliza == id
                          select new PolizaAuto
                          {
+                             IdTipoPoliza = p.TipoPoliza,
                              NoPoliza = p.NoPoliza,
                              FormaPago = p.FormaPago,
-                             ProximoPago = p.ProximoPago,
-                             FechaInicio = p.FechaInicio,
-                             FechaFin = p.FechaFin,
+                             ProximoPago = p.ProximoPago.ToString("yyyy-MM-dd"),
+                             FechaInicio = p.FechaInicio.ToString("yyyy-MM-dd"),
+                             FechaFin = p.FechaFin.ToString("yyyy-MM-dd"),
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
                              PrimaNeta = p.PrimaNeta,
@@ -110,12 +109,12 @@ namespace brokfy.dashboard.api.Controllers
             {
                 Polizas poliza = new Polizas()
                 {
-                    TipoPoliza = 1,
+                    TipoPoliza = data.IdTipoPoliza,
                     NoPoliza = data.NoPoliza,
                     FormaPago = data.FormaPago,
-                    ProximoPago = data.ProximoPago,
-                    FechaInicio = data.FechaInicio,
-                    FechaFin = data.FechaFin,
+                    ProximoPago = Convert.ToDateTime(data.ProximoPago),
+                    FechaInicio = Convert.ToDateTime(data.FechaInicio),
+                    FechaFin = Convert.ToDateTime(data.FechaFin),
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
                     PrimaNeta = data.PrimaNeta,
@@ -163,12 +162,12 @@ namespace brokfy.dashboard.api.Controllers
             {
                 Polizas poliza = new Polizas()
                 {
-                    TipoPoliza = 1,
+                    TipoPoliza = data.IdTipoPoliza,
                     NoPoliza = data.NoPoliza,
                     FormaPago = data.FormaPago,
-                    ProximoPago = data.ProximoPago,
-                    FechaInicio = data.FechaInicio,
-                    FechaFin = data.FechaFin,
+                    ProximoPago = Convert.ToDateTime(data.ProximoPago),
+                    FechaInicio = Convert.ToDateTime(data.FechaInicio),
+                    FechaFin = Convert.ToDateTime(data.FechaFin),
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
                     PrimaNeta = data.PrimaNeta,
@@ -182,21 +181,25 @@ namespace brokfy.dashboard.api.Controllers
                     RcUsaCanada = data.RcUsaCanada,
                     CostoPrimerRecibo = data.CostoPrimerRecibo,
                     CostoRecibosSubsecuentes = data.CostoRecibosSubsecuentes,
-                    IdEstadoPoliza = 4, // ESTADO POR CONFIRMAR
+                    IdEstadoPoliza = _context.CartasNombramiento.Where(x => x.NoPoliza == data.NoPoliza).FirstOrDefault().Firmada ? 4 : 1, // ESTADO POR CONFIRMAR
                 };
                 _context.Polizas.Add(poliza);
 
-                Auto auto = new Auto()
+                if(data.Marca != null || data.Clave != null)
                 {
-                    Marca = data.Marca,
-                    Modelo = data.Modelo,
-                    Ano = data.Ano,
-                    Placas = data.Placas,
-                    Clave = data.Clave,
-                    CodigoPostal = data.CodigoPostal,
-                    NoPoliza = data.NoPoliza
-                };
-                _context.Auto.Add(auto);
+                    Auto auto = new Auto()
+                    {
+                        Marca = data.Marca,
+                        Modelo = data.Modelo,
+                        Ano = data.Ano,
+                        Placas = data.Placas,
+                        Clave = data.Clave,
+                        CodigoPostal = data.CodigoPostal,
+                        NoPoliza = data.NoPoliza
+                    };
+                    _context.Auto.Add(auto);
+                }
+                
 
                 CartasNombramiento carta = _context.CartasNombramiento.Where(x => x.NoPoliza == data.NoPoliza).FirstOrDefault();
                 carta.Revisado = true;

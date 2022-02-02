@@ -17,6 +17,7 @@ namespace brokfy.dashboard.api.data.DataModel
 
         public int Id { get; set; }
         public string Tipo { get; set; }
+        public bool Habilitada { get; set; }
 
         public virtual ICollection<AseguradorasComisiones> AseguradorasComisiones { get; set; }
         public virtual ICollection<CartasNombramiento> CartasNombramiento { get; set; }

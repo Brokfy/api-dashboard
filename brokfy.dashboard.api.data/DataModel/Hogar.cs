@@ -20,9 +20,6 @@ namespace brokfy.dashboard.api.data.DataModel
         public int? NivelesCasa { get; set; }
         public bool FrenteMar { get; set; }
 
-        public virtual TiposMuro IdTipoMuroNavigation { get; set; }
-        public virtual TipoTecho IdTipoTechoNavigation { get; set; }
-        public virtual TipoViviendaBrokfy IdTipoViviendaNavigation { get; set; }
         public virtual Polizas NoPolizaNavigation { get; set; }
         public virtual ICollection<Notificaciones> Notificaciones { get; set; }
     }

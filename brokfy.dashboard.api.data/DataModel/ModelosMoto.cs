@@ -5,7 +5,6 @@ namespace brokfy.dashboard.api.data.DataModel
 {
     public partial class ModelosMoto
     {
-        public int Id { get; set; }
         public string CodModelo { get; set; }
         public string NomModelo { get; set; }
         public string AnioComercializacion { get; set; }

@@ -14,6 +14,7 @@ namespace brokfy.dashboard.api.data.DataModel
         public string NoPoliza { get; set; }
         public DateTime Vencimiento { get; set; }
         public double Valor { get; set; }
+        public bool Pagado { get; set; }
 
         public virtual Polizas NoPolizaNavigation { get; set; }
         public virtual ICollection<PagosDetalle> PagosDetalle { get; set; }

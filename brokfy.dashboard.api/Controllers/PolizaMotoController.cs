@@ -30,14 +30,15 @@ namespace brokfy.dashboard.api.Controllers
         {
             var result = from p in _context.Polizas
                          join a in _context.Auto on p.NoPoliza equals a.NoPoliza
+                         join u in _context.Perfil on p.Username equals u.Username
                          where p.PolizaPropia == propia & p.TipoPoliza == 2
                          select new PolizaAuto
                          {
                              NoPoliza = p.NoPoliza,
                              FormaPago = p.FormaPago,
-                             ProximoPago = p.ProximoPago,
-                             FechaInicio = p.FechaInicio,
-                             FechaFin = p.FechaFin,
+                             ProximoPago = p.ProximoPago.ToString("yyyy-MM-dd"),
+                             FechaInicio = p.FechaInicio.ToString("yyyy-MM-dd"),
+                             FechaFin = p.FechaFin.ToString("yyyy-MM-dd"),
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
                              PrimaNeta = p.PrimaNeta,
@@ -57,7 +58,8 @@ namespace brokfy.dashboard.api.Controllers
                              Ano = a.Ano,
                              Placas = a.Placas,
                              Clave = a.Clave,
-                             CodigoPostal = a.CodigoPostal
+                             CodigoPostal = a.CodigoPostal,
+                             fullName = u.Nombre + " " + u.ApellidoPaterno + " " + u.ApellidoMaterno
                          };
 
             return result.ToList();
@@ -74,9 +76,9 @@ namespace brokfy.dashboard.api.Controllers
                          {
                              NoPoliza = p.NoPoliza,
                              FormaPago = p.FormaPago,
-                             ProximoPago = p.ProximoPago,
-                             FechaInicio = p.FechaInicio,
-                             FechaFin = p.FechaFin,
+                             ProximoPago = p.ProximoPago.ToString("yyyy-MM-dd"),
+                             FechaInicio = p.FechaInicio.ToString("yyyy-MM-dd"),
+                             FechaFin = p.FechaFin.ToString("yyyy-MM-dd"),
                              IdAseguradoras = p.IdAseguradoras,
                              Costo = p.Costo,
                              PrimaNeta = p.PrimaNeta,
@@ -112,9 +114,9 @@ namespace brokfy.dashboard.api.Controllers
                     TipoPoliza = 2,
                     NoPoliza = data.NoPoliza,
                     FormaPago = data.FormaPago,
-                    ProximoPago = data.ProximoPago,
-                    FechaInicio = data.FechaInicio,
-                    FechaFin = data.FechaFin,
+                    ProximoPago = Convert.ToDateTime(data.ProximoPago),
+                    FechaInicio = Convert.ToDateTime(data.FechaInicio),
+                    FechaFin = Convert.ToDateTime(data.FechaFin),
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
                     PrimaNeta = data.PrimaNeta,
@@ -165,9 +167,9 @@ namespace brokfy.dashboard.api.Controllers
                     TipoPoliza = 2,
                     NoPoliza = data.NoPoliza,
                     FormaPago = data.FormaPago,
-                    ProximoPago = data.ProximoPago,
-                    FechaInicio = data.FechaInicio,
-                    FechaFin = data.FechaFin,
+                    ProximoPago = Convert.ToDateTime(data.ProximoPago),
+                    FechaInicio = Convert.ToDateTime(data.FechaInicio),
+                    FechaFin = Convert.ToDateTime(data.FechaFin),
                     IdAseguradoras = data.IdAseguradoras,
                     Costo = data.Costo,
                     PrimaNeta = data.PrimaNeta,

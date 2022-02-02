@@ -9,7 +9,9 @@ namespace brokfy.dashboard.api.data.DataModel
         public string Username { get; set; }
         public int IdTipoPoliza { get; set; }
         public string Fecha { get; set; }
+        public DateTime? FechaProximaAparicion { get; set; }
         public bool Subido { get; set; }
+        public bool Activa { get; set; }
 
         public virtual TipoPoliza IdTipoPolizaNavigation { get; set; }
         public virtual PerfilAsegurado UsernameNavigation { get; set; }

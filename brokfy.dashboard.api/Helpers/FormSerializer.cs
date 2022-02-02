@@ -19,9 +19,9 @@ namespace brokfy.dashboard.api.Helpers
 						{
 							NoPoliza = Data.Where(x => x.name == "noPoliza").FirstOrDefault().value,
 							FormaPago = Data.Where(x => x.name == "formaPago").FirstOrDefault().value,
-							ProximoPago = DateTime.TryParse(Data.Where(x => x.name == "proximoPago").FirstOrDefault().value, out DateTime f1) ? f1 : DateTime.Now,
-							FechaInicio = DateTime.TryParse(Data.Where(x => x.name == "proximoPago").FirstOrDefault().value, out DateTime f2) ? f2 : DateTime.Now,
-							FechaFin = DateTime.TryParse(Data.Where(x => x.name == "fechaFin").FirstOrDefault().value, out DateTime f3) ? f3 : DateTime.Now,
+							ProximoPago = Data.Where(x => x.name == "proximoPago").FirstOrDefault().value,
+							FechaInicio = Data.Where(x => x.name == "proximoPago").FirstOrDefault().value,
+							FechaFin = Data.Where(x => x.name == "fechaFin").FirstOrDefault().value,
 							IdAseguradoras = int.Parse(Data.Where(x => x.name == "idAseguradoras").FirstOrDefault().value),
 							Costo = double.Parse(Data.Where(x => x.name == "costo").FirstOrDefault().value),
 							Username = Data.Where(x => x.name == "username").FirstOrDefault().value,

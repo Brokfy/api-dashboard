@@ -15,14 +15,9 @@ namespace brokfy.dashboard.api.data.ViewModel
             public Auto Auto { get; set; } 
 
             public Auto Moto { get; set; }
-        //public Hogar Hogar { get; set; }
-        //public Salud Salud { get; set; }
             public Vida Vida { get; set; }
-        //public Gadget Gadget { get; set; }
-        //public Mascota Mascota { get; set; }
-        //public Viaje Viaje { get; set; }
-        //public Retiro Retiro { get; set; }
             public Pyme Pyme { get; set; }
+            public List<HistoriaPagosPoliza> HistoricoPagos { get; set; }
     }
 
         public class DetallePago
@@ -69,6 +64,14 @@ namespace brokfy.dashboard.api.data.ViewModel
             public double Monto { get; set; }
             public string FormaPago { get; set; }
             
+        }
+
+        public class HistoriaPagosPoliza
+        {
+            public DateTime Vencimiento { get; set; }
+            public bool Pagado { get; set; }
+            public int IdPolizaComision { get; set; }
+            public double valor { get; set; }
         }
 
 }

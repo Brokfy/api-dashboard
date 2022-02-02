@@ -29,19 +29,21 @@ namespace brokfy.dashboard.api.Controllers
         {
             var result = from cn in _context.CartasNombramiento
                          join p in _context.Perfil on cn.Username equals p.Username
-                         where cn.Revisado == false
+                         join u in _context.Usuario on cn.Username equals u.Username
+                         where cn.Revisado == false orderby cn.Fecha ascending
                          select new CartaNombramientoShowModel
                          {
                              Username = p.Username,
                              FullName = string.Format(@"{0} {1} {2}", p.Nombre, p.ApellidoPaterno, p.ApellidoMaterno),
                              Tipo = cn.Tipo,
                              Aseguradora = cn.Aseguradora,
-                             Fecha = cn.Fecha,
+                             Fecha = cn.Fecha.ToString("yyyy-MM-dd"),
                              NoPoliza = cn.NoPoliza,
                              Revisado = cn.Revisado,
                              UrlPoliza = cn.UrlPoliza,
                              UrlCartaNombramiento = cn.UrlCartaNombramiento,
-                             Firmada = cn.Firmada
+                             Firmada = cn.Firmada,
+                             tokenF = u.TokenF
                          };
             return result.ToList(); 
             //_context.CartasNombramiento.Where(x => x.Revisado == false).ToList();
